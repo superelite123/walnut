@@ -182,7 +182,7 @@ $(() => {
         async:false,
         success: function (response) {
           //$('#modalDeliveryOption').modal({backdrop: 'static',keyboard: false})
-          location.href="../../order/fulfillment_list"
+          location.reload()
         },
         error:function(e)
         {
