@@ -22,7 +22,7 @@
       </div>
     </div>
     <!-- /.box-header -->
-    
+
     <div class="box-body">
         <div class="box-body">
             <div class="row">
@@ -89,7 +89,7 @@
                         <thead>
                             <th></th>
                             <th>No</th>
-                            <th>Invoice id</th>
+                            <th>Sales Order</th>
                             <th>Customer</th>
                             <th>WB + Excise Total</th>
                             <th>Date</th>
@@ -215,4 +215,4 @@
     <script type="text/javascript" src="{{ asset('assets/js/ajax_loader.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/orderFulfilled/home_reject.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/orderFulfilled/home.js') }}"></script>
-@stop   
+@stop
