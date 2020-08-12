@@ -307,7 +307,7 @@
               Please Sign - Signature for collection of Payment
           </h4>
           <div class="sign-wrapper col-cs-12">
-              <canvas id="dSignature-pad" class="signature-pad" style="" width=500 height=200></canvas>
+              <canvas id="dSignature-pad" class="signature-pad" style="" width=400 height=200></canvas>
           </div>
           <div class="col-xs-12">
               <button class="btn btn-warning" id="dClear">Clear</button>

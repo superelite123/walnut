@@ -30,6 +30,7 @@
                         <th></th>
                         <th>No</th>
                         <th>Sales Order</th>
+                        <th>Invoice</th>
                         <th>Client</th>
                         <th>Distributor</th>
                         <th>Total Cost</th>

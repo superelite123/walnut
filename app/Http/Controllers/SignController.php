@@ -219,7 +219,7 @@ class SignController extends OBaseController
             // $req->id = $request->id;
             // $req->status = 4;
             // $this->setOrderStatus($req);
-            
+
             $this->setDeliveryStatus($invoice->id,2);
             return '1';
         });
@@ -309,6 +309,7 @@ class SignController extends OBaseController
             $item['id']         = $order->id;
             $item['no']         = $key + 1;
             $item['number']     = $order->number;
+            $item['number2']     = $order->number2;
             $item['clientname'] = $order->CName;
             $item['total']      = $fInfo['oTotal'];
             $item['rSubTotal']  = $fInfo['rSubTotal'];

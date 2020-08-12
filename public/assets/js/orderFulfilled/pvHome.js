@@ -22,6 +22,7 @@ var createVerificationTable = () => {
             },
             { "data": "no" },
             { "data": "number" },
+            { "data": "number2" },
             { "data": "clientname" },
             { "data": "companyname" },
             { "data": "total" },

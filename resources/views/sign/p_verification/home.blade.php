@@ -92,6 +92,7 @@
             <th></th>
             <th>No</th>
             <th>Sales Order</th>
+            <th>Invoice</th>
             <th>Client</th>
             <th>Total Price</th>
             <th>R Sub Total</th>

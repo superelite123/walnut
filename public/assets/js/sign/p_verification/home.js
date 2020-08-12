@@ -52,6 +52,7 @@ let createTable = () => {
             },
             { "data": "no" },
             { "data": "number" },
+            { "data": "number2" },
             { "data": "clientname" },
             { "data": "lTotal" },
             { "data": "lRSubTotal" },

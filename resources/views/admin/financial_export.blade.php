@@ -139,7 +139,7 @@
                   <table class="table table-bordered" id="invoice_table" style='width:100%'>
                       <thead>
                         <th>Customer Name</th>
-                        <th>Sales Order</th>
+                        <th>Invoice</th>
                         <th>Invoice Date</th>
                         <th>Terms</th>
                         <th>Total Qty Grams</th>
