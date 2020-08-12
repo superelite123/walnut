@@ -1,0 +1,37 @@
+.page-break {
+    page-break-after: always;
+  }
+.sign-wrapper {
+  position: relative;
+  width: 400px;
+  height: 200px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+body{
+  display: block;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  }
+
+.signature-pad {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 400px;
+  height: 200px;
+  border: 1px solid #03b1dd;
+}
+@media print {
+  .pdf_area * { display:none; }
+  .panel-close-btn * { display:none; }
+  table{
+    font-size:1vw;
+  }
+  a[href]:after {
+    content: none !important;
+  }
+}
