@@ -13,7 +13,7 @@ $('#updateTopInfo').click(() => {
     topInfo.note = note
     swal({
         title: "Are You Sure",
-        text: "Are You going to update the Order?",
+        text: "Are You going to update the Sales Order?",
         type: "info",
         showCancelButton: true,
         closeOnConfirm: true,
