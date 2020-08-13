@@ -189,7 +189,7 @@ Route::group( ['prefix' => 'order','middleware' => ['auth','permission:order_new
     Route::get('form','OrderFormController@index');
     Route::post('store','OrderController@store');
     Route::post('_form_customer_list','OrderController@_form_customer_list');
-    Route::post('_form_avaliable_qty','OrderController@_form_avaliable_qty');
+    Route::post('_form_avaliable_qty','OrderFormController@_getAvaliableQty');
 });
 /**
  * 3.29

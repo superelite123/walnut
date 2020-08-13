@@ -21,7 +21,8 @@ use App\Models\ActiveInventory;
 use App\Models\InvoiceItemAP;
 use App\Models\UPController;
 use App\Models\Term;
-
+use App\Models\FGInventory;
+use App\Models\InventoryVault;
 use DB;
 use JavaScript;
 class OrderFormController extends Controller
@@ -56,6 +57,7 @@ class OrderFormController extends Controller
             'producttypes'    => Producttype::where('onordermenu',1)->orderby('producttype')->get(),
             'promos'          => Promo::all(),
             'isNew'           => 0,
+            'tax_allow'       => 0
         ];
 
         $aInvList = [];
@@ -63,6 +65,9 @@ class OrderFormController extends Controller
               DB::raw('count(*) as qty'),DB::raw('sum(weight) as weights'))
               ->with(['Strain','AssetType'])
               ->where('qtyonhand','>',0)
+              ->whereHas('AssetType',function($query){
+                  $query->where('onordermenu',1);
+              })
               ->groupby('strainname','asset_type_id')
               ->orderby('strainname','asc')
               ->orderby('asset_type_id','asc')
@@ -107,6 +112,8 @@ class OrderFormController extends Controller
             $form['term']            = Term::find($form['invoice']->term_id);
             $form['shipping_method'] = $form['invoice']->shipping_method;
             $form['isNew']           = 1;
+
+            $form['tax_allow']       = $form['invoice']->tax_allow;
         }
 
         JavaScript::put([
@@ -114,7 +121,7 @@ class OrderFormController extends Controller
             'p_types'           => Producttype::all(),
             'invoice_item'      => $form['invoice_items'],
             'mode'              => $form['mode'],
-            'tax_allow'         => $form['invoice']->tax_allow,
+            'tax_allow'         => $form['tax_allow'],
             'id'                => $form['invoice']->id,
             'tax'               => OurDetail::all()->first()->tax,
             'clients'           => $form['clients'],
@@ -124,5 +131,50 @@ class OrderFormController extends Controller
         ]);
 
         return view('order.form_new',$form);
+    }
+
+    /**
+     * 8.12 Chi
+     *
+     * @param $strain,$ptype
+     * @return ['qty','weight','taxexempt']
+     */
+
+    public function _getAvaliableQty(Request $request)
+    {
+        $strain = $request->strain;
+        $p_type = $request->p_type;
+        $res = [];
+        $res['qty']       = 0;
+        $res['weight']    = 0;
+        $res['taxexempt'] = -1;
+        $upc = UPController::where(
+            [
+                ['strain',$strain],
+                ['type',$p_type]
+            ])->first();
+        $fg     = FGInventory::where([
+                ['strainname',$strain],
+                ['asset_type_id','=',$p_type],
+                ['qtyonhand','>',0],['status','=',1],
+                ])->get();
+        $vault  = InventoryVault::where([
+            ['strainname',$strain],
+            ['asset_type_id',$p_type],
+            ['qtyonhand','>',0],
+            ['status','=',1]])->get();
+        $alreay_requested = InvoiceItemAP::whereHas('Order', function($q) {
+                                $q->whereIn('status', [0,1,2]);
+                            })->where([
+                                    ['strain',$strain],
+                                    ['p_type',$p_type],
+                                    ['invoice_id','!=',$request->id]
+                                ])->get();
+        $res['qty']    = count($fg) + count($vault) - $alreay_requested->sum('qty');
+        $weight = $upc != null?$upc->weight:0;
+        $res['weight'] = $fg->sum('weight') + $vault->sum('weight') - ($weight * $alreay_requested->sum('qty'));
+        $res['weight'] = number_format((float)$res['weight'], 2, '.', '');
+        $res['taxexempt'] = $upc != null?$upc->taxexempt:-1;
+        return response()->json($res);
     }
 }

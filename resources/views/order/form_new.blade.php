@@ -158,7 +158,7 @@
         <!-- /.col -->
         <div class="col-md-3">
           <label for="">Don't Allow Tax</label>
-          <input type="checkbox" id='tax_allow'>
+          <input type="checkbox" id='tax_allow' {{ $tax_allow==1?'checked':'' }}>
           <p style='display:none'>This Order won't calculate any tax</p>
         </div>
         <!-- /.col -->
@@ -483,5 +483,8 @@
 @section('js')
   <script type="text/javascript" src="{{ asset('assets/component/js/sweetalert.js') }}"></script>
   <script type="text/javascript" src="{{ asset('assets/js/redux.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('assets/js/order/form/index.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('assets/js/redux-thunk.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('assets/js/order/form/constants.js') }}"></script>
+  <script type="module" src="{{ asset('assets/js/order/form/reducer.js') }}"></script>
+  <script type="module" src="{{ asset('assets/js/order/form/index.js') }}"></script>
 @stop

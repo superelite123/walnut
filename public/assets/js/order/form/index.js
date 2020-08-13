@@ -1,45 +1,17 @@
-//Get data from Laravel Controller
-var Invoice_item        = windowvar.invoice_item
-console.log(Invoice_item)
-var mode                = windowvar.mode
-var invoice_id          = windowvar.id
-var shipping_method     = windowvar.shipping_method
-var clients             = windowvar.clients
-let sel_client          = windowvar.sel_client
-let strains             = windowvar.strains
-let p_types             = windowvar.p_types
-let promos              = windowvar.promos
-//let cPersons            = windowvar.contact_persons
-var tax                 = parseFloat(windowvar.tax)
-let tax_allow           = windowvar.tax_allow == null?0:windowvar.tax_allow
-let avaliable_qty       = 0
-let taxexempt           = 0
-//isNew Flag
-let isNew = windowvar.isNew
-shipping_method.ok = true
-
-//invoice_row
-var inserted_data = Array();
-
-//product List
-var Strain_list       = $("#strain");
-var P_type_list       = $("#p_type");
-var QtyInput          = $("#qty");
-var Unit_priceInput   = $("#unit_price");
-var Sub_totalInput    = $("#sub_total");
-var DiscountInput     = $("#discount");
-var LessDiscountInput = $("#less_discount");
-var TaxInput          = $("#tax");
-var Adjust_priceInput = $("#adjust_price");
-
-
+import {combinedReduers} from './reducer.js'
+const {applyMiddleware} = Redux;
+const ReduxThunk = window.ReduxThunk.default;
+const store = Redux.createStore(combinedReduers,applyMiddleware(ReduxThunk));
 //--------------------------tax allow part---------------------------------
+
+    const listnerTaxAllow = () => {
+        const { taxAllow } = store.getState()
+        TaxInput.val(0)
+        TaxInput.prop('disabled', taxAllow==1)
+    }
+    store.subscribe(listnerTaxAllow);
     $('#tax_allow').click(() => {
-        tax_allow = $('#tax_allow').prop('checked') == true?1:0
-        if(tax_allow == 1)
-            TaxInput.val(0)
-        TaxInput.prop('disabled', $('#tax_allow').prop('checked'));
-        CreateTable()
+        store.dispatch({type: 'CHANGETAXALLOW',value:$('#tax_allow').prop('checked') == true?1:0})
     })
 //--------------------------/.tax allow part-------------------------------
 
@@ -107,53 +79,67 @@ var Adjust_priceInput = $("#adjust_price");
 //--------------------------./Customer Part----------------------------------
 //--------------------------Build Request Part-------------------------------------
     Strain_list.change(function(){
-        OnChangeStrainOrPType()
-        QtyInput.focus()
-        // DiscountInput.val(0)
-        validation_qty()
-        // set_adjust_price(calc_adjust_price())
+        store.dispatch(changeStrainOrPType({strain:$(this).val(),pType:store.getState().productAttr.pType}))
     })
     P_type_list.change(function(){
-        OnChangeStrainOrPType()
-        QtyInput.focus()
-        validation_qty()
+        store.dispatch(changeStrainOrPType({strain:store.getState().productAttr.strain,pType:$(this).val()}))
     })
-    let OnChangeStrainOrPType = () => {
-        let strain = Strain_list.val()
-        let p_type = P_type_list.val()
-        if(strain == 0 || p_type == 0)
-        {
-            return false
-        }
-        setPrice()
-        calc_units()
-        let res;
-        $.ajax({
-            url:'_form_avaliable_qty',
-            type:'post',
-            async:false,
-            data:'strain=' + strain + '&p_type=' + p_type + '&id='+invoice_id,
-            success:(r) => {
-                res = r
-                inserted_data.forEach(element => {
-                    if(element.strain == strain && element.p_type == p_type)
-                    {
-                        res.qty -= element.qty;
+    const changeStrainOrPType = (value) => {
+        return function(dispatch) {
+            return getAvaliableQty(value).then(
+                (res) => dispatch( () => {
+                    const action = {
+                        type:'SETPRODUCTATTR',
+                        value:{
+                            ...value,
+                            avaliableQty:parseInt( res.qty ),
+                            weight:parseInt( res.weight ),
+                            taxexempt:parseInt( res.taxexempt )
+                        }
                     }
-                })
-            }
-        })
-        setQty(res.qty)
-        $('#avaliable_weight').html(res.weight)
-        taxexempt = res.taxexempt
+                    dispatch(action)
+                }),
+                (error) => () => {
+                    console.log('error occured')
+                },
+              )
+        };
 
     }
-    let setQty = (qty) => {
-        avaliable_qty = qty
-        $('#avaliable_qty').html(qty)
-        validation_qty()
+    const getAvaliableQty = ({strain,pType}) => {
+        return new Promise((fulfill,reject) => {
+            $.ajax({
+                url:'_form_avaliable_qty',
+                type:'post',
+                async:false,
+                data:'strain=' + strain + '&p_type=' + pType + '&id='+invoice_id,
+                success:(res) => {
+                    fulfill(res)
+                },
+                error:(e) => {
+                    reject(e)
+                }
+            })
+        })
     }
-    let calc_units = () => {
+    store.subscribe(() => {
+        const {avaliableQty} = store.getState().productAttr
+        const {qty} = store.getState()
+        $('#avaliable_qty').html(avaliableQty)
+
+        if(avaliableQty < qty)
+        {
+            //$('#qty_error').html('*Quantity can not big than Avaliable Quantity')
+            $('#qty').css('border-color', 'red')
+        }
+        else
+        {
+            $('#qty_error').html('')
+            $('#qty').css('border-color', '')
+        }
+    })
+
+    const calc_units = () => {
         if(P_type_list.val() == 0)
             return false
         let p_unit = p_types[findIndexWithAttr(p_types,'producttype_id',P_type_list.val())].units
@@ -168,37 +154,7 @@ var Adjust_priceInput = $("#adjust_price");
         cpu = cpu.toFixed(2)
         $('#cpu').val(cpu)
     }
-    let validation_qty = () => {
-        if(avaliable_qty < $('#qty').val())
-        {
-            //$('#qty_error').html('*Quantity can not big than Avaliable Quantity')
-            $('#qty').css('border-color', 'red')
-            return false;
-        }
-        else
-        {
-            $('#qty_error').html('')
-            $('#qty').css('border-color', '')
-            return true
-        }
-
-    }
-    let validation_cost = () => {
-        // if(Unit_priceInput.val() < 0)
-        // {
-        //     $('#unit_price_error').html('*Price cannot be 0')
-        //     $('#unit_price_error').css('border-color', 'red')
-        //     return false;
-        // }
-        // else
-        // {
-        //     $('#unit_price_error').html('')
-        //     $('#unit_price_error').css('border-color', '')
-        //     return true
-        // }
-        return true;
-    }
-    let validation_tax = () => {
+    const validation_tax = () => {
         if(parseFloat(TaxInput.val()) > parseFloat(LessDiscountInput.val()))
         {
             TaxInput.val(LessDiscountInput.val())
@@ -214,6 +170,31 @@ var Adjust_priceInput = $("#adjust_price");
         }
     }
 //--------------------------./Build Request Part-----------------------------------
+//--------------------------/Row Input Part----------------------------------------
+QtyInput.on('input',(e) => {
+    const {value} = e.target
+    if(value < 1)
+    {
+        $(this).val(1)
+    }
+    store.dispatch({type:'CHANGEQTY', value:parseInt(value)})
+})
+$('#units').on('input',function(){
+    if($(this).val() < 1)
+        $(this).val(1)
+})
+Unit_priceInput.on('input',function(){
+    calc_adjust_price()
+    validation_qty()
+    validation_cost()
+});
+TaxInput.on('input',function(){
+    if($(this).val() < 0.000001)
+        $(this).val(0)
+    validation_tax()
+    calc_adjust_price()
+});
+//-------------------------./Row Input Part----------------------------------------
 //--------------------------/Add Row-----------------------------------
     $("#add_row").click(function() {
         if(Strain_list.val() == 0)
@@ -283,7 +264,7 @@ var Adjust_priceInput = $("#adjust_price");
         data.less_discount = data.less_discount.toFixed(2)
         check_item_duplicate(data).then(() => {
             inserted_data.push(data)
-            CreateTable();
+            createTable();
             ListenerForItemList();
             avaliable_qty -= data.qty;
             setQty(avaliable_qty)
@@ -321,7 +302,7 @@ var Adjust_priceInput = $("#adjust_price");
      * 1.24 Added reset discount for entire order
      * called when 'entire discount' selector is changed
      */
-    let refresh_order_discount = () => {
+    const refresh_order_discount = () => {
         let discount = get_discount(get_discount_id())
         inserted_data.forEach(element => {
             if(element.discount_type == 0)
@@ -335,7 +316,7 @@ var Adjust_priceInput = $("#adjust_price");
                 element.adjust_price  = element.less_discount + element.tax
             }
         })
-        CreateTable()
+        createTable()
     }
 
     /**
@@ -422,32 +403,6 @@ let set_adjust_price = (data) => {
     Adjust_priceInput.val(data.adjust_price)
 }
 
-//----------------------Input Realtime calculation------------------------
-QtyInput.on('input',function(){
-    if($(this).val() < 1)
-        $(this).val(1)
-    calc_adjust_price()
-    validation_qty()
-})
-$('#units').on('input',function(){
-    if($(this).val() < 1)
-        $(this).val(1)
-})
-Unit_priceInput.on('input',function(){
-//    if($(this).val() < 0.000001)
- //       $(this).val(0)
-    calc_adjust_price()
-    validation_qty()
-    validation_cost()
-});
-TaxInput.on('input',function(){
-    if($(this).val() < 0.000001)
-        $(this).val(0)
-    validation_tax()
-    calc_adjust_price()
-});
-//----------------------./Input Realtime calculation------------------------
-
 var findIndexWithAttr =  function(array, attr, value){
     for(var i = 0; i < array.length; i += 1) {
         if(array[i][attr] == value) {
@@ -457,18 +412,43 @@ var findIndexWithAttr =  function(array, attr, value){
     return -1;
 };
 
-var CreateTable = () => {
-    var html = "";
-
-    $.each(inserted_data,function(index,element) {
-        html += create_row(index,element);
+var createTable = () => {
+    var {orderItems} = store.getState();
+    let html = ''
+    $.each(orderItems,function(index,element) {
+        html += generateRow(index,element);
     });
 
     $("#inserted_table > tbody > tr").remove();
     $("#inserted_table > tbody").html(html);
-    calc_total();
 };
-var calc_total = () => {
+const generateRow = (index,data) => {
+    var html = "";
+
+    html += "<tr item_id='" + index +"'>"
+    html += "<td>" + (index + 1) + "</td>"
+    html += "<td>" + data.description + "</td>"
+    html += "<td>" + data.qty + "</td>"
+    html += "<td>" + data.units + "</td>"
+    html += "<td>" + data.unit_price + "</td>"
+    html += "<td>" + data.sub_total + "</td>"
+    html += "<td>" + data.cpu + "</td>"
+    html += "<td>" + data.discount + "</td>"
+    let temp = "<td>No Discount</td>"
+    html += "<td>" + data.discount_label + "</td>"
+    html += "<td>" + data.e_discount + "</td>"
+    html += "<td>" + data.less_discount + "</td>"
+    html += "<td>" + (data.tax_note == null?'':data.tax_note) + "</td>"
+    html += "<td>" + data.adjust_price + "</td>"
+    html += "<td><button class='btn btn-info btn-xs btn_item_edit'>"
+    html += "<i class='fa fa-edit' aria-hidden='true'></i>&nbsp;edit</button></td>"
+    html += "<td><button class='btn btn-danger btn-xs btn_item_remove'>"
+    html += "<i class='fa fa-trash' aria-hidden='true'></i>&nbsp;Remove</button></td>"
+    html += "</tr>"
+    return html;
+}
+store.subscribe(createTable)
+var calculateTotal = () => {
     let base_price = 0
     let base_price_for_tax = 0
     let base_price_for_promotion = 0
@@ -476,8 +456,8 @@ var calc_total = () => {
     let e_discount = 0
     let taxed = 0
     let adjust_price = 0
-
-    $.each(inserted_data,function(index,element) {
+    var {orderItems} = store.getState();
+    $.each(orderItems,function(element) {
 
         base_price += parseFloat(element.sub_total)
         if(element.taxexempt != 1)
@@ -509,32 +489,7 @@ var calc_total = () => {
 
     return adjust_price
 }
-var create_row = (index,data) => {
-    var html = "";
-
-    html += "<tr item_id='" + index +"'>"
-    html += "<td>" + (index + 1) + "</td>"
-    html += "<td>" + data.description + "</td>"
-    html += "<td>" + data.qty + "</td>"
-    html += "<td>" + data.units + "</td>"
-    html += "<td>" + data.unit_price + "</td>"
-    html += "<td>" + data.sub_total + "</td>"
-    html += "<td>" + data.cpu + "</td>"
-    html += "<td>" + data.discount + "</td>"
-    let temp = "<td>No Discount</td>"
-    html += "<td>" + data.discount_label + "</td>"
-    html += "<td>" + data.e_discount + "</td>"
-    html += "<td>" + data.less_discount + "</td>"
-    html += "<td>" + (data.tax_note == null?'':data.tax_note) + "</td>"
-    html += "<td>" + data.adjust_price + "</td>"
-    html += "<td><button class='btn btn-info btn-xs btn_item_edit'>"
-    html += "<i class='fa fa-edit' aria-hidden='true'></i>&nbsp;edit</button></td>"
-    html += "<td><button class='btn btn-danger btn-xs btn_item_remove'>"
-    html += "<i class='fa fa-trash' aria-hidden='true'></i>&nbsp;Remove</button></td>"
-    html += "</tr>"
-    return html;
-}
-
+store.subscribe(calculateTotal)
 var ListenerForItemList = () =>{
     QtyInput.val(1)
     $('#units').val(1)
@@ -547,32 +502,6 @@ var ListenerForItemList = () =>{
     $('#tax_note').val('')
     Adjust_priceInput.val(0)
 };
-
-$("#save_shipping_method").click(function(){
-    // == ''
-    var shipment_date    = $("#shipment_date").val();
-    var shipping_carrier = $("#shipping_carrier").val();
-    var expected_date    = $("#expected_date").val();
-    var actual_date      = $("#actual_date").val();
-    var trackingid       = $("#trackingid").val();
-
-    // if(shipping_carrier == 0)
-    // {
-    //     swal("You need to fill All field to save the shipping", "", "warning")
-    //     shipping_method.ok =false;
-    //     return;
-    // }
-
-    shipping_method.trackingid       = trackingid;
-    shipping_method.shipment_date    = shipment_date;
-    shipping_method.shipping_carrier = shipping_carrier;
-    shipping_method.expected_date    = expected_date;
-    shipping_method.actual_date      = actual_date;
-    shipping_method.ok               = true;
-    $("#modal_shipping_method").modal('toggle');
-
-    $("#add_shipping_method").html('<i class="fa fa-fw fa-pen"></i>EDIT SHIPPING METHOD');
-})
 
 $(".makeBtn").click(function(){
 
@@ -617,7 +546,7 @@ var submit_invoice = () => {
         'note': $('#note').val(),
         'fulfillmentnote':$('#fulfillmentnote').val(),
         'distuributor_id':0,
-        'total':calc_total(),
+        'total':calculateTotal(),
         'tax_allow':tax_allow,
         'items':inserted_data,
         'term_id':term,
@@ -666,11 +595,6 @@ $("#confirm_modal").on("hidden.bs.modal", function () {
     location.href="create"
 });
 
-
-$("#add_shipping_method").click(function(){
-    $("#modal_shipping_method").modal();
-})
-
 //----------------------------------start inserted items---------------------------------------------------
 $("#inserted_table > tbody").on("click", ".btn_item_edit", function(){
     var item_id = parseInt($(this).parents('tr').attr('item_id'))
@@ -694,7 +618,7 @@ $("#inserted_table > tbody").on("click", ".btn_item_edit", function(){
     Adjust_priceInput.val(data.adjust_price)
 
     inserted_data.splice(item_id,1);
-    CreateTable();
+    createTable();
     $(this).parents("tr").remove();
 })
 $("#inserted_table > tbody").on("click", ".btn_item_remove", function(){
@@ -705,7 +629,7 @@ $("#inserted_table > tbody").on("click", ".btn_item_remove", function(){
         setQty(avaliable_qty)
     }
     inserted_data.splice(item_id,1);
-    CreateTable();
+    createTable();
     $(this).parents("tr").remove();
 })
 //---------------------------------- end inserted items------------------------------------------
@@ -738,15 +662,9 @@ ListenerForItemList();
     })
 //-----------------------end keyup event chain--------------------------
 $(function(){
-    $('.datepicker').datepicker({
-        format: 'yyyy-mm-dd'
-    });
     $("body").removeClass('fixed');
     $('.select2').select2();
 
-    $('.datepicker').datepicker({
-        autoclose: true
-    })
     $('#aInbTable').DataTable()
 })
 
@@ -792,10 +710,8 @@ var initOp = () => {
         data.discount_id    = discount.id
         data.discount_pro   = discount.pro
         data.discount_type  = discount.type
-        inserted_data.push(data);
+        store.dispatch({type: 'ADDITEM',item:data})
     }
-
-    CreateTable();
     $("#save_shipping_method").click();
     $("#modal_shipping_method").modal('hide');
 };
