@@ -94,7 +94,7 @@ const store = Redux.createStore(combinedReduers,applyMiddleware(ReduxThunk));
                             ...value,
                             avaliableQty:parseInt( res.qty ),
                             weight:parseInt( res.weight ),
-                            taxexempt:parseInt( res.taxexempt )
+                            taxExempt:parseInt( res.taxexempt )
                         }
                     }
                     dispatch(action)
@@ -122,14 +122,15 @@ const store = Redux.createStore(combinedReduers,applyMiddleware(ReduxThunk));
             })
         })
     }
+    //qty validation
     store.subscribe(() => {
         const {avaliableQty} = store.getState().productAttr
-        const {qty} = store.getState()
+        const {qty} = store.getState().inputData
         $('#avaliable_qty').html(avaliableQty)
 
         if(avaliableQty < qty)
         {
-            //$('#qty_error').html('*Quantity can not big than Avaliable Quantity')
+            $('#qty_error').html('*Quantity can not big than Avaliable Quantity')
             $('#qty').css('border-color', 'red')
         }
         else
@@ -138,22 +139,52 @@ const store = Redux.createStore(combinedReduers,applyMiddleware(ReduxThunk));
             $('#qty').css('border-color', '')
         }
     })
-
-    const calc_units = () => {
-        if(P_type_list.val() == 0)
-            return false
-        let p_unit = p_types[findIndexWithAttr(p_types,'producttype_id',P_type_list.val())].units
-        p_unit = p_unit == null?1:p_unit
-        $('#units').val(QtyInput.val() * p_unit)
-        let base_price = parseFloat(Unit_priceInput.val())
-        let cpu = 0
-        if(base_price > 0)
+    /**
+     * Calculate Row
+     *
+     * units
+     * Sub Total
+     * cpu
+     * discount
+     * extra discount
+     * extended
+     * adjust price
+     */
+    store.subscribe(() => {
+        //units,cpu
+        const {qty,basePrice} = store.getState().inputData
+        const {pType} = store.getState().productAttr
+        let pUnit = 0,cpu = 0
+        if(pType == 0)
         {
-            cpu = base_price * parseFloat(QtyInput.val()) / parseFloat($('#units').val())
+           return false
+        }
+        pUnit = p_types[findIndexWithAttr(p_types,'producttype_id',P_type_list.val())].units == null
+                ?1:
+                p_types[findIndexWithAttr(p_types,'producttype_id',P_type_list.val())].units
+        const units = qty * pUnit
+        $('#units').val(units)
+        if(basePrice > 0)
+        {
+            cpu = basePrice * parseFloat(qty / units)
         }
         cpu = cpu.toFixed(2)
         $('#cpu').val(cpu)
-    }
+        //subTotal
+        const subTotal = qty * basePrice
+
+    data.sub_total     = cost * qty;
+    data.discount      = data.sub_total * discount.pro / 100
+    data.less_discount = data.sub_total - data.discount - data.e_discount
+    data.adjust_price  = data.less_discount + tax
+
+    data.sub_total     = data.sub_total.toFixed(2)
+    data.discount      = data.discount.toFixed(2)
+    data.less_discount = data.less_discount.toFixed(2)
+    data.adjust_price  = data.adjust_price.toFixed(2)
+    set_adjust_price(data)
+    calc_units()
+    })
     const validation_tax = () => {
         if(parseFloat(TaxInput.val()) > parseFloat(LessDiscountInput.val()))
         {
@@ -179,20 +210,17 @@ QtyInput.on('input',(e) => {
     }
     store.dispatch({type:'CHANGEQTY', value:parseInt(value)})
 })
-$('#units').on('input',function(){
-    if($(this).val() < 1)
-        $(this).val(1)
-})
-Unit_priceInput.on('input',function(){
-    calc_adjust_price()
-    validation_qty()
-    validation_cost()
+Unit_priceInput.on('input',function(e){
+    store.dispatch({type:'CHANGEUNITPRICE', value:parseInt(e.target.value)})
+    // calc_adjust_price()
+    // validation_qty()
+    // validation_cost()
 });
 TaxInput.on('input',function(){
     if($(this).val() < 0.000001)
         $(this).val(0)
-    validation_tax()
-    calc_adjust_price()
+    // validation_tax()
+    // calc_adjust_price()
 });
 //-------------------------./Row Input Part----------------------------------------
 //--------------------------/Add Row-----------------------------------
@@ -296,6 +324,7 @@ TaxInput.on('input',function(){
     })
     $('#row_discount').change(() => {
         calc_adjust_price()
+        store.dispatch({type:'CHANGEUNITPRICE', value:parseInt(e.target.value)})
     })
 
     /**

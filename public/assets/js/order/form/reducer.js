@@ -1,43 +1,25 @@
 const { combineReducers } = Redux;
-
-const SetProductAttr = (state={avaliableQty:0,weight:0,taxexempt:0},actions) => {
+const SetState = (state=initialState,actions) => {
     switch (actions.type) {
-        case 'SETPRODUCTATTR': return state = actions.value;
-        default: return state
-    }
-}
-const SetState = (state={
-    avaliableQty:0,
-    weight:0,
-    taxexempt:0,
-    taxAllow,
-    qty:1,
-},actions) => {
-
-}
-const ChangeTaxAllow = (state=tax_allow,actions) => {
-    switch (actions.type) {
-        case 'CHANGETAXALLOW': return actions.value
-        default: return state
-    }
-}
-const changeQty = (state=1,actions) => {
-    switch (actions.type) {
-        case 'CHANGEQTY': return parseInt(actions.value)
-        default: return state
-    }
-}
-const ChangeItem = (state=[],actions) => {
-    switch (actions.type) {
-        case 'ADDITEM': state.push(actions.item)
-        case 'REMOVEITEM': state.filter((element,index) => index != actions.index)
+        case 'SETPRODUCTATTR':
+            return {...state,productAttr:actions.value}
+            break;
+        case 'CHANGETAXALLOW':
+            return {...state,taxAllow:actions.value}
+            break;
+        case 'ADDITEM':
+            state.orderItems = state.orderItems.push(actins.item)
+            return state;
+            break;
+        case 'REMOVEITEM': state.orderItems.filter((element,index) => index != actions.index)
+        case 'CHANGEQTY': state.inputData.qty = parseFloat(actions.value)
+        case 'CHANGEUNITPRICE': state.inputData.unitPrice = parseFloat(actions.value)
+        case 'CHANGEORDERDISCOUNTID':
+            state.element = state.element - 1
+            return state;
+            break;
         default: return state
     }
 }
 
-export const combinedReduers = combineReducers({
-    productAttr:SetProductAttr,
-    taxAllow:ChangeTaxAllow,
-    orderItems:ChangeItem,
-    qty:changeQty
-})
+export const combinedReduers = SetState

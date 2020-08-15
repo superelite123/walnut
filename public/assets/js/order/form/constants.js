@@ -19,6 +19,7 @@ let inserted_data       = Array()
 const Strain_list       = $("#strain")
 const P_type_list       = $("#p_type")
 const QtyInput          = $("#qty")
+const CaledUnitInput    = $('#units')
 const Unit_priceInput   = $("#unit_price")
 const Sub_totalInput    = $("#sub_total")
 const DiscountInput     = $("#discount")
@@ -33,12 +34,26 @@ const initialState = {
     tax:parseFloat(windowvar.tax),
     taxAllow:tax_allow,
     productAttr:{
+        strain:0,
+        pType:0,
         avaliableQty:0,
         weight:0,
         taxExempt:0,
     },
     inputData:{
-        qty:0,
-
-    }
+        qty:1,
+        basePrice:0,
+        unitPrice:0,
+        subTotal:0,
+        cpu:0,
+        discountID:0,
+        discount:0,
+        eDiscount:0,
+        extended:0,
+        tax:0,
+        note:'',
+        adjustPrice:0,
+    },
+    orderDiscountID:0,
+    rowDiscountID:0
 }

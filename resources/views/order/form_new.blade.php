@@ -61,7 +61,7 @@
         </div>
         <div class="col-md-2">
           <div class="form-group">
-            <label>Invoice Number:</label>
+            <label>Sales Order:</label>
 
             <div class="input-group">
               <div class="input-group-addon">
