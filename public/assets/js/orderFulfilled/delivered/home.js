@@ -176,6 +176,7 @@ var createTable = (date_range) => {
             { "data": "no" },
             { "data": "number" },
             { "data": "number2" },
+            { "data": "salesRep" },
             { "data": "clientname" },
             { "data": "lTotal" },
             { "data": "lRSubTotal" },
@@ -194,6 +195,7 @@ var createTable = (date_range) => {
             { "orderable": false, "targets": 5 },
             { "orderable": false, "targets": 6 },
             { "orderable": false, "targets": 7 },
+            { "orderable": false, "targets": 8 },
             { "orderable": false, "targets": 8 },
 
         ],

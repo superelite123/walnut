@@ -51,6 +51,7 @@
                             <th></th>
                             <th>No</th>
                             <th>Sales Order</th>
+                            <th>Sales Rep</th>
                             <th>Customer</th>
                             <th>WB + Excise Total</th>
                             <th>Date</th>
@@ -64,6 +65,7 @@
                         <tbody>
                         </tbody>
                         <tfoot>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>

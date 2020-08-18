@@ -104,6 +104,8 @@ class OrderFulFilledController extends OBaseController
             $temp['number'] = $order->number;
             $temp['number2'] = $order->number2;
             $temp['clientname'] = $order->CName;
+            $temp['salesRep']   = $order->salesperson != null?
+                                $order->salesperson->firstname.' '.$order->salesperson->lastname:'';
             $temp['total'] = $order->total_info['adjust_price'];
             $temp['base_price'] = $order->total_info['base_price'];
             $temp['discount'] = $order->total_info['discount'];

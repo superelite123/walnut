@@ -51,6 +51,7 @@
                           <th>No</th>
                           <th>Sales Order</th>
                           <th>Invoice</th>
+                          <th>Sales Rep</th>
                           <th>Customer</th>
                           <th>Total Price</th>
                           <th>R Sub Total</th>
@@ -63,6 +64,7 @@
                       <tbody>
                       </tbody>
                       <tfoot>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
