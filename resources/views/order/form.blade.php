@@ -15,7 +15,7 @@
     <!--start edit form-->
   <div class="box box-info main-panel">
     <div class="box-header with-border">
-      <h3 class="box-title"><i class="fas fa-file-invoice"></i> {{ $mode=='create'?'New':'Edit'}} {{' Invoice'}} {{ $number }}</h3>
+      <h3 class="box-title"><i class="fas fa-file-invoice"></i> {{ $mode=='create'?'New':'Edit'}} {{' Sales Order'}} {{ $number }}</h3>
       <div class="box-tools pull-right">
         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
         <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
@@ -61,7 +61,7 @@
         </div>
         <div class="col-md-2">
           <div class="form-group">
-            <label>Invoice Number:</label>
+            <label>Sales Order:</label>
 
             <div class="input-group">
               <div class="input-group-addon">
@@ -419,7 +419,7 @@
       <div class="row">
         <div class="col-md-12">
             <hr class="first">
-            <h3><i class="fas fa-list-ol"></i> Invoice Items</h3>
+            <h3><i class="fas fa-list-ol"></i> Sales Order Items</h3>
         </div>
       </div>
       <!--inserted panel-->
@@ -471,7 +471,7 @@
       <!-- /.row -->
       <div class="row">
         <div class="col-md-12">
-          <button class="btn btn-success btn-lg pull-right makeBtn" id="make_invoice"><i class="fa fa-upload"></i>&nbsp;{{ $mode=='store'?'Build Invoice':'Update Invoice' }}</button>
+          <button class="btn btn-success btn-lg pull-right makeBtn" id="make_invoice"><i class="fa fa-upload"></i>&nbsp;{{ $mode=='store'?'Build Sales Order':'Update Sales Order' }}</button>
         </div>
       </div>
     </div>
