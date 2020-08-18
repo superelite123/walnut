@@ -19,6 +19,7 @@ use App\Models\InventoryVault;
 use App\Models\DeliveryStatus;
 use App\Models\OurDetail;
 use App\Models\InvoicePaymentLog;
+use App\Mail\ReportOrderDelivery;
 //Config
 use Config;
 use App\Models\Counter;
@@ -86,6 +87,7 @@ class SignController extends OBaseController
         $ourdetail = OurDetail::all()->first();
         $invoice['company_detail']  = $ourdetail;
         $data['invoice'] = $invoice;
+        $data['isDelivered'] = $invoice->status == Config::get('constants.order.delivered');
         $data['fInfo'] = $invoice->FinancialTotalInfo;
         $data['dOptions'] = DeliveryStatus::where('id','!=',1)->get();
         $data['owedInvoices'] = $invoice->customer != null?$invoice->customer->FinacialInfo['myInvoices']:[];
@@ -221,6 +223,9 @@ class SignController extends OBaseController
             // $this->setOrderStatus($req);
 
             $this->setDeliveryStatus($invoice->id,2);
+            //sending Email
+            //get sales person name
+            Mail::to($invoice->SalesEmail)->send(new ReportOrderDelivery($invoice));
             return '1';
         });
         return $flag;

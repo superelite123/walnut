@@ -33,62 +33,8 @@
   <section class="invoice">
     <div class="row">
         @include('shared.close_button')
+        @include('shared.invoice_header')
     </div>
-    <!-- info row -->
-    <div class="row invoice-info">
-      <div class="col-sm-4 invoice-col">
-        <address>
-          {{ $invoice->company_detail->companyname }}<br>
-          {{ $invoice->company_detail-> address1}},<br>
-          {{ $invoice->company_detail->city }}, {{ $invoice->company_detail->state }} {{ $invoice->company_detail->zip }}<br>
-          Phone: {{ $invoice->company_detail->phone }}<br>
-          <strong>{{ $invoice->salesperson->firstname.' '.$invoice->salesperson->lastname }}.</strong><br>
-          Rep Phone: {{ $invoice->salesperson->telephone }}<br>
-          Cultivation License: <strong>{{ $invoice->company_detail->license }}</strong><br>
-        </address>
-      </div>
-      <!-- /.col -->
-      <div class="col-sm-4 invoice-col">
-        Client:
-        <address>
-          @if ($invoice->customer != null)
-            <strong>{{ $invoice->CName }}</strong><br>
-            {{ $invoice->customer->address1 }}<br>
-            {{ $invoice->customer->city }}, {{ $invoice->customer->state_name->name }} {{ $invoice->customer->zip }}<br>
-            Phone: {{ $invoice->customer->companyphone }}<br>
-            Email: {{ $invoice->customer->companyemail }}<br>
-            License: <strong>{{ $invoice->customer->licensenumber }}</strong>
-          @endif
-        </address>
-      </div>
-      <!-- /.col -->
-      <div class="col-sm-4 invoice-col">
-        Distributor/Transporter:
-        <address>
-          {{ $invoice->distuributor->companyname }} <br>
-          {{ $invoice->distuributor->address1 }}, {{ $invoice->distuributor->address2 }}<br>
-          {{ $invoice->distuributor->city }}, {{ $invoice->distuributor->state_name!=null?$invoice->distuributor->state_name->name:'No State' }} {{ $invoice->distuributor->zipcode }}  <br>
-          Phone: {{ $invoice->distuributor->phone }} <br>
-          Email: {{ $invoice->distuributor->email }} <br>
-          License: <strong>{{ $invoice->distuributor->license }}</strong>
-        </address>
-      </div>
-      <!-- /.col -->
-      <div class="col-sm-4 invoice-col">
-        Invoice: <b>{{ $invoice->number }}</b>,<b>{{ $invoice->number2 }}</b><br>
-        <b>Metrc Manifest:</b> {{ $invoice->m_m_str }} <br>
-        Terms:
-        @if ($invoice->customer != null)
-        <b>{{ $invoice->customer->term != null?$invoice->customer->term->term:'No Term' }}</b><br>
-        <b>Account:</b> {{ $invoice->customer->client_id }}
-        @endif
-      </div>
-      <!-- /.col -->
-      <div class="col-sm-4 invoice-col">
-        <strong>Note:</strong> <br>{{ $invoice->note }}
-      </div>
-    </div>
-    <!-- /.row -->
 
     <!-- Table row -->
     <div class="row">

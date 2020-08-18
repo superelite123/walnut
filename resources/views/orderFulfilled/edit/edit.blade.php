@@ -7,25 +7,26 @@
   <link rel="stylesheet" href="{{ asset('assets/component/css/growl/jquery.growl.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/component/css/datatable-fixedWidthColumn.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/checkbox.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/invoice_print/custom.css') }}"  media="all"  type="text/css">
 @stop
 @section('content_header')
-    
+
 @stop
 
 @section('content')
 <div class="box box-info main-panel">
     <div class="box-header with-border">
-      <h3 class="box-title"><i class="fas fa-file-invoice"></i> Edit FulFilled Invoice:<span class='number'>{{ $invoice->number }}</span></h3>
+      <h3 class="box-title"><i class="fas fa-file-invoice"></i> Edit Sales Order:<span class='number'>{{ $invoice->number }}</span></h3>
       <div class="box-tools pull-right">
         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
         <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
       </div>
     </div>
     <!-- /.box-header -->
-    
+
     <div class="box-body">
         <div class="row top-panel">
-            @include('orderFulfilled.edit.top')
+            @include('shared.invoice_header')
         </div>
         <div class="row">
             <!--Customer-->
@@ -344,4 +345,4 @@
   <script type="text/javascript" src="{{ asset('assets/js/orderFulfilled/edit/addForm.js') }}"></script>
   <script type="text/javascript" src="{{ asset('assets/js/orderFulfilled/edit/inventory.js') }}"></script>
   <script type="text/javascript" src="{{ asset('assets/js/orderFulfilled/edit/top.js') }}"></script>
-@stop 
+@stop

@@ -35,3 +35,30 @@ body{
     content: none !important;
   }
 }
+.panel-header{
+    padding:10px;
+    background:#e2e2e2;
+}
+.panel-logo{
+    width:120px;
+    height:120px;
+}
+.panel-card > p{
+    margin-bottom:0;
+}
+.panel-card .bolder{
+    font-size:14px;
+    font-weight: bolder;
+}
+.panel-card .light{
+    font-size:14px;
+}
+.invoice-info{
+    margin-top:10px;
+}
+.col-print-4{
+    width:33%; float:left;
+}
+.col-print-12{
+    width:100%; float:left;
+}

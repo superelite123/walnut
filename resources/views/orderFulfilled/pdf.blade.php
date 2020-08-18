@@ -91,59 +91,8 @@ html {
 
 
 <div class="row">
-  <div class="col-4">
-        <p>
-          <strong>{{ $invoice->company_detail->companyname }}</strong><br>
-          {{ $invoice->company_detail-> address1}},<br>
-          {{ $invoice->company_detail->city }}, {{ $invoice->company_detail->state }} {{ $invoice->company_detail->zip }}<br>
-          Phone: {{ $invoice->company_detail->phone }}<br>
-          Rep: {{ $invoice->salesperson->firstname.' '.$invoice->salesperson->lastname }}.<br>
-          Rep Phone: {{ $invoice->salesperson->telephone }}<br>
-          Cultivation License: <b>{{ $invoice->company_detail->license }}</b>
-        </p>
-  </div>
-  <div class="col-4">
-        <p>
-          @if ($invoice->customer != null)
-            <strong>{{ $invoice->CName }}</strong><br>
-            {{ $invoice->customer->address1 }}<br>
-            {{ $invoice->customer->city }}, {{ $invoice->customer->state_name != null?$invoice->customer->state_name->name:'' }} {{ $invoice->customer->zip }}<br>
-            Phone: {{ $invoice->customer->companyphone }}<br>
-            Email: {{ $invoice->customer->companyemail }}<br>
-            License: <strong>{{ $invoice->customer->licensenumber }}</strong>
-          @endif
-        </p>
-  </div>
-    <div class="col-4">
-        <p>
-        <strong>Distribution/Transportation</strong><br>
-        @if ($invoice->distuributor != null)
-        <strong>{{ $invoice->distuributor->companyname }}</strong><br>
-        {{ $invoice->distuributor->address1 }}, {{ $invoice->distuributor->address2 }}<br>
-        {{ $invoice->distuributor->city }}, {{ $invoice->distuributor->state_name != null?$invoice->distuributor->state_name->name:'' }} {{ $invoice->distuributor->zipcode }}  <br>
-        Phone: {{ $invoice->distuributor->phone }} <br>
-        Email: {{ $invoice->distuributor->email }} <br>
-        License: <strong>{{ $invoice->distuributor->license }}</strong>
-        </p>
-        @else
-            <p>{{ Config::get('constants.order.no_distributor') }}</p>
-        @endif
-  </div>
-
+    @include('shared.invoice_header')
 </div>
-<div class="row" style="margin-left:20px">
-        <div>
-            <b>Invoice Date:</b> {{ $invoice->date }} <br>
-            <b>Invoice Number:</b> {{ $invoice->number }} <br>,<b>{{ $invoice->number2 }}</b>
-            <b>Terms: 
-              <b>{{ $invoice->Term != null?$invoice->Term->term:'No Term' }}</b><br>    
-              @if ($invoice->customer != null)
-              <b>Account:</b> {{ $invoice->customer->client_id }}
-              @endif  
-            </b><br>
-        </div>
-</div>
-  
 <div class="row">
     <div class="col-12">
         <table id="customers">
@@ -192,8 +141,8 @@ html {
                               {{ $coa['coa'] }}
                           @else
                               {{ $coa['coa'] }} doesn't exist
-                          @endif       
-                          <br>                       
+                          @endif
+                          <br>
                         @endforeach
                        </td>
                  </tr>

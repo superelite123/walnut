@@ -218,7 +218,7 @@ class OrderFulFilledController extends OBaseController
         $data['invoice'] = $invoice;
         $ourdetail = OurDetail::all()->first();
         $data['invoice']['company_detail']  = $ourdetail;
-
+        $data['invoice']['logoInvisible'] =true;
         $data['items'] = [];
         $data['promos'] = Promo::all();
 
