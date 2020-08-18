@@ -21,6 +21,7 @@ var createTable = (date_range) => {
                     json[i].sign_delivery_btn = '<a href="panel/' + json[i].id + '" target="_blank" class="btn btn-info btn-xs"><i class="fas fa-signature"></i>&nbsp;Sign&nbsp;Delivery</a>'
                     json[i].sign_payment_btn = '<a href="payment_panel/' + json[i].id + '" target="_blank" class="btn btn-info btn-xs"><i class="fas fa-comment-dollar"></i>&nbsp;Sign&nbsp;Payment</a>'
                     json[i].note_btn = '<button class="btn btn-info btn-xs note_btn"><i class="fas fa-pen"></i>&nbsp;Note</button>'
+                    json[i].pdf_btn = '<a href="../order_fulfilled/_download_invoice_pdf/' + json[i].id + '" target="_blank"><i class="fas fa-file-pdf"></i>&nbsp;PDF INV</a>'
                 }
                 return json
             }
@@ -43,6 +44,7 @@ var createTable = (date_range) => {
             { "data": "date" },
             { "data": "sign_delivery_btn" },
             { "data": "note_btn" },
+            { "data": "pdf_btn" },
         ],
         "columnDefs": [
             { "orderable": false, "targets": 0 },
