@@ -86,20 +86,42 @@ html {
 </style>
 </head>
 <body>
-<div style="padding: 7px;background-color: #e2e2e2;"><img src="http://cultivision.us/walnut/assets/wbcolorlogo.jpg" alt="Logo" style="width:90px;height:69px;"><span style="color: #5c5d5d;font-size: 20px;padding-left: 20px;position: absolute;padding-top: 24px;">Walnut LLC</span><span style="float:right;padding-right:20px;padding-top: 27px;color: #5c5d5d;"><b>Invoice Date:</b> {{ $invoice->date }}</span>
+<div class="row" style="padding: 7px;background-color: #e2e2e2;">
+    <div class="col-4">
+        <img
+        src="{{ asset('assets/wbcolorlogo.jpg') }}"
+        alt="Logo"
+        style="width:90px;height:69px;" />
+    </div>
+    <div class="col-4"></div>
+    <div class="col-4">
+        <p>
+            <strong>{{ $invoice->company_detail->companyname }}</strong><br>
+            {{ $invoice->company_detail->address1}},
+            <br>
+            {{ $invoice->company_detail->city }},
+            {{ $invoice->company_detail->state }}
+            {{ $invoice->company_detail->zip }}
+            <br>
+            Cultivation LIC: CCL19-00006000<br>
+            {{ $invoice->company_detail->phone }}<br>
+        </p>
+    </div>
 </div>
 
 
 <div class="row">
   <div class="col-4">
         <p>
-          <strong>{{ $invoice->company_detail->companyname }}</strong><br>
-          {{ $invoice->company_detail-> address1}},<br>
-          {{ $invoice->company_detail->city }}, {{ $invoice->company_detail->state }} {{ $invoice->company_detail->zip }}<br>
-          Phone: {{ $invoice->company_detail->phone }}<br>
-          Rep: {{ $invoice->salesperson->firstname.' '.$invoice->salesperson->lastname }}.<br>
-          Rep Phone: {{ $invoice->salesperson->telephone }}<br>
-          Cultivation License: <b>{{ $invoice->company_detail->license }}</b>
+            <strong>INVOICE DATE:</strong>{{ $invoice->date }}<br>
+            <strong>INVOICE #:</strong>{{ $invoice->number }},{{ $invoice->number2 }}<br>
+            <strong>METRC MANIFEST:</strong>{{ $invoice->metrc_manifest }}<br>
+            TERMS:
+            @if ($invoice->customer != null)
+            <span>{{ $invoice->customer->term != null?$invoice->customer->term->term:'No Term' }}</span>
+            @endif<br>
+            REP:{{ $invoice->salesperson != null?$invoice->salesperson->firstname.' '.$invoice->salesperson->lastname:'' }}<br>
+            REP PHONE:{{ $invoice->salesperson != null?$invoice->salesperson->telephone:'' }}
         </p>
   </div>
   <div class="col-4">
@@ -114,35 +136,23 @@ html {
           @endif
         </p>
   </div>
-    <div class="col-4">
-        <p>
-        <strong>Distribution/Transportation</strong><br>
-        @if ($invoice->distuributor != null)
-        <strong>{{ $invoice->distuributor->companyname }}</strong><br>
-        {{ $invoice->distuributor->address1 }}, {{ $invoice->distuributor->address2 }}<br>
-        {{ $invoice->distuributor->city }}, {{ $invoice->distuributor->state_name != null?$invoice->distuributor->state_name->name:'' }} {{ $invoice->distuributor->zipcode }}  <br>
-        Phone: {{ $invoice->distuributor->phone }} <br>
-        Email: {{ $invoice->distuributor->email }} <br>
-        License: <strong>{{ $invoice->distuributor->license }}</strong>
-        </p>
-        @else
-            <p>{{ Config::get('constants.order.no_distributor') }}</p>
-        @endif
-  </div>
 
+  <div class="col-4">
+    <p>
+    <strong>Distribution/Transportation</strong><br>
+    @if ($invoice->distuributor != null)
+    <strong>{{ $invoice->distuributor->companyname }}</strong><br>
+    {{ $invoice->distuributor->address1 }}, {{ $invoice->distuributor->address2 }}<br>
+    {{ $invoice->distuributor->city }}, {{ $invoice->distuributor->state_name != null?$invoice->distuributor->state_name->name:'' }} {{ $invoice->distuributor->zipcode }}  <br>
+    Phone: {{ $invoice->distuributor->phone }} <br>
+    Email: {{ $invoice->distuributor->email }} <br>
+    License: <strong>{{ $invoice->distuributor->license }}</strong>
+    </p>
+    @else
+        <p>{{ Config::get('constants.order.no_distributor') }}</p>
+    @endif
 </div>
-<div class="row" style="margin-left:20px">
-        <div>
-            <b>Invoice Date:</b> {{ $invoice->date }} <br>
-            <b>Invoice Number:</b> {{ $invoice->number }} <br>
-            <b>Metrc Manifest:</b> {{ $invoice->m_m_str }} <br>
-            <b>Terms:
-              @if ($invoice->customer != null)
-              <b>{{ $invoice->customer->term != null?$invoice->customer->term->term:'No Term' }}</b><br>
-              <b>Account:</b> {{ $invoice->customer->client_id }}
-              @endif
-            </b><br>
-        </div>
+
 </div>
 
 <div class="row">

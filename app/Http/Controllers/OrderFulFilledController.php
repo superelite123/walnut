@@ -27,6 +27,8 @@ use DB;
 use PDF;
 use File;
 use Config;
+use Mail;
+
 class OrderFulFilledController extends OBaseController
 {
     //construct

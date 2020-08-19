@@ -31,8 +31,8 @@ class ReportOrderDelivery extends Mailable
      */
     public function build()
     {
-        $mail = $this->view('mail.report_order_delivery',['invoice' => $this->invoice])
-                     ->subject($this->invoice->number.$this->invoice->number2.' DELIVERED');
+        $mail = $this->view('mailTemplate.report_order_delivery',['invoice' => $this->invoice])
+                     ->subject($this->invoice->number.','.$this->invoice->number2.' DELIVERED');
         return $mail;
     }
 }
