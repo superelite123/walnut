@@ -20,7 +20,7 @@
 <div class="col-md-12 col-print-12 invoice-info">
 
     <div class="col-md-4 col-print-4 panel-card">
-        <span class='bolder'>INVOICE DATE:</span><span>{{ $invoice->date }}</span><br>
+        <span class='bolder' style="font-size:19px">INVOICE DATE:</span><span>{{ $invoice->date }}</span><br>
         <span class='bolder'>INVOICE #:</span><span>{{ $invoice->number }},{{ $invoice->number2 }}</span><br>
         <span class='bolder'>METRC MANIFEST:</span><span>{{ $invoice->metrc_manifest }}</span><br>
         <span class='light'>TERMS:</span>

@@ -58,12 +58,14 @@
                           <th>R Tax</th>
                           <th>Date</th>
                           <th>View</th>
+                          <th>PDF</th>
                           <th>Archive</th>
                           <th>Collect Payment</th>
                       </thead>
                       <tbody>
                       </tbody>
                       <tfoot>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>

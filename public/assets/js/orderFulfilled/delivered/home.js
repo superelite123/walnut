@@ -183,6 +183,7 @@ var createTable = (date_range) => {
             { "data": "lRTax" },
             { "data": "date" },
             { "data": "btnView" },
+            { "data": "btnPdf" },
             { "data": "btnArchive" },
             { "data": "btnPayment" },
         ],
@@ -196,7 +197,8 @@ var createTable = (date_range) => {
             { "orderable": false, "targets": 6 },
             { "orderable": false, "targets": 7 },
             { "orderable": false, "targets": 8 },
-            { "orderable": false, "targets": 8 },
+            { "orderable": false, "targets": 9 },
+            { "orderable": false, "targets": 10 },
 
         ],
         'scrollX':true
@@ -211,6 +213,7 @@ let convert_ajax_table_data = (json) => {
         json[i].chkUndeliver    = '<input type="checkbox" class="chkUndeliver" >'
         json[i].btnView         = '<a class="btn btn-info btn-xs" href="delivered_payment_view/' + json[i].id + '" target="_blank">'
         json[i].btnView        += '<i class="fas fa-file-invoice-dollar">&nbsp;</i>Inv Snap</a>'
+        json[i].btnPdf          = '<a href="../order_fulfilled/_download_invoice_pdf/' + json[i].id + '" target="_blank"><i class="fas fa-file-pdf"></i>&nbsp;PDF INV</a>'
         json[i].btnArchive      = '<button class="btn btn-warning btn-xs btnArchive">'
         json[i].btnArchive     += '<i class="fas fa-file-invoice-dollar">&nbsp;</i>Archive</button>'
         json[i].btnPayment      = '<a class="btn btn-info btn-xs" href="payment/' + json[i].id + '" target="_blank">'
