@@ -98,7 +98,7 @@ $('#invoice_table tbody').on('click', '.email_btn', function () {
         type: "info",
         showCancelButton: true,
         closeOnConfirm: false,
-        showLoaderOnConfirm: false
+        showLoaderOnConfirm: true
     }, function () {
         $.ajax({
             url:'_send_sales_email',
@@ -108,7 +108,7 @@ $('#invoice_table tbody').on('click', '.email_btn', function () {
                 swal("Email sent Successfully", "", "success")
             },
             error:(e) => {
-            swal(e.statusText, e.responseJSON.message, "error")
+                swal(e.statusText, e.responseJSON.message, "error")
             }
         })
     })

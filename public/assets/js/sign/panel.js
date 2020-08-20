@@ -194,27 +194,33 @@ $(() => {
         }
         const sign_date = $("#sign_date").val()
         const sign_name = $("#sign_name").val()
-        if(!confirm('Your Signature will now be saved to this invoice'))
-        {
-            return false;
-        }
-        var data = signaturePad.toDataURL('image/png');
-        sign_img_data = data
-        var img_data = data.replace(/^data:image\/(png|jpg);base64,/, "");
-        $.ajax({
-            url: '_save_sign',
-            data: { img_data:img_data,id:invoice_id,sign_date:sign_date,sign_name:sign_name },
-            type: 'post',
-            dataType: 'json',
-            async:false,
-            success: function (response) {
-                location.reload()
-            },
-            error:function(e)
-            {
-                console.log(e);
-            }
-        });
+        swal({
+            title: 'Confirm',
+            text: "Your Signature will now be saved to this invoice",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+        }, function () {
+            var data = signaturePad.toDataURL('image/png');
+            sign_img_data = data
+            var img_data = data.replace(/^data:image\/(png|jpg);base64,/, "");
+            $.ajax({
+                url: '_save_sign',
+                data: { img_data:img_data,id:invoice_id,sign_date:sign_date,sign_name:sign_name },
+                type: 'post',
+                dataType: 'json',
+                async:false,
+                success: function (response) {
+                    swal('Thanks!', 'We saved your signature', "success")
+                    location.reload()
+                },
+                error:function(e)
+                {
+                    console.log(e);
+                }
+            });
+        })
     });
 
     cancelButton.addEventListener('click', function(event) {
