@@ -53,6 +53,7 @@
                           <th>Date</th>
                           <th>Sign Delivery</th>
                           <th>Note</th>
+                          <th>Email</th>
                           <th>PDF</th>
                       </thead>
                       <tbody>

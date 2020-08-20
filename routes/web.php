@@ -297,6 +297,7 @@ Route::group( ['prefix' => 'signature','middleware' => ['auth','permission:order
     Route::post('get_signature_list','SignController@get_list');
     Route::post('_set_d_status','SignController@_set_d_status');
     Route::post('_save_deliver_note','SignController@_save_deliver_note');
+    Route::post('_send_sales_email','SignController@_sendSalesEmail');
     //panel
     Route::get('panel/{id}','SignController@Panel');
     Route::post('panel/_save_sign','SignController@_save_sign');

@@ -20,9 +20,11 @@ use App\Models\DeliveryStatus;
 use App\Models\OurDetail;
 use App\Models\InvoicePaymentLog;
 use App\Mail\ReportOrderDelivery;
+use App\Mail\SignSalesPerson;
+use App\Models\Counter;
 //Config
 use Config;
-use App\Models\Counter;
+use Mail;
 class SignController extends OBaseController
 {
     //construct
@@ -64,11 +66,19 @@ class SignController extends OBaseController
             $nestedData['rSub']             = $fInfo['rSubTotal'];
             $nestedData['rTax']             = $fInfo['rTax'];
             $nestedData['pDiscount']        = $order->rPDiscount;
+            $nestedData['salesEmail']       = $order->SalesEmail;
             $nestedData['items']            = $order->getFulfilledItems();
             $data[] = $nestedData;
         }
         $json_data['data'] = $data;
         return response()->json($json_data);
+    }
+
+    public function _sendSalesEmail(Request $request)
+    {
+        $invoice = InvoiceNew::find($request->id);
+        Mail::to($invoice->SalesEmail)->send(new ReportOrderDelivery($invoice));
+        return 1;
     }
 
     public function _set_d_status(Request $request)
@@ -143,6 +153,17 @@ class SignController extends OBaseController
                                        'cash_serial' => $request->cash_serial]);
             $log->updated_at = $request->cDate.' '.date('H:i:s');
             $order->PaymentLog()->save($log);
+        }
+        //Saving Client
+        $clientData = $request->clientData;
+        if( $clientData != null)
+        {
+            $clientRequest = new Request;
+            $clientRequest->id = $request->id;
+            $clientRequest->img_data = $clientData['img_data'];
+            $clientRequest->sign_date = $clientData['sign_date'];
+            $clientRequest->sign_name = $clientData['sign_name'];
+            $this->_save_sign($clientRequest);
         }
         return $order->id;
     }

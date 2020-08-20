@@ -3,67 +3,83 @@ var dClearButton
 var dSignaturePad
 var signaturePad
 let collectMoney = () => {
-  //check image data
-  if (dSignaturePad.isEmpty()) {
-    return alert("Please provide a signature first.");
-  }
-  //check d name
-  let d_sign_name = $("#d_sign_name").val()
-  if(d_sign_name == "")
-  {
-    alert("Enter Your NAME")
-    return
-  }
-  //check serial
-  let d_cash_seiral = $('#cash_serial').val()
-  if(d_cash_seiral == '')
-  {
-    //   alert('Enter the Cash Serial Bag');
-    //   return
-  }
-  //get Amount and Date
-  let amountSubTotal  = $('#inputTotalCollect').val()
-  let amountTax       = $('#inputTaxCollect').val()
-  if(amountTax <= 0 && amountSubTotal <= 0)
-  {
-    swal('Warning', 'Can not collect $0', "warning")
-    return false
-  }
-  let cDate           = $('#inputCollectionDate').val()
+    //check image data
+    if (dSignaturePad.isEmpty()) {
+        return alert("Please provide a signature first.");
+    }
+    //check d name
+    let d_sign_name = $("#d_sign_name").val()
+    if(d_sign_name == "")
+    {
+        alert("Enter Your NAME")
+        return
+    }
+    //check serial
+    let d_cash_seiral = $('#cash_serial').val()
+    if(d_cash_seiral == '')
+    {
+        //   alert('Enter the Cash Serial Bag');
+        //   return
+    }
+    //get Amount and Date
+    let amountSubTotal  = $('#inputTotalCollect').val()
+    let amountTax       = $('#inputTaxCollect').val()
+    if(amountTax <= 0 && amountSubTotal <= 0)
+    {
+        swal('Warning', 'Can not collect $0', "warning")
+        return false
+    }
+    let cDate           = $('#inputCollectionDate').val()
 
-  var img_data = dSignaturePad.toDataURL('image/png');
-  img_data = img_data.replace(/^data:image\/(png|jpg);base64,/, "");
-  let data = {
-    id:invoice_id,
-    amountSubTotal:amountSubTotal,
-    amountTax:amountTax,
-    cDate:cDate,
-    signImage:img_data,
-    dPersoname:d_sign_name,
-    cash_serial:d_cash_seiral
-  }
-  swal({
-    title: "Sub Total:" + amountSubTotal + '  Tax:' + amountTax,
-    text: "You are about to Collect Money",
-    type: "info",
-    showCancelButton: true,
-    closeOnConfirm: false,
-    showLoaderOnConfirm: true
-  }, function () {
-    $.ajax({
-      url:'_collect_money',
-      type:'post',
-      headers:{"content-type" : "application/json"},
-      data: JSON.stringify(data),
-      success:(res) => {
-        swal('Thanks!', 'We saved your payment', "success")
-        location.reload()
-      },
-      error:(e) => {
-        swal(e.statusText, e.responseJSON.message, "error")
-      }
+    var img_data = dSignaturePad.toDataURL('image/png');
+    img_data = img_data.replace(/^data:image\/(png|jpg);base64,/, "");
+    let data = {
+        id:invoice_id,
+        amountSubTotal:amountSubTotal,
+        amountTax:amountTax,
+        cDate:cDate,
+        signImage:img_data,
+        dPersoname:d_sign_name,
+        cash_serial:d_cash_seiral,
+        clientData:null
+    }
+
+    //check client sign input data
+    if(validationClient() == 0)
+    {
+        let imgData = signaturePad.toDataURL('image/png');
+        imgData = imgData.replace(/^data:image\/(png|jpg);base64,/, "");
+        const sign_date = $("#sign_date").val()
+        const sign_name = $("#sign_name").val()
+        data.clientData = {
+            img_data:imgData,
+            sign_date:sign_date,
+            sign_name:sign_name
+        }
+    }
+    console.log(data)
+    swal({
+        title: "Sub Total:" + amountSubTotal + '  Tax:' + amountTax,
+        text: "You are about to Collect Money",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true
+    }, function () {
+        $.ajax({
+            url:'_collect_money',
+            type:'post',
+            headers:{"content-type" : "application/json"},
+            data: JSON.stringify(data),
+            success:(res) => {
+                swal('Thanks!', 'We saved your payment', "success")
+                location.reload()
+            },
+            error:(e) => {
+                swal(e.statusText, e.responseJSON.message, "error")
+            }
+        })
     })
-  })
 }
 let completeRejection = () => {
     swal({
@@ -128,18 +144,30 @@ $('#btnSaveDOption').click(() => {
 let onDeleteP = (id) => {
     if(!confirm('You are going to Delete this Payment?'))
     {
-    return false
+        return false
     }
     $.get({
-    url:'_delete_payment/' + id,
-    success:() => {
-        alert('Success on Deleting')
-        location.reload()
-    },
-    error:(e) => {
-        alert("Error occured with server");
-    }
+        url:'_delete_payment/' + id,
+        success:() => {
+            alert('Success on Deleting')
+            location.reload()
+        },
+        error:(e) => {
+            alert("Error occured with server");
+        }
     })
+}
+const validationClient = () => {
+    const sign_date = $("#sign_date").val()
+    const sign_name = $("#sign_name").val()
+    if (signaturePad.isEmpty()) {
+        return 1;
+    }
+    if(sign_date == "" || sign_name == "")
+    {
+        return 2;
+    }
+    return 0;
 }
 $(() => {
     signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
@@ -154,42 +182,39 @@ $(() => {
     var cancelButton = document.getElementById('clear');
     dClearButton = document.getElementById('dClear');
     saveButton.addEventListener('click', function(event) {
-
-      if (signaturePad.isEmpty()) {
-          return alert("Please provide a signature first.");
-      }
-
-      let sign_date = $("#sign_date").val()
-      let sign_name = $("#sign_name").val()
-      if(sign_date == "" || sign_name == "")
-      {
-        alert("Enter the NAME and Date")
-        return
-      }
-
-      if(!confirm('Your Signature will now be saved to this invoice'))
-      {
-          return false;
-      }
-      var data = signaturePad.toDataURL('image/png');
-      sign_img_data = data
-      var img_data = data.replace(/^data:image\/(png|jpg);base64,/, "");
-      $.ajax({
-        url: '_save_sign',
-        data: { img_data:img_data,id:invoice_id,sign_date:sign_date,sign_name:sign_name },
-        type: 'post',
-        dataType: 'json',
-        async:false,
-        success: function (response) {
-          //$('#modalDeliveryOption').modal({backdrop: 'static',keyboard: false})
-          location.reload()
-        },
-        error:function(e)
+        const validatiaonResult = validationClient()
+        //display alert
+        if(validatiaonResult != 0)
         {
-          console.log(e);
+            if(validatiaonResult == 1)
+                alert("Please provide a signature first.")
+            if(validatiaonResult == 2)
+                alert("Enter the NAME and Date")
+            return false
         }
-      });
-
+        const sign_date = $("#sign_date").val()
+        const sign_name = $("#sign_name").val()
+        if(!confirm('Your Signature will now be saved to this invoice'))
+        {
+            return false;
+        }
+        var data = signaturePad.toDataURL('image/png');
+        sign_img_data = data
+        var img_data = data.replace(/^data:image\/(png|jpg);base64,/, "");
+        $.ajax({
+            url: '_save_sign',
+            data: { img_data:img_data,id:invoice_id,sign_date:sign_date,sign_name:sign_name },
+            type: 'post',
+            dataType: 'json',
+            async:false,
+            success: function (response) {
+                location.reload()
+            },
+            error:function(e)
+            {
+                console.log(e);
+            }
+        });
     });
 
     cancelButton.addEventListener('click', function(event) {
@@ -200,9 +225,7 @@ $(() => {
     })
   })
   function printPage() {
-
     window.print();
-
   }
   $.ajaxSetup({
     headers: {
