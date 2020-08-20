@@ -25,6 +25,7 @@ use App\Models\Counter;
 //Config
 use Config;
 use Mail;
+use File;
 class SignController extends OBaseController
 {
     //construct
@@ -77,7 +78,14 @@ class SignController extends OBaseController
     public function _sendSalesEmail(Request $request)
     {
         $invoice = InvoiceNew::find($request->id);
-        Mail::to($invoice->SalesEmail)->send(new ReportOrderDelivery($invoice));
+        $ourdetail = OurDetail::all()->first();
+        $invoice['company_detail']  = $ourdetail;
+        $invoice['sign_name'] = $invoice->sign_name;
+        $invoice['sign_date'] = $invoice->sign_date;
+        $this->generatePdf($invoice,'pdfTemplate.fulfilled_invoice');
+        Mail::to($invoice->SalesEmail)->send(new SignSalesPerson($invoice));
+        File::delete(public_path().'/storage/'.$invoice->number.'/invoice.pdf');
+        File::delete(public_path().'/storage/'.$invoice->number.'/mail.pdf');
         return 1;
     }
 
