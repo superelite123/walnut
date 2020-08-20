@@ -113,7 +113,7 @@ html {
 <div class="row">
   <div class="col-4">
         <p>
-            <strong style="font-size:19px">INVOICE DATE:</strong>{{ $invoice->date }}<br>
+            <strong style="font-size:19px">INVOICE DATE:</strong><span  style="font-size:19px">{{ $invoice->date }}</span><br>
             <strong>INVOICE #:</strong>{{ $invoice->number }},{{ $invoice->number2 }}<br>
             <strong>METRC MANIFEST:</strong>{{ $invoice->metrc_manifest }}<br>
             TERMS:
