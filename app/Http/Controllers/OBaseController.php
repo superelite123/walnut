@@ -225,6 +225,10 @@ class OBaseController extends Controller
                     ->orWhereHas('distuributor',function($query) use ($search){
                         $query->where('companyname','like',"%{$search}%");
                     })
+                    ->orWhereHas('salesperson',function($query) use ($search){
+                        $query->where('firstname','like',"%{$search}%")
+                              ->orWhere('lastname','like',"%{$search}%");
+                    })
                     ->orWhere('total','like',"%{$search}%")
                     ->orWhere('date','like',"%{$search}%");
             $totalFiltered  = $cond->count();

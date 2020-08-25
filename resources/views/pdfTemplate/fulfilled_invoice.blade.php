@@ -113,9 +113,9 @@ html {
 <div class="row">
   <div class="col-4">
         <p>
-            <strong style="font-size:19px">INVOICE DATE:</strong><span  style="font-size:19px">{{ $invoice->date }}</span><br>
-            <strong>INVOICE #:</strong>{{ $invoice->number }},{{ $invoice->number2 }}<br>
-            <strong>METRC MANIFEST:</strong>{{ $invoice->metrc_manifest }}<br>
+            <strong style="font-size:19px">INVOICE DATE:{{ $invoice->date }}</strong><br>
+            <strong style="font-size:19px">INVOICE #:{{ $invoice->number }},{{ $invoice->number2 }}</strong><br>
+            <strong style="font-size:19px">METRC MANIFEST:{{ $invoice->metrc_manifest }}</strong><br>
             TERMS:
             @if ($invoice->customer != null)
             <span>{{ $invoice->customer->term != null?$invoice->customer->term->term:'No Term' }}</span>

@@ -121,7 +121,7 @@ Route::group( ['prefix' => 'harvest','middleware' => 'auth'], function(){
     Route::post('store_fresh','HarvestController@store_fresh');
     Route::get('dry','HarvestController@form_dry');
     Route::get('list_dry','HarvestController@list_dry');
-    Route::get('statistics','HarvestController@statistics');
+    Route::get('statistics','HarvestController@statistic');
 
     Route::get('list_archived','HarvestController@list_archived');
     Route::post('_deduct_waist','HarvestController@_deduct_waist');

@@ -22,7 +22,7 @@ var createTable = (date_range) => {
                     json[i].sign_payment_btn = '<a href="payment_panel/' + json[i].id + '" target="_blank" class="btn btn-info btn-xs"><i class="fas fa-comment-dollar"></i>&nbsp;Sign&nbsp;Payment</a>'
                     json[i].note_btn = '<button class="btn btn-info btn-xs note_btn"><i class="fas fa-pen"></i>&nbsp;Note</button>'
                     json[i].email_btn = '<button class="btn btn-info btn-xs email_btn"><i class="fas fa-envelope-square">&nbsp;</i>Email</button>'
-                    json[i].pdf_btn = '<a href="../order_fulfilled/_download_invoice_pdf/' + json[i].id + '" target="_blank"><i class="fas fa-file-pdf"></i>&nbsp;PDF INV</a>'
+                    json[i].pdf_btn = '<a href="../order_fulfilled/_download_invoice_pdf/' + json[i].id + '?name=2" target="_blank"><i class="fas fa-file-pdf"></i>&nbsp;PDF INV</a>'
                 }
                 return json
             }
@@ -37,6 +37,7 @@ var createTable = (date_range) => {
             },
             { "data": "no" },
             { "data": "number" },
+            { "data": "salesRep" },
             { "data": "clientname" },
             { "data": "companyname" },
             { "data": "total" },

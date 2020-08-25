@@ -60,6 +60,8 @@ class SignController extends OBaseController
             $nestedData['customer']         = $order->customer;
             $nestedData['deliver_note']     = $order->deliver_note;
             $nestedData['number']           = $order->number;
+            $nestedData['salesRep']          = $order->salesperson != null?
+                                                $order->salesperson->firstname.' '.$order->salesperson->lastname:'';;
             $nestedData['clientname']       = $order->CName;
             $nestedData['companyname']      = $order->CPName;
             $nestedData['date']             = $order->date;

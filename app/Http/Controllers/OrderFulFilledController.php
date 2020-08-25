@@ -590,7 +590,7 @@ class OrderFulFilledController extends OBaseController
         return 1;
     }
 
-    public function _download_invoice_pdf($id)
+    public function _download_invoice_pdf($id,Request $request)
     {
         $invoice = InvoiceNew::find($id);
 
@@ -601,9 +601,8 @@ class OrderFulFilledController extends OBaseController
         $invoice['coa_list'] = $this->getCoaList($invoice)['exist'];
 
         $pdf = PDF::loadView('pdfTemplate.fulfilled_invoice', ['invoice' => $invoice]);
-        return $pdf->download($invoice->number.'.pdf');
-
-        //return Response::download();
+        $pdfName = $request->name == 1?$invoice->number2:$invoice->number;
+        return $pdf->download($pdfName.'.pdf');
     }
 
     public function _delete_store(Request $request)
