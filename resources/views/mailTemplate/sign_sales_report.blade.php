@@ -183,7 +183,8 @@
                 <!-- Body content -->
                 <tr>
                   <td class="content-cell">
-                    <!-- Action -->
+                    THE ATTACHED INVOICE HAS BEEN DELIVERED TODAY TO
+                    (RETAILER NAME) AT 12:00PM PST SIGNED BY:(NAME HERE)
                   </td>
                 </tr>
               </table>

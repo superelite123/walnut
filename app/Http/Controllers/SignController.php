@@ -86,6 +86,13 @@ class SignController extends OBaseController
         $invoice['sign_date'] = $invoice->sign_date;
         $this->generatePdf($invoice,'pdfTemplate.fulfilled_invoice');
         Mail::to($invoice->SalesEmail)->send(new SignSalesPerson($invoice));
+        if($invoice->customer != null)
+        {
+            if($invoice->customer->secondaryc_email != null)
+            {
+                Mail::to($invoice->customer->secondaryc_email)->send(new SignSalesPerson($invoice));
+            }
+        }
         File::delete(public_path().'/storage/'.$invoice->number.'/invoice.pdf');
         File::delete(public_path().'/storage/'.$invoice->number.'/mail.pdf');
         return 1;
