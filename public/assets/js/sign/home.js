@@ -37,6 +37,7 @@ var createTable = (date_range) => {
             },
             { "data": "no" },
             { "data": "number" },
+            { "data": "number2" },
             { "data": "salesRep" },
             { "data": "clientname" },
             { "data": "companyname" },

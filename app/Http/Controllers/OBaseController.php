@@ -142,6 +142,7 @@ class OBaseController extends Controller
                 $nestedData['customer']         = $order->customer;
                 $nestedData['deliver_note']     = $order->deliver_note;
                 $nestedData['number']           = $order->number;
+                $nestedData['number2']           = $order->number2;
                 $nestedData['salesRep']   = $order->salesperson != null?
                                 $order->salesperson->firstname.' '.$order->salesperson->lastname:'';
                 $nestedData['clientname']       = $order->CName;

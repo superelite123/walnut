@@ -691,6 +691,9 @@ class OrderController extends OBaseController
             $order = InvoiceNew::find($order_id);
 
             $order->status = $order_status;
+            $counter = Counter::where('key','invoice_number2')->first();
+            $order->number2 = $counter->prefix.$counter->value;
+            $counter->increment('value');
             $order->save();
             if($order_status == Config::get('constants.order.unable_fulfillment'))
             {

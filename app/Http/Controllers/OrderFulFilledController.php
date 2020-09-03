@@ -22,6 +22,7 @@ use App\Models\OurDetail;
 use App\Models\Promo;
 use App\Models\InvoiceContact;
 use App\Models\DeliveryStatus;
+use App\Models\Counter;
 use Session;
 use DB;
 use PDF;
@@ -38,6 +39,15 @@ class OrderFulFilledController extends OBaseController
     }
     public function home()
     {
+        // //get fulfilled orders
+        // $orders = InvoiceNew::where('status',3)->orderBy('number')->get();
+        // foreach($orders as $order){
+        //     echo $order->number.'<br>';
+        //     $counter = Counter::where('key','invoice_number2')->first();
+        //     $order->number2 = $counter->prefix.$counter->value;
+        //     $counter->increment('value');
+        //     $order->save();
+        // }
         $edit_permission = auth()->user()->can('order_edit')?1:0;
         JavaScript::put([
             'start_date' => date('m/d/Y', strtotime('today - 31 days')),

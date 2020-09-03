@@ -60,6 +60,7 @@ class SignController extends OBaseController
             $nestedData['customer']         = $order->customer;
             $nestedData['deliver_note']     = $order->deliver_note;
             $nestedData['number']           = $order->number;
+            $nestedData['number2']           = $order->number2;
             $nestedData['salesRep']          = $order->salesperson != null?
                                                 $order->salesperson->firstname.' '.$order->salesperson->lastname:'';;
             $nestedData['clientname']       = $order->CName;
@@ -232,14 +233,6 @@ class SignController extends OBaseController
                 }
             }
 
-            //set Number 2
-            //check if this is new sign
-            if($invoice->number2 == null)
-            {
-                $counter = Counter::where('key','invoice_number2')->first();
-                $invoice->number2 = $counter->prefix.$counter->value;
-                $counter->increment('value');
-            }
             $invoice->sign_name = $request->sign_name;
             $invoice->sign_date = $request->sign_date.' '.date('H:i:s');
             $invoice->save();
