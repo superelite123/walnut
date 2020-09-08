@@ -77,7 +77,7 @@ class OrderController extends OBaseController
 
         $form = [
             'number'          => Counter::where('key','invoice')->first()->prefix.Counter::where('key','invoice')->first()->value,
-            'date'            => date('Y-m-d'),
+            'date'            => date('m/d/Y'),
             'clients'         => Customer::with(['Term','basePrice'])->get(),
             'mode'            => 'store',
             'term'            => null,

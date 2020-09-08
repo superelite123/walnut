@@ -256,7 +256,14 @@ class SignController extends OBaseController
             $this->setDeliveryStatus($invoice->id,2);
             //sending Email
             //get sales person name
+            $ourdetail = OurDetail::all()->first();
+            $invoice['company_detail']  = $ourdetail;
+            $invoice['sign_name'] = $invoice->sign_name;
+            $invoice['sign_date'] = $invoice->sign_date;
+            $this->generatePdf($invoice,'pdfTemplate.fulfilled_invoice');
             Mail::to($invoice->SalesEmail)->send(new ReportOrderDelivery($invoice));
+            File::delete(public_path().'/storage/'.$invoice->number.'/invoice.pdf');
+            File::delete(public_path().'/storage/'.$invoice->number.'/mail.pdf');
             return '1';
         });
         return $flag;

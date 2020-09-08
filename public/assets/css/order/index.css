@@ -26,3 +26,10 @@ table {
 .box-body{
   margin-bottom:50px
 }
+.popover {
+    width: 304px;
+    max-width: 100%;
+}
+.txtMMStr{
+    cursor: pointer;
+}

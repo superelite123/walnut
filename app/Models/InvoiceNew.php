@@ -16,7 +16,10 @@ class InvoiceNew extends Model
     protected $fillable = ['number','customer_id','distuributor_id',
                            'salesperson_id','note','fulfillmentnote','date','total',
                            'term_id','paid','coainbox','delivered','status','tax_allow','m_m_str'];
-
+    public function getDateAttribute($value)
+    {
+        return date("m/d/Y", strtotime($value) );
+    }
     public function customer(){
         return $this->belongsTo(Customer::class,'customer_id')->with('Term');
     }

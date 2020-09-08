@@ -231,10 +231,8 @@ var createTable = (date_range) => {
             { "data": "distributor" },
             { "data": "metrc_manifest" },
             { "data": "txtMMStr" },
-            { "data": "coainbox_chk", },
-            { "data": "metrc_chk",
-              "width":"1%"
-            },
+            { "data": "coainbox_chk" },
+            { "data": "metrc_chk"},
             { "data": "actions" },
         ],
         "columnDefs": [
@@ -266,8 +264,8 @@ let convert_ajax_table_data = (json) => {
         json[i].coainbox_chk    = '<input type="checkbox" class="coainbox_chk" ' + coainbox + ' >'
         json[i].paid_chk        = '<input type="checkbox" class="paid_chk" ' + paid + ' >'
         json[i].metrc_chk       = '<input type="checkbox" class="metrc_chk" ' + metrc_ready + ' >'
-        json[i].chkDeliver     = '<input type="checkbox" class="chkDeliver">'
-        json[i].txtMMStr            = '<input type="text" class="form-control txtMMStr" value="' + json[i].m_m_str + '" >';
+        json[i].chkDeliver      = '<input type="checkbox" class="chkDeliver">'
+        json[i].txtMMStr        = '<p class="form-control txtMMStr" style="width:100%;cursor:pointer" data-original-title title>' + json[i].m_m_str + '</p>';
         json[i].total = '$' + json[i].total_info.adjust_price
         json[i].actions = list_btn_template_start
 
@@ -382,25 +380,69 @@ $('#invoice_table tbody').on('click', 'td.details-control', function () {
         $(this).html('<button class="btn btn-info btn-xs btn-edit"><i class="glyphicon glyphicon-minus"></i></button>')
     }
 });
-$('#invoice_table tbody').on('focusout','.txtMMStr',function(){
+$('#invoice_table tbody').on('click','.txtMMStr',function(){
     var tr = $(this).closest('tr');
     var row = invoice_table.row( tr );
-    let m_m_str = $(this).val()
-    if(m_m_str != row.data().id.m_m_str)
-    {
-        $.post({
-            url:'_set_metrc_manifest',
-            data:'m_m_str=' + m_m_str + '&id=' + row.data().id,
-            success:(res) => {
-                swal('Success', 'Metrc Manifest is set successfully', "success")
-                createTable($("#reservation").val())
-            },
-            error:(e) => {
-                swal(e.statusText, e.responseJSON.message, "error")
-            }
-        })
-    }
+    selected_invoice = row.data().id
+    $(this).popover({
+        trigger: 'click',
+        html: true,
+        title: function() {
+            return 'Enter Metrc Manigest Tag';
+        },
+        content: function() {
+            return $('#popover-form').html();
+        },
+
+        container: 'body',
+        placement: 'left'
+    })
 })
+$(document).on("click", ".popover .btn-popover-save" , function(){
+    const mmstr = $(this).parents(".popover").find('.txt-popover-mmstr').val()
+    $.post({
+        url:'_set_metrc_manifest',
+        data:'m_m_str=' + mmstr + '&id=' + selected_invoice,
+        success:(res) => {
+            swal('Success', 'Metrc Manifest is set successfully', "success")
+            createTable($("#reservation").val())
+            $(this).parents(".popover").popover('hide')
+        },
+        error:(e) => {
+            swal(e.statusText, e.responseJSON.message, "error")
+        }
+    });
+})
+$(document).on("click", ".popover .btn-popover-cancel" , function(){
+    $(this).parents(".popover").popover('hide')
+});
+// $('#invoice_table tbody').on('focusout','.txtMMStr',function(){
+
+//     var tr = $(this).closest('tr');
+//     var row = invoice_table.row( tr );
+//     let m_m_str = $(this).val()
+//     if(m_m_str != row.data().id.m_m_str)
+//     {
+//         if(confirm('Are you going to save this value?'))
+//         {
+//             $.post({
+//                 url:'_set_metrc_manifest',
+//                 data:'m_m_str=' + m_m_str + '&id=' + row.data().id,
+//                 success:(res) => {
+//                     swal('Success', 'Metrc Manifest is set successfully', "success")
+//                     createTable($("#reservation").val())
+//                 },
+//                 error:(e) => {
+//                     swal(e.statusText, e.responseJSON.message, "error")
+//                 }
+//             })
+//         }
+//         else
+//         {
+//             $(this).val(row.data().id.m_m_str)
+//         }
+//     }
+// })
 
 $('#invoice_table tbody').on('click','.chkDeliver',function(){
     let tr = $(this).closest('tr')
@@ -642,6 +684,7 @@ $(function(){
     createTable($("#reservation").val())
     createRejectTable(null)
     $('.select2').select2();
+
 })
 
 $.ajaxSetup({

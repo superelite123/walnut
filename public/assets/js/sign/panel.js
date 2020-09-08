@@ -160,7 +160,8 @@ let onDeleteP = (id) => {
 const validationClient = () => {
     const sign_date = $("#sign_date").val()
     const sign_name = $("#sign_name").val()
-    if (signaturePad.isEmpty()) {
+    if(signaturePad == null || signaturePad.isEmpty())
+    {
         return 1;
     }
     if(sign_date == "" || sign_name == "")
@@ -170,10 +171,13 @@ const validationClient = () => {
     return 0;
 }
 $(() => {
-    signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-      penColor: 'rgb(0, 0, 0)'
-    });
+    if(document.getElementById('signature-pad') != null)
+    {
+        signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
+            backgroundColor: 'rgba(255, 255, 255, 0)',
+            penColor: 'rgb(0, 0, 0)'
+          });
+    }
     dSignaturePad = new SignaturePad(document.getElementById('dSignature-pad'), {
       backgroundColor: 'rgba(255, 255, 255, 0)',
       penColor: 'rgb(0, 0, 0)'
@@ -181,51 +185,56 @@ $(() => {
     var saveButton = document.getElementById('save');
     var cancelButton = document.getElementById('clear');
     dClearButton = document.getElementById('dClear');
-    saveButton.addEventListener('click', function(event) {
-        const validatiaonResult = validationClient()
-        //display alert
-        if(validatiaonResult != 0)
-        {
-            if(validatiaonResult == 1)
-                alert("Please provide a signature first.")
-            if(validatiaonResult == 2)
-                alert("Enter the NAME and Date")
-            return false
-        }
-        const sign_date = $("#sign_date").val()
-        const sign_name = $("#sign_name").val()
-        swal({
-            title: 'Confirm',
-            text: "Your Signature will now be saved to this invoice",
-            type: "info",
-            showCancelButton: true,
-            closeOnConfirm: false,
-            showLoaderOnConfirm: true
-        }, function () {
-            var data = signaturePad.toDataURL('image/png');
-            sign_img_data = data
-            var img_data = data.replace(/^data:image\/(png|jpg);base64,/, "");
-            $.ajax({
-                url: '_save_sign',
-                data: { img_data:img_data,id:invoice_id,sign_date:sign_date,sign_name:sign_name },
-                type: 'post',
-                dataType: 'json',
-                async:false,
-                success: function (response) {
-                    swal('Thanks!', 'We saved your signature', "success")
-                    location.reload()
-                },
-                error:function(e)
-                {
-                    console.log(e);
-                }
-            });
-        })
-    });
-
-    cancelButton.addEventListener('click', function(event) {
-      signaturePad.clear();
-    });
+    if(saveButton != null)
+    {
+        saveButton.addEventListener('click', function(event) {
+            const validatiaonResult = validationClient()
+            //display alert
+            if(validatiaonResult != 0)
+            {
+                if(validatiaonResult == 1)
+                    alert("Please provide a signature first.")
+                if(validatiaonResult == 2)
+                    alert("Enter the NAME and Date")
+                return false
+            }
+            const sign_date = $("#sign_date").val()
+            const sign_name = $("#sign_name").val()
+            swal({
+                title: 'Confirm',
+                text: "Your Signature will now be saved to this invoice",
+                type: "info",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true
+            }, function () {
+                var data = signaturePad.toDataURL('image/png');
+                sign_img_data = data
+                var img_data = data.replace(/^data:image\/(png|jpg);base64,/, "");
+                $.ajax({
+                    url: '_save_sign',
+                    data: { img_data:img_data,id:invoice_id,sign_date:sign_date,sign_name:sign_name },
+                    type: 'post',
+                    dataType: 'json',
+                    async:false,
+                    success: function (response) {
+                        swal('Thanks!', 'We saved your signature', "success")
+                        location.href='../../signature/home'
+                    },
+                    error:function(e)
+                    {
+                        console.log(e);
+                    }
+                });
+            })
+        });
+    }
+    if(saveButton != null)
+    {
+        cancelButton.addEventListener('click', function(event) {
+        signaturePad.clear();
+        });
+    }
     $('#dClear').click(() => {
       dSignaturePad.clear();
     })

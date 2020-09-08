@@ -204,6 +204,13 @@
         </div>
     </div>
 </div>
+<div id="popover-form" class="hide">
+    <div class="form-group">
+        <input type="text" placeholder="Enter Metrc Manifest" class="form-control txt-popover-mmstr" />
+    </div>
+    <button class="btn btn-success btn-popover-save"><i class="fas fa-check">&nbsp;</i>Save</button>
+    <button class="btn btn-danger btn-popover-cancel"><i class="fas fa-times">&nbsp;</i>Cancel</button>
+</div>
 @stop
 @include('footer')
 <script>

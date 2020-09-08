@@ -94,8 +94,10 @@ $('#invoice_table tbody').on('click', '.email_btn', function () {
     var row = invoice_table.row( tr )
     const id = row.data().id
     const emailAddress = row.data().salesEmail
+    let retailerEmail = row.data().customer != null?row.data().customer.secondaryc_email:''
+    retailerEmail = retailerEmail == null?'No Retailer':retailerEmail
     swal({
-        title: emailAddress,
+        title: emailAddress + '\n' + retailerEmail,
         text: "You are about to send Email",
         type: "info",
         showCancelButton: true,

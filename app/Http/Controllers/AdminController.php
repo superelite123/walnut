@@ -53,6 +53,7 @@ class AdminController extends OBaseController
                 $nestedData = [];
                 $fInfo = $order->FinancialTotalInfo;
                 $nestedData['id']               = $order->id;
+                $nestedData['mmstr']            = $order->m_m_str;
                 $nestedData['number']           = $order->number2;
                 $nestedData['clientname']       = $order->CName;
                 $nestedData['total_info']       = $order->TotalInfoForExport;

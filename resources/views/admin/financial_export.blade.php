@@ -139,6 +139,7 @@
                   <table class="table table-bordered" id="invoice_table" style='width:100%'>
                       <thead>
                         <th>Customer Name</th>
+                        <th>Metrc Manifest</th>
                         <th>Invoice</th>
                         <th>Invoice Date</th>
                         <th>Terms</th>
@@ -156,6 +157,7 @@
                       <tbody>
                       </tbody>
                       <tfoot>
+                          <th></th>
                           <th></th>
                           <th></th>
                           <th></th>
