@@ -65,13 +65,28 @@ var Adjust_priceInput = $("#adjust_price");
     })
 
     let setPrice = () => {
-        let p_type = P_type_list.val()
-        let p_type_obj = p_types[findIndexWithAttr(p_types,'producttype_id',p_type )]
-        let promo = p_type_obj != null?p_type_obj.promovalue:null
-        if(promo != null)
+        // let p_type = P_type_list.val()
+        // let p_type_obj = p_types[findIndexWithAttr(p_types,'producttype_id',p_type )]
+        // let promo = p_type_obj != null?p_type_obj.promovalue:null
+        // if(promo != null)
+        // {
+        //     Unit_priceInput.prop('disabled', true)
+        //     Unit_priceInput.val(promo)
+        // }
+        // else
+        // {
+        //     Unit_priceInput.prop('disabled', false)
+        //     Unit_priceInput.val(0)
+        // }
+        const strain = Strain_list.val()
+        const strain_obj = strains[findIndexWithAttr(strains,'itemname_id',strain )]
+        console.log(strain_obj)
+        const base_price = strain_obj != null?parseFloat(strain_obj.base_price):null
+        console.log(base_price)
+        if(base_price != null && base_price > 0)
         {
             Unit_priceInput.prop('disabled', true)
-            Unit_priceInput.val(promo)
+            Unit_priceInput.val(base_price)
         }
         else
         {

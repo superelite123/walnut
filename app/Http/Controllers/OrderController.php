@@ -181,7 +181,7 @@ class OrderController extends OBaseController
                 ['strain',$strain],
                 ['type',$p_type]
             ])->first();
-
+        $weight = $upc != null?$upc->weight:0;
         $fg     = FGInventory::where([
                 ['strainname',$strain],
                 ['asset_type_id','=',$p_type],
@@ -200,7 +200,7 @@ class OrderController extends OBaseController
                                     ['invoice_id','!=',$request->id]
                                 ])->get();
         $res['qty']    = count($fg) + count($vault) - $alreay_requested->sum('qty');
-        $res['weight'] = $fg->sum('weight') + $vault->sum('weight') - ($upc->weight * $alreay_requested->sum('qty'));
+        $res['weight'] = $fg->sum('weight') + $vault->sum('weight') - ($weight * $alreay_requested->sum('qty'));
         $res['weight'] = number_format((float)$res['weight'], 2, '.', '');
         $res['taxexempt'] = $upc != null?$upc->taxexempt:-1;
 
@@ -237,6 +237,7 @@ class OrderController extends OBaseController
             {
                 $invoice->status = Config::get('constants.order.fulfillment');
             }
+            $invoice->date = date('Y-m-d',strtotime($request->date));
             $invoice->save();
 
             //store or update shipping info
