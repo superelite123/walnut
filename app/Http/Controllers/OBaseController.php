@@ -46,15 +46,7 @@ class OBaseController extends Controller
 
     protected function getOrdersByDateRange($date_range,$status,$paid = -1,$priority_check = -1)
     {
-        if($date_range == null)
-        {
-            $date_range['start_date'] = date('m/d/Y', strtotime('today - 31 days'));
-            $date_range['end_date']   = date('Y-m-d');
-        }
-        else
-        {
-            $date_range = $this->convertDateRangeFormat($date_range);
-        }
+        $date_range = $this->convertDateRangeFormat($date_range);
         $cond = InvoiceNew::with('salesperson')->where('status',$status)
                ->whereRaw('DATE(date) >= ?', [$date_range['start_date']])
                ->whereRaw('DATE(date) <= ?', [$date_range['end_date']]);
@@ -72,15 +64,7 @@ class OBaseController extends Controller
     protected function getOrdersByPagnation(Request $request)
     {
         $date_range = $request->date_range;
-        if($date_range == null)
-        {
-            $date_range['start_date'] = date('m/d/Y', strtotime('today - 90 days'));
-            $date_range['end_date']   = date('Y-m-d');
-        }
-        else
-        {
-            $date_range = $this->convertDateRangeFormat($date_range);
-        }
+        $date_range = $this->convertDateRangeFormat($date_range);
         $bCond = InvoiceNew::whereRaw('DATE(date) >= ?', [$date_range['start_date']])
                             ->whereRaw('DATE(date) <= ?', [$date_range['end_date']])
                             ->whereIn('status',$request->status);
@@ -174,15 +158,7 @@ class OBaseController extends Controller
     protected function getOrdersByPagnation1(Request $request)
     {
         $date_range = $request->date_range;
-        if($date_range == null)
-        {
-            $date_range['start_date'] = date('m/d/Y', strtotime('today - 31 days'));
-            $date_range['end_date']   = date('Y-m-d');
-        }
-        else
-        {
-            $date_range = $this->convertDateRangeFormat($date_range);
-        }
+        $date_range = $this->convertDateRangeFormat($date_range);
         $bCond = InvoiceNew::whereRaw('DATE(date) >= ?', [$date_range['start_date']])
                             ->whereRaw('DATE(date) <= ?', [$date_range['end_date']])
                             ->whereIn('status',$request->status);

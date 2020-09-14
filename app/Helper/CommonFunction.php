@@ -6,7 +6,7 @@ trait CommonFunction{
     {
         if($date_range == null)
         {
-            $date_range['start_date'] = date('m/d/Y', strtotime('today - 31 days'));
+            $date_range['start_date'] = date('Y-m-d', strtotime('today - 31 days'));
             $date_range['end_date']   = date('Y-m-d');
 
             return $date_range;

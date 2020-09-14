@@ -182,6 +182,7 @@ class OrderController extends OBaseController
                 ['type',$p_type]
             ])->first();
         $weight = $upc != null?$upc->weight:0;
+        $basePrice = $upc != null?$upc->baseprice:0;
         $fg     = FGInventory::where([
                 ['strainname',$strain],
                 ['asset_type_id','=',$p_type],
@@ -203,6 +204,7 @@ class OrderController extends OBaseController
         $res['weight'] = $fg->sum('weight') + $vault->sum('weight') - ($weight * $alreay_requested->sum('qty'));
         $res['weight'] = number_format((float)$res['weight'], 2, '.', '');
         $res['taxexempt'] = $upc != null?$upc->taxexempt:-1;
+        $res['basePrice'] = $basePrice;
 
         return response()->json($res);
     }
@@ -489,7 +491,7 @@ class OrderController extends OBaseController
     {
         if($date_range == null)
         {
-            $date_range['start_date'] = date('m/d/Y', strtotime('today - 31 days'));
+            $date_range['start_date'] = date('Y-m-d', strtotime('today - 31 days'));
             $date_range['end_date']   = date('Y-m-d');
         }
         else
@@ -513,7 +515,7 @@ class OrderController extends OBaseController
     {
         if($date_range == null)
         {
-            $date_range['start_date'] = date('m/d/Y', strtotime('today - 31 days'));
+            $date_range['start_date'] = date('Y-m-d', strtotime('today - 31 days'));
             $date_range['end_date']   = date('Y-m-d');
             return $date_range;
         }

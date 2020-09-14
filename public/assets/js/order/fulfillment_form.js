@@ -516,7 +516,7 @@ $(() => {
     fnCreateInventoryTable()
     $('.toast').popover('show');
     $('.sidebar-toggle').click()
-    $("body").removeClass('fixed');
+
 })
 $.ajaxSetup({
     headers: {

@@ -313,7 +313,7 @@ $(function(){
 
     createTable($("#reservation").val());
 
-    $("body").removeClass('fixed');
+
 
     $("#filter").click(function(){
         $('#invoice_table').dataTable().fnDestroy()

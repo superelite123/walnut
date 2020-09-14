@@ -64,7 +64,7 @@ var Adjust_priceInput = $("#adjust_price");
         $('#salesperson').val(salesrep).change()
     })
 
-    let setPrice = () => {
+    let setPrice = (basePrice) => {
         // let p_type = P_type_list.val()
         // let p_type_obj = p_types[findIndexWithAttr(p_types,'producttype_id',p_type )]
         // let promo = p_type_obj != null?p_type_obj.promovalue:null
@@ -78,15 +78,15 @@ var Adjust_priceInput = $("#adjust_price");
         //     Unit_priceInput.prop('disabled', false)
         //     Unit_priceInput.val(0)
         // }
-        const strain = Strain_list.val()
-        const strain_obj = strains[findIndexWithAttr(strains,'itemname_id',strain )]
-        console.log(strain_obj)
-        const base_price = strain_obj != null?parseFloat(strain_obj.base_price):null
-        console.log(base_price)
-        if(base_price != null && base_price > 0)
+        // const strain = Strain_list.val()
+        // const strain_obj = strains[findIndexWithAttr(strains,'itemname_id',strain )]
+        // console.log(strain_obj)
+        // const base_price = strain_obj != null?parseFloat(strain_obj.base_price):null
+        // console.log(base_price)
+        if(basePrice != null && basePrice > 0)
         {
             Unit_priceInput.prop('disabled', true)
-            Unit_priceInput.val(base_price)
+            Unit_priceInput.val(basePrice)
         }
         else
         {
@@ -139,7 +139,7 @@ var Adjust_priceInput = $("#adjust_price");
         {
             return false
         }
-        setPrice()
+
         calc_units()
         let res;
         $.ajax({
@@ -155,6 +155,7 @@ var Adjust_priceInput = $("#adjust_price");
                         res.qty -= element.qty;
                     }
                 })
+                setPrice(r.basePrice)
             }
         })
         setQty(res.qty)
@@ -755,7 +756,7 @@ $(function(){
     $('.datepicker').datepicker({
         format: 'yyyy-mm-dd'
     });
-    $("body").removeClass('fixed');
+
     $('.select2').select2();
 
     $('.datepicker').datepicker({

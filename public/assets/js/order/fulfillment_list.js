@@ -591,7 +591,7 @@ $(function(){
     $("body").addClass('fixed')
 
     $("#reservation").daterangepicker({
-        format: 'dd.mm.yyyy',
+        format: 'mm.dd.yyyy',
         startDate: s_date,
         endDate: e_date
     }).on("change", function() {
@@ -600,7 +600,7 @@ $(function(){
     })
 
     $("#reservation_problematic").daterangepicker({
-        format: 'dd.mm.yyyy',
+        format: 'mm.dd.yyyy',
         startDate: s_date,
         endDate: e_date
     }).on("change", function() {
