@@ -223,7 +223,7 @@ $(() => {
                     },
                     error:function(e)
                     {
-                        console.log(e);
+                        swal(e.statusText, e.responseJSON.message, "error")
                     }
                 });
             })

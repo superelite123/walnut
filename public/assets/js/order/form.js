@@ -99,11 +99,11 @@ var Adjust_priceInput = $("#adjust_price");
         $.ajax({
             url:'_form_customer_list',
             type:'post',
-            async:false,
             success:(res) => {
                 clients = res
             },
             error:(e) => {
+                console.log(e.statusText)
                 alert('Problem in commucating with server');
             }
         })
@@ -406,7 +406,6 @@ var Adjust_priceInput = $("#adjust_price");
         return result;
     }
 //---------------------------./Discount---------------------------------
-//use arrow function follow ES6 grammar
 var calc_adjust_price = () => {
     var data = {}
 
@@ -416,8 +415,9 @@ var calc_adjust_price = () => {
     let discount = get_discount(get_discount_id())
 
     data.sub_total     = cost * qty;
-    data.discount      = data.sub_total * discount.pro / 100
-    data.less_discount = data.sub_total - data.discount - data.e_discount
+    data.discount      = data.sub_total * discount.pro / 100.0
+    console.log(data)
+    data.less_discount = data.sub_total - data.discount// - data.e_discount
     data.adjust_price  = data.less_discount + tax
 
     data.sub_total     = data.sub_total.toFixed(2)
@@ -430,6 +430,7 @@ var calc_adjust_price = () => {
 }
 
 let set_adjust_price = (data) => {
+    console.log(data)
     $('#discount').val(data.discount)
     Sub_totalInput.val(data.sub_total)
     $('#cpu').val(data.cpu)

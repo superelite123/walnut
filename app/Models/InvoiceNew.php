@@ -82,6 +82,11 @@ class InvoiceNew extends Model
         return $this->hasOne(InvoiceOption::class,'order_id');
     }
 
+    public function rDevlieryer()
+    {
+        return $this->belongsTo(Delivery::class,'deliveryer');
+    }
+
     public function getSignDateDAttribute()
     {
         return ($this->sign_date != null && $this->sign_date != '0000-00-00')?date('Y-m-d',strtotime($this->sign_date)):date('Y-m-d');

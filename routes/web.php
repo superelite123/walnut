@@ -236,9 +236,11 @@ Route::group( ['prefix' => 'order','middleware' => ['auth','permission:order_ful
 Route::group( [ 'prefix' => 'order_fulfilled','middleware' => ['auth','permission:order_fulfilled_list']],function(){
 
     Route::get('home','OrderFulFilledController@home');
+    Route::get('scheduled','OrderScheduledController@index');
     Route::post('get_fulfilled_list','OrderFulFilledController@get_list');
     Route::post('get_reject_list','OrderFulFilledController@get_reject_list');
     Route::post('_fulfilled_email','OrderFulFilledController@_email');
+    Route::post('registerDeliverySchedule','OrderFulFilledController@registerDeliverySchedule');
     Route::get('view/{id}/{print}','OrderFulFilledController@view');
 
     /**

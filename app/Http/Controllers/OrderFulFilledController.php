@@ -23,6 +23,7 @@ use App\Models\Promo;
 use App\Models\InvoiceContact;
 use App\Models\DeliveryStatus;
 use App\Models\Counter;
+use App\Models\Delivery;
 use Session;
 use DB;
 use PDF;
@@ -54,8 +55,19 @@ class OrderFulFilledController extends OBaseController
             'end_date' => Date('m/d/Y'),
             'edit_permission' => $edit_permission,
         ]);
-        return view('orderFulfilled.home',['distributors' => Distributor::all(),
-                                            'metrc_manifests' => MetrcManifest::all()]);
+        return view('orderFulfilled.home',[ 'distributors'      => Distributor::all(),
+                                            'deliveries'        => Delivery::all(),
+                                            'metrc_manifests'   => MetrcManifest::all()]);
+    }
+
+    public function registerDeliverySchedule(Request $request)
+    {
+        $date = date("Y-m-d H:i:s",strtotime($request->date));
+        $invoice = InvoiceNew::find($request->id);
+        $invoice->delivery_time = $date;
+        $invoice->deliveryer = $request->deliveryer;
+        $invoice->save();
+        return response()->json(['success' => 1]);
     }
 
     public function get_list(Request $request)

@@ -145,6 +145,12 @@ return [
                     'can' => 'order_fulfilled_list',
                 ],
                 [
+                    'text'        => 'Scheduled Deliveries',
+                    'url'         => 'order_fulfilled/scheduled',
+                    'icon'        => 'fas fa-shipping-fast',
+                    'can' => 'order_fulfilled_list',
+                ],
+                [
                     'text'        => 'Signature & Delivery',
                     'url'         => 'signature/home',
                     'icon'        => 'fas fa-signature',

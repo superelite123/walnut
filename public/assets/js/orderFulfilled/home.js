@@ -238,13 +238,18 @@ var createTable = (date_range) => {
         "columnDefs": [
             { "orderable": false, "targets": 0 },
             { "orderable": false, "targets": 1 },
-            { "orderable": true, "targets": 2 },
-            { "orderable": true, "targets": 3 },
-            { "orderable": true, "targets": 4 },
-            { "orderable": true, "targets": 5 },
+            { "orderable": false, "targets": 2 },
+            { "orderable": false, "targets": 3 },
+            { "orderable": false, "targets": 4 },
+            { "orderable": false, "targets": 5 },
             { "orderable": false, "targets": 6 },
             { "orderable": false, "targets": 7 },
+            { "orderable": false, "targets": 8 },
             { "orderable": false, "targets": 9 },
+            { "orderable": false, "targets": 10 },
+            { "orderable": false, "targets": 11 },
+            { "orderable": false, "targets": 12 },
+            { "orderable": false, "targets": 13 },
         ],
         'scrollX':true
     });
@@ -272,6 +277,7 @@ let convert_ajax_table_data = (json) => {
         json[i].actions += '<li><a href="view/' + json[i].id + '/0" target="_blank"><i class="fas fa-file-invoice-dollar">&nbsp;</i>View</a></li>'
         json[i].actions += '<li><a href="#" class="email_btn"><i class="fas fa-envelope-square">&nbsp;</i>Email</a></li>'
         json[i].actions += '<li><a href="view/' + json[i].id + '/1" target="_blank"><i class="fas fa-print">&nbsp;</i>Print</a></li>'
+        json[i].actions += '<li><a href="#" class="schedule_btn"><i class="fas fa-shipping-fast">&nbsp;</i>Schedule</a></li>'
         json[i].actions += '<li><a href="_download_invoice_pdf/' + json[i].id + '" target="_blank"><i class="fas fa-file-pdf"></i>&nbsp;Download Invoice</a></li>'
         json[i].actions += '<li><a href="barcode_print/' + json[i].id + '" target="_blank"><i class="fas fa-print">&nbsp;</i>Barcode sheet</a></li>'
         json[i].actions += '<li><a href="#" class="csv_btn"><i class="fas fa-file-csv"></i>&nbsp;CSV</a></li>'
@@ -416,33 +422,6 @@ $(document).on("click", ".popover .btn-popover-save" , function(){
 $(document).on("click", ".popover .btn-popover-cancel" , function(){
     $(this).parents(".popover").popover('hide')
 });
-// $('#invoice_table tbody').on('focusout','.txtMMStr',function(){
-
-//     var tr = $(this).closest('tr');
-//     var row = invoice_table.row( tr );
-//     let m_m_str = $(this).val()
-//     if(m_m_str != row.data().id.m_m_str)
-//     {
-//         if(confirm('Are you going to save this value?'))
-//         {
-//             $.post({
-//                 url:'_set_metrc_manifest',
-//                 data:'m_m_str=' + m_m_str + '&id=' + row.data().id,
-//                 success:(res) => {
-//                     swal('Success', 'Metrc Manifest is set successfully', "success")
-//                     createTable($("#reservation").val())
-//                 },
-//                 error:(e) => {
-//                     swal(e.statusText, e.responseJSON.message, "error")
-//                 }
-//             })
-//         }
-//         else
-//         {
-//             $(this).val(row.data().id.m_m_str)
-//         }
-//     }
-// })
 
 $('#invoice_table tbody').on('click','.chkDeliver',function(){
     let tr = $(this).closest('tr')
@@ -488,6 +467,36 @@ $('#invoice_table tbody').on('change','#mManifest',function(){
         error:(e) => {
             swal(e.statusText, e.responseJSON.message, "error")
             return false
+        }
+    })
+})
+$('#invoice_table tbody').on('click','.schedule_btn',function(){
+    const tr = $(this).closest('tr')
+    const row = invoice_table.row( tr )
+    selected_invoice = row.data().id
+
+    $('#modal_time_range').modal('show')
+})
+
+$('.deliveryConfirmBtn').on('click',() => {
+    $('#modal_time_range').modal('hide')
+    const schedule = $('#delivery_schedule').val()
+    const deliveryer = $('#deliveries').val()
+    const postData = {
+        date:schedule,
+        deliveryer:deliveryer,
+        id:selected_invoice
+    }
+    $.ajax({
+        url:'registerDeliverySchedule',
+        type:'post',
+        headers:{"content-type" : "application/json"},
+        data: JSON.stringify(postData),
+        success:(res) => {
+            $.growl.notice({ message: "Success to schedule delivery" });
+        },
+        error:(e) => {
+            $.growl.error({ message: "Fail to schedule delivery" });
         }
     })
 })
@@ -684,7 +693,10 @@ $(function(){
     createTable($("#reservation").val())
     createRejectTable(null)
     $('.select2').select2();
-
+    //datetimepicker
+    $('#delivery_schedule').datetimepicker({
+        format: 'MM/DD/YYYY h:m'
+    });
 })
 
 $.ajaxSetup({

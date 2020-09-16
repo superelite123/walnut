@@ -4,6 +4,7 @@
 @section('css')
   <link rel="stylesheet" href="{{ asset('assets/css/order/index.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/component/css/daterangepicker/daterangepicker.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/component/css/bootstrap-datetimepicker.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/component/css/growl/jquery.growl.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/component/css/sweetalert.css') }}">
 @stop
@@ -46,40 +47,40 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <table class="table table-bordered" id="invoice_table" style='width:100%'>
+                    <table class="table table-bordered" id="invoice_table">
                         <thead>
                             <th></th>
                             <th>No</th>
-                            <th>Sales Order</th>
+                            <th>Sales<br>Order</th>
                             <th>Invoice</th>
                             <th>Sales Rep</th>
                             <th>Customer</th>
-                            <th>WB + Excise Total</th>
+                            <th>WB +<br>Excise Total</th>
                             <th>Date</th>
                             <th>Distributor</th>
                             <th>Manifest Status</th>
-                            <th>Metrc Manifest</th>
-                            <th>COA in <i class="fa fa-envelope"></i></th>
-                            <th>Metrc Ready</th>
+                            <th>Metrc<br> Manifest</th>
+                            <th>COA<br> in <i class="fa fa-envelope"></i></th>
+                            <th>Metrc<br>Ready</th>
                             <th>Actions</th>
                         </thead>
                         <tbody>
                         </tbody>
                         <tfoot>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                         </tfoot>
                     </table>
                 </div>
@@ -211,6 +212,53 @@
     <button class="btn btn-success btn-popover-save"><i class="fas fa-check">&nbsp;</i>Save</button>
     <button class="btn btn-danger btn-popover-cancel"><i class="fas fa-times">&nbsp;</i>Cancel</button>
 </div>
+<!--Clicking Report Modal-->
+<div class="modal fade" id='modal_time_range'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="waist_title">Select the Delivery Time</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class='col-sm-12'>
+                        <div class="form-group">
+                            <label for="weight">Clock In:</label>
+                            <div class='input-group date'>
+                                <input type='text' class="form-control" id='delivery_schedule' />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Delivery</label>
+                            <div class="input-group">
+                              <div class="input-group-addon">
+                                <i class="fas fa-users"></i>
+                              </div>
+                              <select class="form-control select2" style="width: 100%;" name="client" id="deliveries">
+                                <option disabled value="0">Select Deliveryer</option>
+                                @foreach($deliveries as $delivery)
+                                  <option value="{{ $delivery->id }}"> {{ $delivery->username }}</option>
+                                @endforeach
+                              </select>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding-bottom:0px;">
+                <button type="button" class="btn btn-sd pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info deliveryConfirmBtn"><i class="fas fa-arrow-right"></i>&nbsp;Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Clicking Report Modal-->
 @stop
 @include('footer')
 <script>
@@ -219,9 +267,10 @@
 </script>
 @section('js')
     <script type="text/javascript" src="{{ asset('assets/component/js/sweetalert.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/component/js/daterangepicker/moment.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/component/js/growl/jquery.growl.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/component/js/daterangepicker/moment.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/component/js/daterangepicker/daterangepicker.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/component/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/harvest/table2csv.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/ajax_loader.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/orderFulfilled/home_reject.js') }}"></script>
