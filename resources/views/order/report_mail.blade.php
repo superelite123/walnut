@@ -1,7 +1,7 @@
 <html>
-    
+
     <body>
-    <h3>Invoice {{ $invoice->number }} has been approved. Attachment below:</h3>
+    <h3>Sales Order {{ $invoice->number }} has been approved. Attachment below:</h3>
     --------------------------------------------------------------------------------
 <br>
 <br>

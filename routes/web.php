@@ -69,6 +69,7 @@ Route::group( ['middleware' => 'auth'], function(){
     Route::any('descriptions', 'CC@descriptions');
     Route::post('get_tracker_list', 'CC@get_tracker_list');
     Route::any('asset','CC@assets');
+    Route::any('delivery_method','CC@delivery_method');
     Route::any('asset_potal','CC@asset_potal');
     Route::post("_asset_potal_get_assets",'CC@_asset_potal_get_assets');
 

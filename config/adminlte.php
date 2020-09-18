@@ -432,6 +432,12 @@ return [
             'can'  => 'product_type'
         ],
         [
+            'text' => 'Delivery Method','can'  => 'Administration',
+            'url'  => 'delivery_method',
+            'icon' => 'fas fa-border-style',
+            'can'  => 'product_type'
+        ],
+        [
             'text' => 'Strain-Type Controller',
             'url'  => 'upccontroller',
             'icon' => 'fas fa-barcode',

@@ -22,6 +22,7 @@ class OrderScheduledController extends Controller
         {
             $order->delivery_time = '2020-10-01 09:39:00';
             $item = [];
+            $item['id']     = $order->id;
             $item['number'] = $order->number2;
             $item['dDate']  = date('Y-m-d',strtotime($order->delivery_time));
             $item['deliveryer'] = $order->rDevlieryer != null?$order->rDevlieryer->username:'';

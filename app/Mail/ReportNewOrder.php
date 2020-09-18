@@ -35,9 +35,9 @@ class ReportNewOrder extends Mailable
         //->attach(asset('assets/upload/files/INV-1019/sign.png'))
         //storage/'.$this->invoice->number.'/invoice.
         $mail = $this->view('order.report_mail',['invoice' => $this->invoice])
-                     ->subject('Invoice has been approved - '.$this->invoice->number)
+                     ->subject('Sales Order has been approved - '.$this->invoice->number)
                      ->attach(public_path('storage/'.$this->invoice->number.'/mail.pdf'),[
-                        'as' => 'invoice.pdf', 
+                        'as' => 'invoice.pdf',
                         'mime' => 'application/pdf'
                       ]);
         return $mail;

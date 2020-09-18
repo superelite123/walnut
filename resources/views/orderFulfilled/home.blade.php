@@ -225,7 +225,7 @@
                 <div class="row">
                     <div class='col-sm-12'>
                         <div class="form-group">
-                            <label for="weight">Clock In:</label>
+                            <label for="weight">Delivery Date:</label>
                             <div class='input-group date'>
                                 <input type='text' class="form-control" id='delivery_schedule' />
                                 <span class="input-group-addon">
@@ -236,13 +236,13 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Delivery</label>
+                            <label>Delivery options</label>
                             <div class="input-group">
                               <div class="input-group-addon">
                                 <i class="fas fa-users"></i>
                               </div>
                               <select class="form-control select2" style="width: 100%;" name="client" id="deliveries">
-                                <option disabled value="0">Select Deliveryer</option>
+                                <option disabled value="0">Delivered Via</option>
                                 @foreach($deliveries as $delivery)
                                   <option value="{{ $delivery->id }}"> {{ $delivery->username }}</option>
                                 @endforeach

@@ -1195,7 +1195,7 @@ class CC extends Controller
         $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('invupccont');
         $crud->setSubject('Strain-Type Matrix', 'Create Strain Type Matrix');
-        $crud->columns(['iteminv_id','strain','type','upc','taxexempt','um','weight']);
+        $crud->columns(['iteminv_id','strain','type','upc','taxexempt','um','weight','baseprice']);
         $crud->displayAs(array('iteminv_id' => 'Item ID'));
         $crud->setRelation('um','units','{name} - {abbriviation}');
         $crud->setRelation('strain','strainname','{strain}');
@@ -1477,6 +1477,38 @@ class CC extends Controller
         $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('terms');
         $crud->setSubject('Terms', 'Terms');
+        $crud->unsetColumns(['datelastmodified']);
+        $crud->unsetFields(['datelastmodified']);
+        $output = $crud->render();
+        if ($output->isJSONResponse) {
+            return response($output->output, 200)
+                  ->header('Content-Type', 'application/json')
+                  ->header('charset', 'utf-8');
+        }
+        $css_files = $output->css_files;
+        $js_files = $output->js_files;
+        $output = $output->output;
+        return view('gc', [
+            'output' => $output,
+            'css_files' => $css_files,
+            'js_files' => $js_files
+        ]);
+    }
+
+    public function delivery_method()
+    {
+        $database = $this->_getDatabaseConnection();
+        $config = config('grocerycrud');
+        $crud = new GroceryCrud($config, $database);
+        $crud->setTheme('Walnut');
+        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setTable('delivery');
+        $crud->setSubject('Delivery Method', 'Delivery Method');
+        $crud->columns(['username','van']);
+        $crud->displayAs(array(
+            'username' => 'Name',
+            'van'       => 'Register'
+        ));
         $crud->unsetColumns(['datelastmodified']);
         $crud->unsetFields(['datelastmodified']);
         $output = $crud->render();
