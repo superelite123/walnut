@@ -20,11 +20,10 @@ class OrderScheduledController extends Controller
         $cData = [];
         foreach($orders as $order)
         {
-            $order->delivery_time = '2020-10-01 09:39:00';
             $item = [];
             $item['id']     = $order->id;
             $item['number'] = $order->number2;
-            $item['dDate']  = date('Y-m-d',strtotime($order->delivery_time));
+            $item['dDate']  = date('m/d/Y',strtotime($order->delivery_time));
             $item['deliveryer'] = $order->rDevlieryer != null?$order->rDevlieryer->username:'';
             $item['time'] = date('h:i',strtotime($order->delivery_time));
             $item['cName']  = $order->cName;

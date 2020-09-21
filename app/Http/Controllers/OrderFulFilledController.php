@@ -438,9 +438,11 @@ class OrderFulFilledController extends OBaseController
                     $merged_asset['strainname']    = $ap['strain'];
                     $merged_asset['asset_type_id'] = $ap['p_type'];
                     $merged_asset['metrc_tag']     = $parentMetrc;
+                    $merged_asset['weight']        = 0;
                     foreach($items as $item)
                     {
                         $merged_asset['um'] = $item['um'];
+                        $merged_asset['weight'] += $item['weight'];
                     }
                     $merged_asset['coa']           = $items[0]['coa'];
                     $merged_asset['upc_fk']        = $items[0]['upc_fk'];
