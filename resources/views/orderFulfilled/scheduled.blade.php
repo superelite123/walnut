@@ -4,6 +4,7 @@
 @section('css')
   <link rel="stylesheet" href="{{ asset('assets/css/order/index.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/component/css/growl/jquery.growl.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/component/css/bootstrap-datetimepicker.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/component/fullcalendar/fullcalendar.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/component/fullcalendar/fullcalendar.print.min.css') }}" media="print">
   <link rel="stylesheet" href="{{ asset('assets/component/css/sweetalert.css') }}">
@@ -48,7 +49,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <table class='table table-bordered nowrap' id='invoice_table'>
+                <table class='table table-bordered nowrap' id='tbl-schedule'>
                 <thead>
                     <th>No</th>
                     <th>Invoice</th>
@@ -68,6 +69,7 @@
                             <td>{{ $item['time'] }}</td>
                             <td>{{ $item['cName'] }}</td>
                             <td>{{ $item['amount'] }}</td>
+                            <td><button class="btn btn-xs btn-info" onclick="onChnageDatte({{ $item['id'] }},'{{ $item['dDate'].' '.$item['time'] }}')">Delivery Date</button></td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -86,6 +88,39 @@
     </div>
     <!--/.table row-->
 </div>
+
+<!--Clicking Report Modal-->
+<div class="modal fade" id='modal_time_range'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="waist_title">Select the Delivery Time</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class='col-sm-12'>
+                        <div class="form-group">
+                            <label for="weight">Delivery Date:</label>
+                            <div class='input-group date'>
+                                <input type='text' class="form-control" id='delivery_schedule' />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding-bottom:0px;">
+                <button type="button" class="btn btn-sd pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info deliveryConfirmBtn"><i class="fas fa-arrow-right"></i>&nbsp;Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Clicking Report Modal-->
 @stop
 @include('footer')
 <script>
@@ -95,6 +130,7 @@
   <script type="text/javascript" src="{{ asset('assets/component/js/sweetalert.js') }}"></script>
   <script type="text/javascript" src="{{ asset('assets/component/js/growl/jquery.growl.js') }}"></script>
   <script type="text/javascript" src="{{ asset('assets/component/js/daterangepicker/moment.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('assets/component/js/bootstrap-datetimepicker.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('assets/component/fullcalendar/fullcalendar.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('assets/js/orderFulfilled/scheduled.js') }}"></script>
 @stop

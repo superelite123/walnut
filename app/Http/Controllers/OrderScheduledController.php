@@ -48,4 +48,12 @@ class OrderScheduledController extends Controller
         return view('orderFulfilled.scheduled',[ 'cData' => $cData]);
     }
 
+    public function changeDate(Request $request)
+    {
+        $date = date("Y-m-d H:i:s",strtotime($request->date));
+        $invoice = InvoiceNew::find($request->id);
+        $invoice->delivery_time = $date;
+        $invoice->save();
+        return response()->json(['success' => 1]);
+    }
 }

@@ -1,3 +1,5 @@
+let selectedOrder = null
+let tblSchedule
 $("#export_btn").on('click', function() {
     console.log('hi')
     var array = typeof calendarData != 'object' ? JSON.parse(calendarData) : calendarData;
@@ -17,7 +19,33 @@ $("#export_btn").on('click', function() {
     const filename = 'Scheduled Deliveries'
     exportCSVfile(filename,str)
 });
+const onChnageDatte = (id,date) => {
+    selectedOrder = id
+    $('#delivery_schedule').val(date)
+    $('#modal_time_range').modal('show')
+}
 
+$('.deliveryConfirmBtn').on('click',() => {
+    $('#modal_time_range').modal('hide')
+    const schedule = $('#delivery_schedule').val()
+    const postData = {
+        date:schedule,
+        id:selectedOrder
+    }
+    $.ajax({
+        url:'_chage_order_delivery_date',
+        type:'post',
+        headers:{"content-type" : "application/json"},
+        data: JSON.stringify(postData),
+        success:(res) => {
+            $.growl.notice({ message: "Success to schedule delivery" });
+            location.reload()
+        },
+        error:(e) => {
+            $.growl.error({ message: "Fail to schedule delivery" });
+        }
+    })
+})
 var exportCSVfile = (filename,csv) =>{
     var exportedFilenmae = filename + '.csv' || 'export.csv';
 
@@ -54,7 +82,7 @@ $(function(){
             day  : 'day'
         },
         //Random default events
-        events    : calendarData,
+        events    : calendarData,//[{'start':'2020-09-21'}],
         editable  : false,
         height:500,
         eventRender: function(event, element) {
@@ -62,14 +90,19 @@ $(function(){
                             event.title2 + '<br>' +
                             event.title3 + '<br>' +
                             event.title4 + '<br>'
-            element.find(".fc-title").prepend(title);
+            element.find(".fc-title").html(title);
+            element.find(".fc-time").html("")
         },
         eventClick:  function(event, jsEvent, view) {
             window.open('view/' + event.id + '/0');
         },
     })
-    $('#invoice_table').DataTable()
+    tblSchedule = $('#invoice_table').DataTable()
     $("body").addClass('fixed')
+    //datetimepicker
+    $('#delivery_schedule').datetimepicker({
+        format: 'MM/DD/YYYY h:m'
+    });
 })
 $.ajaxSetup({
     headers: {
