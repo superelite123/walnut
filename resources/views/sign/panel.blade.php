@@ -249,6 +249,9 @@
     </div>
     @if (!$isDelivered)
     <div class="row">
+        <div class="col-md-12">
+            <h3>Delivery</h3>
+        </div>
       <div class="col-md-5">
           <h4>
             Client Sign - Signature below acknowledges <br>receipt of above product and confirmation <br>of invoice terms as outlined above
@@ -264,7 +267,7 @@
       <div class="col-md-2" style='margin-left:20px;'>
         <button style='margin-top:100px;' class="btn btn-info" onclick="completeRejection()">Complete Rejection</button>
         <br>
-        <button style='margin-top:20px;' class="btn btn-info" onclick="partialRejection()">Partial Rejection</button>
+        <button style='margin-top:20px;' class="btn btn-info" onclick="partialRejection()">Partial Rejection&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
       </div>
       <div class="col-md-4">
         <div class="col-xs-8">
@@ -301,6 +304,12 @@
     </div>
     @endif
     <div class="row">
+        <div class="col-md-12"><hr></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Payment Collections</h3>
+        </div>
         <div class='col-md-12'>
             <div class="col-xs-5">
                 <h4>

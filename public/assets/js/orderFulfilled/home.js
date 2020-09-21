@@ -695,7 +695,7 @@ $(function(){
     $('.select2').select2();
     //datetimepicker
     $('#delivery_schedule').datetimepicker({
-        format: 'MM/DD/YYYY h:m'
+        format: 'MM/DD/YYYY h:m a'
     });
 })
 

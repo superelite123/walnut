@@ -86,11 +86,13 @@ $(function(){
         editable  : false,
         height:500,
         eventRender: function(event, element) {
-            const title =   event.title1 + '<br>' +
+            const title =   '<span class="fc-title">' +
+                            event.title1 + '<br>' +
                             event.title2 + '<br>' +
                             event.title3 + '<br>' +
-                            event.title4 + '<br>'
-            element.find(".fc-title").html(title);
+                            event.title4 + '<br>' +
+                            '</span>'
+            element.prepend(title);
             element.find(".fc-time").html("")
         },
         eventClick:  function(event, jsEvent, view) {
@@ -101,7 +103,7 @@ $(function(){
     $("body").addClass('fixed')
     //datetimepicker
     $('#delivery_schedule').datetimepicker({
-        format: 'MM/DD/YYYY h:m'
+        format: 'MM/DD/YYYY hh:mm a'
     });
 })
 $.ajaxSetup({
