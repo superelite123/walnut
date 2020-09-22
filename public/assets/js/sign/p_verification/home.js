@@ -150,6 +150,7 @@ var row_details_format = (d) => {
             html += '<td>' + element.type + '</td>'
             html += '<td>' + element.amount + '</td>'
             html += '<td>' + element.deliveryerName + '</td>'
+            html += '<td>' + element.date + '</td>'
             html += '</tr>'
         })
         if(items.length == 0)

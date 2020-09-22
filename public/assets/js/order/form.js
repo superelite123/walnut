@@ -613,7 +613,7 @@ $(".makeBtn").click(function(){
 
     swal({
         title: "Are You Sure",
-        text: "Are You going to save the Invoice?",
+        text: "Are You going to save the Sales order?",
         type: "info",
         showCancelButton: true,
         closeOnConfirm: false,
@@ -757,7 +757,7 @@ $(function(){
     $('.datepicker').datepicker({
         format: 'yyyy-mm-dd'
     });
-
+$("body").addClass('fixed');
     $('.select2').select2();
 
     $('.datepicker').datepicker({
