@@ -65,6 +65,7 @@ class OBaseController extends Controller
     {
         $date_range = $request->date_range;
         $date_range = $this->convertDateRangeFormat($date_range);
+
         $bCond = InvoiceNew::whereRaw('DATE(date) >= ?', [$date_range['start_date']])
                             ->whereRaw('DATE(date) <= ?', [$date_range['end_date']])
                             ->whereIn('status',$request->status);
@@ -145,6 +146,7 @@ class OBaseController extends Controller
                 $nestedData['items']            = $order->getFulfilledItems();
                 //get extra discount
                 $nestedData['pDiscount']        = $order->rPDiscount;
+                $nestedData['scheduled']        = $order->delivery_time != null && $order->deliveryer != null?1:0;
 				$data[] = $nestedData;
 			}
         }

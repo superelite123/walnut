@@ -60,6 +60,7 @@
                             <th>Distributor</th>
                             <th>Manifest Status</th>
                             <th>Metrc<br> Manifest</th>
+                            <th>Scheduled</th>
                             <th>COA<br> in <i class="fa fa-envelope"></i></th>
                             <th>Metrc<br>Ready</th>
                             <th>Actions</th>
@@ -67,6 +68,7 @@
                         <tbody>
                         </tbody>
                         <tfoot>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -236,7 +238,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Delivery options</label>
+                            <label>Delivery Assigned To:</label>
                             <div class="input-group">
                               <div class="input-group-addon">
                                 <i class="fas fa-users"></i>

@@ -231,6 +231,7 @@ var createTable = (date_range) => {
             { "data": "distributor" },
             { "data": "metrc_manifest" },
             { "data": "txtMMStr" },
+            { "data": "scheduledLabel" },
             { "data": "coainbox_chk" },
             { "data": "metrc_chk"},
             { "data": "actions" },
@@ -250,6 +251,7 @@ var createTable = (date_range) => {
             { "orderable": false, "targets": 11 },
             { "orderable": false, "targets": 12 },
             { "orderable": false, "targets": 13 },
+            { "orderable": false, "targets": 14 },
         ],
         'scrollX':true
     });
@@ -314,6 +316,9 @@ let convert_ajax_table_data = (json) => {
         })
         distributor_html += '</select>'
         json[i].metrc_manifest = distributor_html
+
+        //add scheduled result
+        json[i].scheduledLabel = json[i].scheduled == 1?'Yes':'No'
     }
     return json
 }
