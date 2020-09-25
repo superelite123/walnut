@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="col-xs-3">
-                <button class="btn btn-info pull-right"  style="margin-top:1.5em" class="export">This Week</button>
+                <button class="btn btn-info pull-right"  style="margin-top:1.5em" class="export" onclick="loadRangedData(1)">This Week</button>
             </div>
             <div class="col-xs-3">
                 <button class="btn btn-info pull-right"  style="margin-top:1.5em" id="export_btn" class="export"><i class="fa fa-download"></i>&nbsp;Export CSV</button>
@@ -83,7 +83,7 @@
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $item['number'] }}</td>
-                                <td>{{ $item['number1'] }}</td>
+                                <td>{{ $item['numberSO'] }}</td>
                                 <td>{{ $item['dDate'] }}</td>
                                 <td>{{ $item['deliveryer'] }}</td>
                                 <td>{{ $item['time'] }}</td>

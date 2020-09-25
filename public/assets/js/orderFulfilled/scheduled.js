@@ -1,5 +1,7 @@
 let selectedOrder = null
 let tblSchedule
+const s_date = windowvar.start_date
+const e_date = windowvar.end_date
 $("#export_btn").on('click', function() {
     console.log('hi')
     var array = typeof calendarData != 'object' ? JSON.parse(calendarData) : calendarData;
@@ -88,6 +90,7 @@ $(function(){
         eventRender: function(event, element) {
             const title =   '<span class="fc-title">' +
                             event.title1 + '<br>' +
+                            event.title5 + '<br>' +
                             event.title2 + '<br>' +
                             event.title3 + '<br>' +
                             event.title4 + '<br>' +
@@ -105,7 +108,20 @@ $(function(){
     $('#delivery_schedule').datetimepicker({
         format: 'MM/DD/YYYY hh:mm a'
     });
+    //dateranger
+    $("#reservation").daterangepicker({
+        format: 'dd.mm.yyyy',
+        startDate: s_date,
+        endDate: e_date
+    }).on("change", function() {
+        loadRangedData($(this).val())
+    })
 })
+const loadRangedData = (date_range) =>
+{
+    let url = location.href.split('?')[0]
+    location.href = url + '?date_range=' + date_range
+}
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

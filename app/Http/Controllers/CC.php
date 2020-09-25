@@ -413,6 +413,38 @@ class CC extends Controller
         ]);
     }
 
+    public function delivery_method()
+    {
+        $database = $this->_getDatabaseConnection();
+        $config = config('grocerycrud');
+        $crud = new GroceryCrud($config, $database);
+        $crud->setTheme('Walnut');
+        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setTable('delivery');
+        $crud->setSubject('Delivery Method', 'Delivery Method');
+        $crud->columns(['username','van','ca_dl_id']);
+        $crud->displayAs(array(
+            'username' => 'Name',
+            'van'       => 'Registration',
+            'ca_dl_id' =>  'CA DL ID'
+        ));
+        $crud->unsetColumns(['datelastmodified']);
+        $crud->unsetFields(['datelastmodified']);
+        $output = $crud->render();
+        if ($output->isJSONResponse) {
+            return response($output->output, 200)
+                  ->header('Content-Type', 'application/json')
+                  ->header('charset', 'utf-8');
+        }
+        $css_files = $output->css_files;
+        $js_files = $output->js_files;
+        $output = $output->output;
+        return view('gc', [
+            'output' => $output,
+            'css_files' => $css_files,
+            'js_files' => $js_files
+        ]);
+    }
      public function vaultmodifystatus()
     {
         $database = $this->_getDatabaseConnection();
@@ -1195,7 +1227,7 @@ class CC extends Controller
         $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('invupccont');
         $crud->setSubject('Strain-Type Matrix', 'Create Strain Type Matrix');
-        $crud->columns(['iteminv_id','strain','type','upc','taxexempt','um','weight','baseprice']);
+        $crud->columns(['iteminv_id','strain','type','upc','baseprice','taxexempt','um','weight']);
         $crud->displayAs(array('iteminv_id' => 'Item ID'));
         $crud->setRelation('um','units','{name} - {abbriviation}');
         $crud->setRelation('strain','strainname','{strain}');
@@ -1477,38 +1509,7 @@ class CC extends Controller
         $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('terms');
         $crud->setSubject('Terms', 'Terms');
-        $crud->unsetColumns(['datelastmodified']);
-        $crud->unsetFields(['datelastmodified']);
-        $output = $crud->render();
-        if ($output->isJSONResponse) {
-            return response($output->output, 200)
-                  ->header('Content-Type', 'application/json')
-                  ->header('charset', 'utf-8');
-        }
-        $css_files = $output->css_files;
-        $js_files = $output->js_files;
-        $output = $output->output;
-        return view('gc', [
-            'output' => $output,
-            'css_files' => $css_files,
-            'js_files' => $js_files
-        ]);
-    }
 
-    public function delivery_method()
-    {
-        $database = $this->_getDatabaseConnection();
-        $config = config('grocerycrud');
-        $crud = new GroceryCrud($config, $database);
-        $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
-        $crud->setTable('delivery');
-        $crud->setSubject('Delivery Method', 'Delivery Method');
-        $crud->columns(['username','van']);
-        $crud->displayAs(array(
-            'username' => 'Name',
-            'van'       => 'Register'
-        ));
         $crud->unsetColumns(['datelastmodified']);
         $crud->unsetFields(['datelastmodified']);
         $output = $crud->render();
@@ -1595,8 +1596,8 @@ class CC extends Controller
         2nd Contact Name','secondaryc_phone' =>'2nd Company Phone','secondaryc_email' =>'Retailers email','deliverye' =>'Delivery email','deliveryc' =>'Delivery Contact','deliveryp' =>'Delivery Phone','deliveryday' =>'Delivery Days','salesrep' =>'Sales Rep','accountmanager' =>'Account Manager','licensenumber' =>'License Number','licensetype' =>'License Type','licensevalid' =>'License Valid','licenseexpire' =>'License Expires','licenseul' =>'Uploaded License','servicezone' =>'Service Zone'));
         $crud->setRelation('terms','terms','term');
         $crud->setRelation('status','status','status');
-        $crud->setRelation('salesrep','contactperson','{firstname}, {lastname}');
-        $crud->setRelation('accountmanager','contactperson','{firstname}, {lastname}',['contacttype' => 3]);
+        $crud->setRelation('salesrep','contactperson','{firstname}, {lastname}',['contacttype' => 3]);
+        $crud->setRelation('accountmanager','contactperson','{firstname}, {lastname}');
         $crud->setRelationNtoN('deliveryday', 'customerdeliverydays', 'daysofweek', 'customerid', 'dayid', 'day');
         $crud->setFieldUpload('licenseul', 'assets/upload/files/license', '../../walnut/assets/upload/files/license');
         $crud->setRelation('state','states','abbr');
