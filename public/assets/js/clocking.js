@@ -1,5 +1,4 @@
 let clocking_harvesters = windowvar.clocking_harvesters
-console.log(clocking_harvesters)
 $('#btn_clock_in').click(function(){
     let user_id = $('#harvester').val()
     if(user_id == '0')
@@ -17,10 +16,10 @@ $('#btn_clock_in').click(function(){
     {
         swal("You are already clocked in!", "", "info")
         setTimeout(() => { location.reload() }, 1000);
-        
+
         return false
     }
-    
+
    swal({
         title: "Are You Sure",
         text: "You are about to clock in",
@@ -29,9 +28,8 @@ $('#btn_clock_in').click(function(){
         closeOnConfirm: false,
         closeOnCancel: false,
         showLoaderOnConfirm: false
-        }, 
+        },
         function (res) {
-            console.log(res)
             if(!res)
             {
                 setTimeout(() => { location.reload();swal.close() }, 1000);
@@ -60,10 +58,9 @@ let createTable = () => {
     let cnt = 1
     if(clocking_harvesters.length == 0)
         html = '<tr><td style="text-align:center" colspan=4>No Clocked In User</td></tr>'
-    
+
     clocking_harvesters.forEach(element => {
         html += '<tr user_id="' + element.user_id + '">'
-        html += '<td>' + cnt + '</td>';
         html += '<td>' + element.user.firstname + element.user.lastname + '</td>'
         html += '<td>' + element.start_time + '</td>'
         html += '<td><button class="btn btn-info btn_clock_out">Clock Out</button></td>'
@@ -73,14 +70,19 @@ let createTable = () => {
     $('#tbl_clocked > tbody').html(html)
 }
 
-// $('#tab_clock_out').click(function(){
-//     //when tab is shifted
-//     if(!$(this).parent().hasClass('active'))
-//     {
-//         console.log('d')
-        
-//     }
-// })
+const switchTab = (mode) =>
+{
+    let url = window.location.href.split('?')[0];
+    if (url.indexOf('?') > -1)
+    {
+        url += '&mode=' + mode
+    }
+    else
+    {
+        url += '?mode=' + mode
+    }
+    window.location.href = url;
+}
 
 $('#tbl_clocked tbody').on('click', '.btn_clock_out', function () {
     let tr = $(this).parents('tr');
@@ -92,7 +94,7 @@ $('#tbl_clocked tbody').on('click', '.btn_clock_out', function () {
         showCancelButton: true,
         closeOnConfirm: false,
         showLoaderOnConfirm: false
-        }, 
+        },
         function () {
             $.get({
                 url:'_set_clock_in',
@@ -100,8 +102,9 @@ $('#tbl_clocked tbody').on('click', '.btn_clock_out', function () {
                 data:'user_id='+user_id + '&status=0',
                 success:(res) => {
                     swal("You are clocked out now!", "", "success")
-                    clocking_harvesters = res
-                    createTable()
+                    // clocking_harvesters = res
+                    // createTable()
+                    location.reload()
                 },
                 error:(e) => {
                     swal("Error has been happened!", "", "danger")

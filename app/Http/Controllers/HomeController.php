@@ -34,15 +34,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    
-    
+
+
     public function index()
     {
-    
-    //controls defailt chart date    
+
+    //controls defailt chart date
         $first_day_this_month = date('Y-m-t', strtotime('today - 31 days')); // hard-coded '01' for first day
         $last_day_this_month  = date('Y-m-t');
-        
+
         $harvest = new Harvest;
 
         $data['plant_cnt'] =HarvestItem::select(DB::raw('count(*) as cnt'))
@@ -58,32 +58,32 @@ class HomeController extends Controller
                               ->whereRaw('DATE(created_at) >= ?', [$first_day_this_month])
                               ->whereRaw('DATE(created_at) <= ?', [$last_day_this_month])
                               ->get()[0]->cnt;
-                              
+
        $data['wetweight'] = Harvest::select(DB::raw('format(sum(total_weight),2) as cnt'))
                               ->whereRaw('DATE(created_at) >= ?', [$first_day_this_month])
                               ->whereRaw('DATE(created_at) <= ?', [$last_day_this_month])
-                              ->get()[0]->cnt;                 
-             
+                              ->get()[0]->cnt;
+
         $data['wetweightlbs'] = Harvest::select(DB::raw('format(sum(total_weight * 0.00220462),2) as cnt'))
                               ->whereRaw('DATE(created_at) >= ?', [$first_day_this_month])
                               ->whereRaw('DATE(created_at) <= ?', [$last_day_this_month])
-                              ->get()[0]->cnt;                             
-                              
+                              ->get()[0]->cnt;
+
        $data['wetweightantlbs'] = Harvest::select(DB::raw('format(sum(total_weight *0.00220462 /5),2) as cnt'))
                               ->whereRaw('DATE(created_at) >= ?', [$first_day_this_month])
                               ->whereRaw('DATE(created_at) <= ?', [$last_day_this_month])
-                              ->get()[0]->cnt;   
-                              
+                              ->get()[0]->cnt;
+
          $data['wetweightantoz'] = Harvest::select(DB::raw('format(sum(total_weight *0.002204 /5 *16),2) as cnt'))
                               ->whereRaw('DATE(created_at) >= ?', [$first_day_this_month])
                               ->whereRaw('DATE(created_at) <= ?', [$last_day_this_month])
-                              ->get()[0]->cnt; 
-                                               
+                              ->get()[0]->cnt;
+
         $data['wetweightantgr'] = Harvest::select(DB::raw('format(sum(total_weight *0.002204 /5 *453.592),2) as cnt'))
                               ->whereRaw('DATE(created_at) >= ?', [$first_day_this_month])
                               ->whereRaw('DATE(created_at) <= ?', [$last_day_this_month])
-                              ->get()[0]->cnt;   
-        
+                              ->get()[0]->cnt;
+
         JavaScript::put([
             'start_date' => $first_day_this_month,
             'end_date' => $last_day_this_month,
@@ -108,7 +108,7 @@ class HomeController extends Controller
     {
         $data['harvesters'] = ContactPerson::where('contacttype',5)->get();
         $data['clocking_harvesters']  = Clocking::with('user')->where('status',1)->get();
-
+        $data['mode'] = $request->mode == null?1:$request->mode;
         JavaScript::put([
             'clocking_harvesters' => $data['clocking_harvesters'],
         ]);
@@ -135,7 +135,7 @@ class HomeController extends Controller
             $clock->end_time = date('Y-m-d H:i:s');
             $clock->save();
         }
-        
+
         $data['clocking_harvesters'] = Clocking::with('user')->where('status',1)->get();
 
         return $data['clocking_harvesters'];
@@ -145,7 +145,7 @@ class HomeController extends Controller
     {
         $s_date = date('m/d/Y', strtotime('today - 31 days'));
         $e_date = date('m/d/Y');
-        
+
         JavaScript::put([
             's_date' => $s_date,
             'e_date' => $e_date,
@@ -182,17 +182,17 @@ class HomeController extends Controller
         {
             return;
         }
-        
+
         $date_range = str_replace(' ', '', $date_range);
-        
+
         $tmp = [];
         $tmp[0] = explode('-',$date_range);
         $tmp[1] = explode('/',$tmp[0][0]);
-        
+
         $tmp[2] = explode('/',$tmp[0][1]);
         $result['start_date'] = $tmp[1][2].'-'.$tmp[1][0].'-'.$tmp[1][1];
         $result['end_date']   = $tmp[2][2].'-'.$tmp[2][0].'-'.$tmp[2][1];
-        
+
         return $result;
     }
 

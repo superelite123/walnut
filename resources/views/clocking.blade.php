@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h4><span>Current Time: <span id='now_time'></span></span></h4>
+    <h4><span>Current Time: <span id='now_time'></span></span><span style="margin-left:20px;">On site Members: {{$clocking_harvesters->count()}}</span></h4>
 @stop
 @section('css')
   <link rel="stylesheet" href="{{ asset('assets/component/css/daterangepicker/daterangepicker.css') }}">
@@ -42,12 +42,12 @@
             <div class="col-md-12">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tab_1" data-toggle="tab">Clock In</a></li>
-                        <li><a href="#tab_2" id='tab_clock_out' data-toggle="tab">Clock Out</a></li>
+                        <li <?php echo $mode == 1?'class="active"':"";?> ><a href='javascript:switchTab(1)' >Clock In</a></li>
+                        <li <?php echo $mode == 2?'class="active"':"";?> ><a href='javascript:switchTab(2)'>Clock Out</a></li>
                         <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="tab_1">
+                        <div class="tab-pane <?php echo $mode == 1?'active':'';?>" id="tab_1">
                             <div class='row'>
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -70,7 +70,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane" id="tab_2">
+                        <div class="tab-pane <?php echo $mode == 2?'active':'';?>" id="tab_2">
                             <div class="row">
                                 <div class='col-md-12'>
                                     <h2 id='now_time'></h2>
@@ -78,13 +78,12 @@
                                 <div class="col-md-12">
                                     <table class='table table-striped table-bordered' id='tbl_clocked'>
                                         <thead>
-                                            <th>No</th>
                                             <th>Name</th>
                                             <th>Start Time</th>
                                             <th>Clock Out</th>
                                         </thead>
                                         <tbody>
-                                            
+
                                         </tbody>
                                     </table>
                                 </div>

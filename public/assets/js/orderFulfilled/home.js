@@ -486,6 +486,11 @@ $('#invoice_table tbody').on('click','.schedule_btn',function(){
 $('.deliveryConfirmBtn').on('click',() => {
     $('#modal_time_range').modal('hide')
     const schedule = $('#delivery_schedule').val()
+    if(schedule == '')
+    {
+        alert('You need to select date')
+        return
+    }
     const deliveryer = $('#deliveries').val()
     const postData = {
         date:schedule,
@@ -499,6 +504,7 @@ $('.deliveryConfirmBtn').on('click',() => {
         data: JSON.stringify(postData),
         success:(res) => {
             $.growl.notice({ message: "Success to schedule delivery" });
+            createTable($("#reservation").val());
         },
         error:(e) => {
             $.growl.error({ message: "Fail to schedule delivery" });
