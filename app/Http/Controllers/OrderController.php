@@ -308,14 +308,8 @@ class OrderController extends OBaseController
             $order->clientname              = $order->CName;
             $order->companyname             = $order->CPName;
             $order->total_info              = $order->TotalInfo;
-            $order->customerFinacialInfo    = $order->customer->FinacialInfo;
-            $order->pendingOrders           = $order->customer->Invoices()->where([['status',0]])->get();
-            //get extra discount
+            /**get extra discount**/
             $order->pDiscount               = $order->rPDiscount;
-            foreach($order->pendingOrders as $item)
-            {
-                $item->total_info  = $order->TotalInfo;
-            }
             foreach($order['items'] as $item)
             {
                 $item->description   = $item->StrainLabel.','.$item->PTypeLabel;
@@ -326,10 +320,24 @@ class OrderController extends OBaseController
                 $item->discount_label= $item->DisType;
                 $item->tax_note      = $item->TNote;
             }
-            $order['shipping_method'] = $order->shipping_method()->with('carrier')->get();
         }
 
         return json_encode($orders);
+    }
+    public function _pendingOrderCustomerDetail(Request $request)
+    {
+        $order = InvoiceNew::find($request->id);
+        $response = ['customerFinacialInfo' => ['myInvoices' => []],'pendingOrders' => []];
+        if($order != null)
+        {
+            $response['customerFinacialInfo']    = $order->customer->FinacialInfo;
+            $response['pendingOrders']           = $order->customer->Invoices()->where([['status',0]])->get();
+            foreach($response['pendingOrders'] as $item)
+            {
+                $item->total_info  = $order->TotalInfo;
+            }
+        }
+        return response()->json($response);
     }
     public function pending_detail($id,$print)
     {

@@ -34,19 +34,38 @@ class InvoiceFulfilledItem extends Model
 
     public function getDividedBasePriceAttribute()
     {
-        return number_format((float)$this->ap_item->unit_price * $this->asset->qtyonhand, 2, '.', '');
+        return number_format((float)$this->ap_item->DividedBasePrice * $this->asset->qtyonhand, 2, '.', '');
     }
 
     public function getDividedUnitAttribute()
     {
-        return $this->ap_item->units / $this->ap_item->qty * $this->asset->qtyonhand;
+        return $this->ap_item->DividedUnit * $this->asset->qtyonhand;
     }
     public function getUnitLabelAttribute()
     {
         $unit = $this->asset->UnitOfWeight;
         return $unit != null?$unit->name:'';
     }
-
+    public function getDividedDiscountAttribute()
+    {
+        return number_format((float)$this->ap_item->DividedDiscount * $this->asset->qtyonhand, 2, '.', '');
+    }
+    public function getDividedEDiscountAttribute()
+    {
+        return number_format((float)$this->ap_item->DividedEDiscount * $this->asset->qtyonhand, 2, '.', '');
+    }
+    public function getDividedTaxAttribute()
+    {
+        return number_format((float)$this->ap_item->DividedTax * $this->asset->qtyonhand, 2, '.', '');
+    }
+    public function getDividedExtendedAttribute()
+    {
+        return number_format((float)$this->ap_item->DividedExtended * $this->asset->qtyonhand, 2, '.', '');
+    }
+    public function getDividedAdjustPriceAttribute()
+    {
+        return number_format((float)$this->ap_item->DividedAdjustPrice * $this->asset->qtyonhand, 2, '.', '');
+    }
     public function getCoaListAttribute()
     {
         $coas = [];

@@ -500,14 +500,14 @@ class InvoiceNew extends Model
                 $temp['unit_price']     = $item->ap_item->unit_price;
                 $temp['cpu']            = $item->ap_item->CPU;
                 $temp['unit_label']     = $item->UnitLabel;
-                $temp['base_price']     = $item->ap_item->DividedBasePrice;
-                $temp['extended']       = $item->ap_item->DividedExtended;
-                $temp['discount']       = $item->ap_item->DividedDiscount;
+                $temp['base_price']     = $item->DividedBasePrice;
+                $temp['extended']       = $item->DividedExtended;
+                $temp['discount']       = $item->DividedDiscount;
                 $temp['discount_label'] = $item->ap_item->DisType;
-                $temp['e_discount']     = $item->ap_item->DividedEDiscount;
-                $temp['tax']            = $item->ap_item->DividedTax;
+                $temp['e_discount']     = $item->DividedEDiscount;
+                $temp['tax']            = $item->DividedTax;
                 $temp['tax_note']       = $item->ap_item->TNote;
-                $temp['adjust_price']   = $item->ap_item->DividedAdjustPrice;
+                $temp['adjust_price']   = $item->DividedAdjustPrice;
                 $result[] = $temp;
             }
         }

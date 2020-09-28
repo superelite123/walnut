@@ -71,13 +71,13 @@
                     <td>{{ $item->asset->weight }}</td>
                     <td>${{ $item->ap_item->unit_price }}</td>
                     <td>${{ $item->ap_item->CPU }}</td>
-                    <td>${{ $item->ap_item->DividedDiscount }}</td>
+                    <td>${{ $item->DividedDiscount }}</td>
                     <td>{{ $item->ap_item->DisType }}</td>
-                    <td>${{ $item->ap_item->DividedEDiscount }}</td>
-                    <td>${{ $item->ap_item->DividedBasePrice }}</td>
-                    <td>${{ $item->ap_item->DividedExtended }}</td>
+                    <td>${{ $item->DividedEDiscount }}</td>
+                    <td>${{ $item->DividedBasePrice }}</td>
+                    <td>${{ $item->DividedExtended }}</td>
                     <td>{{ $item->ap_item->tax_note != null?$item->ap_item->tax_note:' ' }}</td>
-                    <td>${{ $item->ap_item->DividedAdjustPrice }}</td>
+                    <td>${{ $item->DividedAdjustPrice }}</td>
                     <td>
                         @foreach ($item->CoaList as $coa)
                         @if ($coa['is_exist'])

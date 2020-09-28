@@ -464,9 +464,20 @@ $('#invoice_table tbody').on('click', 'td.details-control', function () {
     }
     else {
         // Open this row
-        row.child( row_details_format(row.data()) ).show();
-        tr.addClass('shown');
-        $(this).html('<button class="btn btn-info btn-xs btn-edit"><i class="glyphicon glyphicon-minus"></i></button>')
+        const rowData = row.data()
+        $.ajax({
+            url:'_getPOrderCustomerDetail',
+            data:'id='+rowData.id,
+            type:'post',
+            success:(res) => {
+                row.child( row_details_format({...rowData,...res}) ).show();
+                tr.addClass('shown');
+                $(this).html('<button class="btn btn-info btn-xs btn-edit"><i class="glyphicon glyphicon-minus"></i></button>')
+            },
+            error:(e) => {
+
+            }
+        })
     }
 });
 

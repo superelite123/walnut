@@ -199,6 +199,7 @@ Route::group( ['prefix' => 'order','middleware' => ['auth','permission:order_new
 Route::group( ['prefix' => 'order','middleware' => ['auth','permission:order_pending_list']],function(){
     Route::get('pending_list','OrderController@pending_list');
     Route::post('get_pending_list','OrderController@get_pending_list');
+    Route::post('_getPOrderCustomerDetail','OrderController@_pendingOrderCustomerDetail');
     Route::get('pending_detail/{id}/{print}','OrderController@pending_detail');
     Route::any('_pending_email','OrderController@_pending_email');
     Route::any('_set_priority','OrderController@_set_priority');
