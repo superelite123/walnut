@@ -15,6 +15,7 @@ class OrderScheduledController extends Controller
 
     public function index(Request $request)
     {
+        $orders = InvoiceNew::where('status',4)->get();
         $dateRange = $request->date_range;
         if($dateRange == null)
         {
@@ -31,7 +32,7 @@ class OrderScheduledController extends Controller
                 $dateRange = [];
                 //check if monday
                 if(date('w') == 1){
-                    $dateRange['start_date'] = date('Y-m-d', strtotime('next monday'));
+                    $dateRange['start_date'] = date('Y-m-d');
                 }
                 else
                 {

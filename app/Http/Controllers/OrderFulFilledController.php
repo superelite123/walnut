@@ -43,10 +43,11 @@ class OrderFulFilledController extends OBaseController
         // //get fulfilled orders
         // $orders = InvoiceNew::where('status',3)->orderBy('number')->get();
         // foreach($orders as $order){
-        //     echo $order->number.'<br>';
-        //     $counter = Counter::where('key','invoice_number2')->first();
-        //     $order->number2 = $counter->prefix.$counter->value;
-        //     $counter->increment('value');
+        //     // echo $order->number.'<br>';
+        //     // $counter = Counter::where('key','invoice_number2')->first();
+        //     // $order->number2 = $counter->prefix.$counter->value;
+        //     // $counter->increment('value');
+        //     $order->number = str_replace('INV','SO',$order->number);
         //     $order->save();
         // }
         $edit_permission = auth()->user()->can('order_edit')?1:0;

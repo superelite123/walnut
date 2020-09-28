@@ -48,7 +48,7 @@ $('#btnMerge').click(() => {
     if(mergedIndex == -1){
         unit_price = 0
         mergeElements.forEach(element => {
-            unit_price += Inventory[element].unit_price
+            unit_price += parseFloat(Inventory[element].unit_price)
         })
         //unit_price = unit_price / mergeElements.length
         unit_price = unit_price.toFixed(2)
