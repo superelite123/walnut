@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 <meta name="csrf-token" content="{{ csrf_token() }}">
-@section('title', 'Payment Verification')
+@section('title', 'AR Calendar')
 @section('css')
   <link rel="stylesheet" href="{{ asset('assets/css/order/index.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/component/css/growl/jquery.growl.css') }}">

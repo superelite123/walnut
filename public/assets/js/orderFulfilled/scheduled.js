@@ -21,18 +21,32 @@ $("#export_btn").on('click', function() {
     const filename = 'Scheduled Deliveries'
     exportCSVfile(filename,str)
 });
-const onChnageDatte = (id,date) => {
+const onChnageDatte = (id,date,deliveryer) => {
     selectedOrder = id
     $('#delivery_schedule').val(date)
+    $('#deliveries').val(deliveryer).change()
     $('#modal_time_range').modal('show')
 }
 
 $('.deliveryConfirmBtn').on('click',() => {
     $('#modal_time_range').modal('hide')
+
     const schedule = $('#delivery_schedule').val()
+    if(schedule == '')
+    {
+        alert('You need to select date')
+        return
+    }
+    const deliveryer = $('#deliveries').val()
+    if(deliveryer == 0)
+    {
+        alert('You need to Driver')
+        return
+    }
     const postData = {
         date:schedule,
-        id:selectedOrder
+        id:selectedOrder,
+        deliveryer:deliveryer,
     }
     $.ajax({
         url:'_chage_order_delivery_date',
@@ -116,6 +130,7 @@ $(function(){
     }).on("change", function() {
         loadRangedData($(this).val())
     })
+    $('.select2').select2();
 })
 const loadRangedData = (date_range) =>
 {

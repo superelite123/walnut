@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="col-xs-3">
-                <button class="btn btn-info pull-right"  style="margin-top:1.5em" class="export">This Week</button>
+                <button class="btn btn-info pull-right"  style="margin-top:1.5em" class="export" onclick="loadRangedData(1)">This Week</button>
             </div>
             <div class="col-xs-3">
                 <button class="btn btn-info pull-right"  style="margin-top:1.5em" id="export_btn" class="export"><i class="fa fa-download"></i>&nbsp;Export CSV</button>
@@ -83,13 +83,15 @@
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $item['number'] }}</td>
-                                <td>{{ $item['number1'] }}</td>
+                                <td>{{ $item['numberSO'] }}</td>
                                 <td>{{ $item['dDate'] }}</td>
                                 <td>{{ $item['deliveryer'] }}</td>
                                 <td>{{ $item['time'] }}</td>
                                 <td>{{ $item['cName'] }}</td>
                                 <td>{{ $item['amount'] }}</td>
-                                <td><button class="btn btn-xs btn-info" onclick="onChnageDatte({{ $item['id'] }},'{{ $item['dDate'].' '.$item['time'] }}')">Delivery Date</button></td>
+                                <td>
+                                    <button class="btn btn-xs btn-info" onclick="onChnageDatte({{ $item['id'] }},'{{ $item['dDate'].' '.$item['time'] }}',{{ $item['deliveryerID'] }})">Delivery Date/Driver</button>
+                                </td>
                             </tr>
                         @empty
                             <tr>
@@ -124,6 +126,21 @@
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Delivery Assigned To:</label>
+                            <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <select class="form-control select2" style="width: 100%;" name="client" id="deliveries">
+                                <option disabled value="0">Delivered Via</option>
+                                @foreach($deliveries as $delivery)
+                                    <option value="{{ $delivery->id }}"> {{ $delivery->username }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 <meta name="csrf-token" content="{{ csrf_token() }}">
-@section('title', 'Walnut Financial')
+@section('title', 'Payments Awaiting Verification')
 @section('css')
   <link rel="stylesheet" href="{{ asset('assets/component/css/daterangepicker/daterangepicker.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/component/css/sweetalert.css') }}">

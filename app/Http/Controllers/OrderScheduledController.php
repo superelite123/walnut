@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\InvoiceNew;
 use JavaScript;
 use App\Helper\CommonFunction;
+use App\Models\Delivery;
 class OrderScheduledController extends Controller
 {
     use CommonFunction;
@@ -62,6 +63,7 @@ class OrderScheduledController extends Controller
             $item['numberSO'] = $order->number;
             $item['dDate']  = date('m/d/Y',strtotime($order->delivery_time));
             $item['deliveryer'] = $order->rDevlieryer != null?$order->rDevlieryer->username:'';
+            $item['deliveryerID'] = $order->rDevlieryer != null?$order->rDevlieryer->id:0;
             $item['time'] = date('h:i a',strtotime($order->delivery_time));
             $item['cName']  = $order->cName;
             $item['amount'] = $order->total_info['adjust_price'];
@@ -83,7 +85,7 @@ class OrderScheduledController extends Controller
             $item['start'] = $item['dDate'];
             $cData[] = $item;
         }
-        return view('orderFulfilled.scheduled1',[ 'cData' => $cData]);
+        return view('orderFulfilled.scheduled',[ 'cData' => $cData,'deliveries' => Delivery::all(),]);
     }
 
     public function changeDate(Request $request)
@@ -91,6 +93,7 @@ class OrderScheduledController extends Controller
         $date = date("Y-m-d H:i:s",strtotime($request->date));
         $invoice = InvoiceNew::find($request->id);
         $invoice->delivery_time = $date;
+        $invoice->deliveryer = $request->deliveryer;
         $invoice->save();
         return response()->json(['success' => 1]);
     }
