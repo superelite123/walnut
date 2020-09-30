@@ -30,7 +30,7 @@ use PDF;
 use File;
 use Config;
 use Mail;
-
+use App\Mail\ScheduledNotify;
 class OrderFulFilledController extends OBaseController
 {
     //construct
@@ -68,7 +68,14 @@ class OrderFulFilledController extends OBaseController
         $invoice->delivery_time = $date;
         $invoice->deliveryer = $request->deliveryer;
         $invoice->save();
-        return response()->json(['success' => 1]);
+        //mail to sales rep
+        $mailData = [];
+        $mailData['soNumber'] = $invoice->number;
+        $mailData['invNumber'] = $invoice->number2;
+        $mailData['retailer'] = $invoice->customer != null?$invoice->customer->secondaryc_name:'No Retailer Name';
+        $mailData['date']   = date('m/d/Y h:i a',strtotime($invoice->delivery_time));;
+        //Mail::to($invoice->SalesEmail)->send(new ScheduledNotify($mailData));
+        return response()->json(['success' => 1,'salesEmail' => $invoice->SalesEmail]);
     }
 
     public function get_list(Request $request)

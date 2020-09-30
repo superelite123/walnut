@@ -514,6 +514,7 @@ $('.deliveryConfirmBtn').on('click',() => {
         data: JSON.stringify(postData),
         success:(res) => {
             $.growl.notice({ message: "Success to schedule delivery" });
+            swal('Email Sent', 'Email Sent to ' + res.salesEmail, "info")
             createTable($("#reservation").val());
         },
         error:(e) => {
