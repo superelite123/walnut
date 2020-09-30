@@ -492,6 +492,16 @@ $('.deliveryConfirmBtn').on('click',() => {
         return
     }
     const deliveryer = $('#deliveries').val()
+    let isAlert = false
+    if(deliveryer == -1)
+    {
+        isAlert = true
+        if(confirm("Are you sure to continue without assigning delivery method?"))
+        {
+            isAlert = false
+        }
+    }
+    if(isAlert) return
     const postData = {
         date:schedule,
         deliveryer:deliveryer,

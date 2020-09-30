@@ -136,7 +136,6 @@
                                 <i class="fas fa-users"></i>
                             </div>
                             <select class="form-control select2" style="width: 100%;" name="client" id="deliveries">
-                                <option disabled value="0">Delivered Via</option>
                                 @foreach($deliveries as $delivery)
                                     <option value="{{ $delivery->id }}"> {{ $delivery->username }}</option>
                                 @endforeach

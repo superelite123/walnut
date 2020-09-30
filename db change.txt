@@ -2,3 +2,5 @@ ALTER TABLE `invoices_new`
 	ADD COLUMN `delivery_time` DATETIME NULL DEFAULT NULL AFTER `deliver_note`;
     ALTER TABLE `invoices_new`
 	ADD COLUMN `deliveryer` INT NULL DEFAULT NULL AFTER `delivery_time`;
+//9.29
+INSERT INTO `delivery` (`id`, `username`, `date`) VALUES ('-1', 'Not Selected', '2020-09-29 22:24:42');

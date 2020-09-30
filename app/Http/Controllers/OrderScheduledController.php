@@ -62,8 +62,8 @@ class OrderScheduledController extends Controller
             $item['number'] = $order->number2;
             $item['numberSO'] = $order->number;
             $item['dDate']  = date('m/d/Y',strtotime($order->delivery_time));
-            $item['deliveryer'] = $order->rDevlieryer != null?$order->rDevlieryer->username:'';
-            $item['deliveryerID'] = $order->rDevlieryer != null?$order->rDevlieryer->id:0;
+            $item['deliveryer'] = $order->rDevlieryer != null?$order->rDevlieryer->username:'Empty';
+            $item['deliveryerID'] = $order->rDevlieryer != null?$order->rDevlieryer->id:-1;
             $item['time'] = date('h:i a',strtotime($order->delivery_time));
             $item['cName']  = $order->cName;
             $item['amount'] = $order->total_info['adjust_price'];

@@ -38,11 +38,16 @@ $('.deliveryConfirmBtn').on('click',() => {
         return
     }
     const deliveryer = $('#deliveries').val()
-    if(deliveryer == 0)
+    let isAlert = false
+    if(deliveryer == -1)
     {
-        alert('You need to Driver')
-        return
+        isAlert = true
+        if(confirm("Are you sure to continue without assigning delivery method?"))
+        {
+            isAlert = false
+        }
     }
+    if(isAlert) return
     const postData = {
         date:schedule,
         id:selectedOrder,
