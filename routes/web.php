@@ -367,6 +367,7 @@ Route::group( ['prefix' => 'admin','middleware' => ['auth','permission:order_fin
     Route::get('/financial_export','AdminController@financialExport');
     Route::post('getInvoices','AdminController@getInvoices');
     Route::post('getCustomers','AdminController@getCustomers');
+    Route::post('_getCustomerInvoice','AdminController@_getCustomerInvoice');
     Route::get('view/{id}/{print}','OrderFulFilledController@view');
     Route::get('_download_invoice_pdf/{id}','OrderFulFilledController@_download_invoice_pdf');
 });

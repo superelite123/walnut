@@ -99,6 +99,9 @@ class OrderController extends OBaseController
               DB::raw('count(*) as qty'),DB::raw('sum(weight) as weights'))
               ->with(['Strain','AssetType'])
               ->where('qtyonhand','>',0)
+              ->whereHas('AssetType',function($query) {
+                    $query->where('onordermenu',1);
+                })
               ->groupby('strainname','asset_type_id')
               ->orderby('strainname','asc')
               ->orderby('asset_type_id','asc')

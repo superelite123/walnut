@@ -1,4 +1,5 @@
 var s_date = windowvar.start_date;
+var s_date1 = windowvar.start_date1;
 var e_date = windowvar.end_date;
 let list_btn_template_start = ''
 let list_btn_template_end = ''
@@ -354,9 +355,23 @@ $('#customer_table tbody').on('click', 'td.details-control', function () {
     }
     else {
         // Open this row
-        row.child( row_details_format(row.data()) ).show();
-        tr.addClass('shown');
-        $(this).html('<button class="btn btn-info btn-xs btn-edit"><i class="glyphicon glyphicon-minus"></i></button>')
+        const rowData = row.data()
+        $.ajax({
+            url:'_getCustomerInvoice',
+            data:'id='+rowData.client_id,
+            type:'post',
+            success:(res) => {
+                row.child( row_details_format({...rowData,...res}) ).show();
+                tr.addClass('shown');
+                $(this).html('<button class="btn btn-info btn-xs btn-edit"><i class="glyphicon glyphicon-minus"></i></button>')
+            },
+            error:(e) => {
+                alert("error during pull customers invoice")
+            }
+        })
+        // row.child( row_details_format(row.data()) ).show();
+        // tr.addClass('shown');
+        // $(this).html('<button class="btn btn-info btn-xs btn-edit"><i class="glyphicon glyphicon-minus"></i></button>')
     }
 });
 
@@ -430,7 +445,7 @@ $(function(){
     })
     $("#reservation_customer").daterangepicker({
         format: 'dd.mm.yyyy',
-        startDate: s_date,
+        startDate: s_date1,
         endDate: e_date
       }).on("change", function() {
         createCustomerTable($("#reservation_customer").val())

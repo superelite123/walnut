@@ -39,6 +39,7 @@ class AdminController extends OBaseController
         JavaScript::put([
             'start_date' => date('m/d/Y', strtotime('today - 31 days')),
             'end_date' => Date('m/d/Y'),
+            'start_date1' => date('m/d/Y', strtotime('today - 1310 days')),
         ]);
         return view('admin.financial_export',$data);
     }
@@ -78,81 +79,29 @@ class AdminController extends OBaseController
         {
             $date_range = $this->convertDateRangeFormat($date_range);
         }
-        $totalData = Customer::count();
-		$limit = $request->input('length');
+
+        $cond = Customer::whereRaw('DATE(created) >= ?', [$date_range['start_date']])
+                        ->whereRaw('DATE(created) <= ?', [$date_range['end_date']])
+                        ->orWhere('created',null);
+        $totalData = $cond->count();
+        $limit = $request->input('length') != -1?$request->input('length'):$totalData;
 		$start = $request->input('start');
         $dir = $request->input('order.0.dir');
-        $totalFiltered = Customer::count();
-        if(empty($request->input('search.value'))){
-            $totalFiltered  = Customer::count();
-            $customers = Customer::offset($start)
-                ->whereRaw('DATE(created) >= ?', [$date_range['start_date']])
-                ->whereRaw('DATE(created) <= ?', [$date_range['end_date']])
-                ->limit($limit)
-                ->orderBy('clientname')
-                ->get();
-        }
-        else
-        {
+
+        if(!empty($request->input('search.value'))){
             $search = $request->input('search.value');
-            $cond = Customer::where('clientname','like',"%{$search}%")
-                    ->whereRaw('DATE(created) >= ?', [$date_range['start_date']])
-                    ->whereRaw('DATE(created) <= ?', [$date_range['end_date']])
-                    ->orWhere('legalname','like',"%{$search}%")
-                    ->orWhere('companyemail','like',"%{$search}%")
-                    ->orWhere('accounting_name','like',"%{$search}%");
-            $totalFiltered  = $cond->count();
-            $customers      = $cond->offset($start)->limit($limit)->get();
+            $cond = $cond->orWhere('legalname','like',"%{$search}%")
+                        ->orWhere('companyemail','like',"%{$search}%")
+                        ->orWhere('accounting_name','like',"%{$search}%");
+
         }
+        $totalFiltered = $cond->count();
+        $customers = $cond->offset($start)->limit($limit)->orderBy('created','desc')->get();
         foreach($customers as $customer)
         {
             $customer->stateName    = $customer->state_name != null?$customer->state_name->name:'';
             $customer->termName     = $customer->Term != null?$customer->Term->term:'';
             $customer->LicTypeLabel = $customer->rLicenseType != null?$customer->rLicenseType->name:'';
-            $temps = [];
-            $sumSubTotal = 0;
-            $sumTax = 0;
-            $sumTotal = 0;
-            $sumPTotal = 0;
-            $sumPTax = 0;
-            $sumRTotal = 0;
-            $sumRTax = 0;
-            foreach($customer->Invoices as $invoice)
-            {
-                $tf = $invoice->TotalInfo;
-                $ff = $invoice->FinancialTotalInfo;
-                $temp = [];
-                $temp['number']     = $invoice->number;
-                $temp['date']       = $invoice->date;
-                $temp['subTotal']   = $tf['extended'];
-                $temp['tax']        = $tf['tax'];
-                $temp['total']      = $tf['adjust_price'];
-                $temp['pTotal']     = $ff['pSubTotal'];
-                $temp['pTax']       = $ff['pTax'];
-                $temp['rTotal']     = $ff['rSubTotal'];
-                $temp['rTax']       = $ff['rTax'];
-                $temp['url']        = url('order_fulfilled/view/'.$invoice->id.'/0');
-                $temp['download']   = url('order_fulfilled/_download_invoice_pdf/'.$invoice->id);
-
-                $sumSubTotal    += $temp['subTotal'];
-                $sumTax         += $temp['tax'];
-                $sumTotal       += $temp['total'];
-                $sumPTotal      += $temp['pTotal'];
-                $sumPTax        += $temp['pTax'];
-                $sumRTotal      += $temp['rTotal'];
-                $sumRTax        += $temp['rTax'];
-
-                $temps[]        = $temp;
-            }
-            $customer->sumSubTotal  = number_format((float)$sumSubTotal, 2, '.', '');
-            $customer->sumTax       = number_format((float)$sumTax, 2, '.', '');
-            $customer->sumTotal     = number_format((float)$sumTotal, 2, '.', '');
-            $customer->sumPTotal    = number_format((float)$sumPTotal, 2, '.', '');
-            $customer->sumPTax      = number_format((float)$sumPTax, 2, '.', '');
-            $customer->sumRTotal    = number_format((float)$sumRTotal, 2, '.', '');
-            $customer->sumRTax      = number_format((float)$sumRTax, 2, '.', '');
-
-            $customer->myInvoices = $temps;
             foreach ($customer->toArray() as $name => $value) {
                 if ($value == null) {
                     $customer->{$name} = '';
@@ -166,6 +115,56 @@ class AdminController extends OBaseController
 			"data"			=> $customers
 		);
         return response()->json($json_data);
+    }
+    public function _getCustomerInvoice(Request $request)
+    {
+        $customer = Customer::find($request->id);
+        $temps = [];
+        $sumSubTotal = 0;
+        $sumTax = 0;
+        $sumTotal = 0;
+        $sumPTotal = 0;
+        $sumPTax = 0;
+        $sumRTotal = 0;
+        $sumRTax = 0;
+        foreach($customer->Invoices as $invoice)
+        {
+            $tf = $invoice->TotalInfo;
+            $ff = $invoice->FinancialTotalInfo;
+            $temp = [];
+            $temp['number']     = $invoice->number;
+            $temp['date']       = $invoice->date;
+            $temp['subTotal']   = $tf['extended'];
+            $temp['tax']        = $tf['tax'];
+            $temp['total']      = $tf['adjust_price'];
+            $temp['pTotal']     = $ff['pSubTotal'];
+            $temp['pTax']       = $ff['pTax'];
+            $temp['rTotal']     = $ff['rSubTotal'];
+            $temp['rTax']       = $ff['rTax'];
+            $temp['url']        = url('order_fulfilled/view/'.$invoice->id.'/0');
+            $temp['download']   = url('order_fulfilled/_download_invoice_pdf/'.$invoice->id);
+
+            $sumSubTotal    += $temp['subTotal'];
+            $sumTax         += $temp['tax'];
+            $sumTotal       += $temp['total'];
+            $sumPTotal      += $temp['pTotal'];
+            $sumPTax        += $temp['pTax'];
+            $sumRTotal      += $temp['rTotal'];
+            $sumRTax        += $temp['rTax'];
+
+            $temps[]        = $temp;
+        }
+
+        $response = [];
+        $response['sumSubTotal']  = number_format((float)$sumSubTotal, 2, '.', '');
+        $response['sumTax']       = number_format((float)$sumTax, 2, '.', '');
+        $response['sumTotal']     = number_format((float)$sumTotal, 2, '.', '');
+        $response['sumPTotal']    = number_format((float)$sumPTotal, 2, '.', '');
+        $response['sumPTax']      = number_format((float)$sumPTax, 2, '.', '');
+        $response['sumRTotal']    = number_format((float)$sumRTotal, 2, '.', '');
+        $response['sumRTax']      = number_format((float)$sumRTax, 2, '.', '');
+        $response['myInvoices']   = $temps;
+        return response()->json($response);
     }
     public function invoiceCollection(Request $request)
     {
