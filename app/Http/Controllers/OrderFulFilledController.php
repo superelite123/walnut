@@ -389,7 +389,7 @@ class OrderFulFilledController extends OBaseController
                         $inventory->save();
                         if($item['deleted'] == 1)
                         {
-                            $inventory->metrc_tag = $item['newMetrc'];
+                            //$inventory->metrc_tag = $item['newMetrc'];
                             $inventory->status = 9;
                             $inventory->save();
                         }
