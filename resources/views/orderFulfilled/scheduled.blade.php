@@ -16,6 +16,7 @@
         <h3 class='box-title'>Scheduled Deliveries</h3>
 
         <div class="box-tools pull-right">
+            <button type="button" class="toggle-expand-btn btn bg-yellow btn-sm"><i class="fa fa-expand"></i></button>
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
             <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
         </div>
@@ -79,6 +80,9 @@
                         <th></th>
                     </thead>
                     <tbody>
+                        @php
+                            $total = 0;
+                        @endphp
                         @forelse ($cData as $key => $item)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
@@ -93,12 +97,20 @@
                                     <button class="btn btn-xs btn-info" onclick="onChnageDatte({{ $item['id'] }},'{{ $item['dDate'].' '.$item['time'] }}',{{ $item['deliveryerID'] }})">Delivery Date/Driver</button>
                                 </td>
                             </tr>
+                            @php
+                                $total += $item['amount'];
+                            @endphp
                         @empty
                             <tr>
                                 <td colspan=8 style='text-align:center'><h3>No Data</h3></td>
                             </tr>
                         @endforelse
                     </tbody>
+                    <tfoot>
+                        <th colspan=*>
+                            <h3>Total&nbsp;:&nbsp;<span style="color:green">{{ $total }}</span></h3>
+                        </th>
+                    </tfoot>
                 </table>
             </div>
         </div>

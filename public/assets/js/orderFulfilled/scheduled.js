@@ -87,6 +87,10 @@ var exportCSVfile = (filename,csv) =>{
         }
     }
 }
+$(".toggle-expand-btn").click(function (e) {
+    $(this).closest('.box.box-info').toggleClass('panel-fullscreen');
+    $('.fc-day-grid-container').toggleClass('fc-day-grid-full-container');
+});
 $(function(){
     /* initialize the calendar
     -----------------------------------------------------------------*/
@@ -121,7 +125,7 @@ $(function(){
             window.open('view/' + event.id + '/0');
         },
     })
-    tblSchedule = $('#invoice_table').DataTable({
+    tblSchedule = $('#tbl-schedule').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
     })
     $("body").addClass('fixed')
