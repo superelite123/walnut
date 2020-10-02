@@ -240,6 +240,7 @@ Route::group( [ 'prefix' => 'order_fulfilled','middleware' => ['auth','permissio
     Route::get('home','OrderFulFilledController@home');
     Route::get('scheduled','OrderScheduledController@index');
     Route::post('_chage_order_delivery_date','OrderScheduledController@changeDate');
+    Route::get('get_calendar_request','OrderScheduledController@_getCalendarRequest');
     Route::post('get_fulfilled_list','OrderFulFilledController@get_list');
     Route::post('get_reject_list','OrderFulFilledController@get_reject_list');
     Route::post('_fulfilled_email','OrderFulFilledController@_email');

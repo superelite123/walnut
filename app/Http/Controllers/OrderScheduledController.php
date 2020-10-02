@@ -16,7 +16,6 @@ class OrderScheduledController extends Controller
 
     public function index(Request $request)
     {
-        $orders = InvoiceNew::where('status',4)->get();
         $dateRange = $request->date_range;
         if($dateRange == null)
         {
@@ -50,10 +49,18 @@ class OrderScheduledController extends Controller
             'start_date' => date('m/d/Y',strtotime($dateRange['start_date'])),
             'end_date' => date('m/d/Y',strtotime($dateRange['end_date'])),
         ]);
-        //load scheduled orders but not delivered
+        return view('orderFulfilled.scheduled',[ 'cData' => $this->fnGetScheduledDataByDateRange($dateRange),'deliveries' => Delivery::all(),]);
+    }
+    public function _getCalendarRequest(Request $request)
+    {
+
+        return response()->json($this->fnGetScheduledDataByDateRange(['start_date' => $request->start,'end_date' => $request->end]));
+    }
+    public function fnGetScheduledDataByDateRange($dateRange)
+    {
         $orders = InvoiceNew::whereRaw('DATE(delivery_time) >= ?', [$dateRange['start_date']])
-                            ->whereRaw('DATE(delivery_time) <= ?', [$dateRange['end_date']])
-                            ->get();
+                    ->whereRaw('DATE(delivery_time) <= ?', [$dateRange['end_date']])
+                    ->get();
         $cData = [];
         foreach($orders as $order)
         {
@@ -75,19 +82,18 @@ class OrderScheduledController extends Controller
             $item['isDelivered'] = $order->status == 4?1:0;
             if($item['isDelivered'] == 0)
             {
-                $item['backgroundColor'] = '#d73925';
+            $item['backgroundColor'] = '#d73925';
             }
             else
             {
-                $item['backgroundColor'] = 'MediumSeaGreen';
+            $item['backgroundColor'] = 'MediumSeaGreen';
             }
             $item['borderColor'] = $item['backgroundColor'];
             $item['start'] = $item['dDate'];
             $cData[] = $item;
         }
-        return view('orderFulfilled.scheduled',[ 'cData' => $cData,'deliveries' => Delivery::all(),]);
+        return $cData;
     }
-
     public function changeDate(Request $request)
     {
         $date = date("Y-m-d H:i:s",strtotime($request->date));

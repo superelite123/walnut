@@ -103,7 +103,7 @@ $(function(){
             day  : 'day'
         },
         //Random default events
-        events    : calendarData,//[{'start':'2020-09-21'}],
+        events    : 'get_calendar_request',//calendarData,//[{'start':'2020-09-21'}],
         editable  : false,
         height:500,
         eventRender: function(event, element) {
@@ -121,7 +121,9 @@ $(function(){
             window.open('view/' + event.id + '/0');
         },
     })
-    tblSchedule = $('#invoice_table').DataTable()
+    tblSchedule = $('#invoice_table').DataTable({
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    })
     $("body").addClass('fixed')
     //datetimepicker
     $('#delivery_schedule').datetimepicker({
