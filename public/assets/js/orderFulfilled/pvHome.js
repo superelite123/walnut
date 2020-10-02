@@ -66,7 +66,7 @@ var row_details_format_v = (d) => {
     html += "<tbody>"
     for(var i = 0; i < data.length; i ++)
     {
-        let type = data[i].type == 1?'Sub Total':'Tax'
+        let type = data[i].type == 2?'Sub Total':'Tax'
         html += '<tr>'
         html += '<td>' + (i + 1) + '</td>'
         html += '<td>' + type + '</td>'
