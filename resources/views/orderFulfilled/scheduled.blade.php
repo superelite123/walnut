@@ -102,12 +102,12 @@
                             @endphp
                         @empty
                             <tr>
-                                <td colspan=8 style='text-align:center'><h3>No Data</h3></td>
+                                <td colspan=9 style='text-align:center'><h3>No Data</h3></td>
                             </tr>
                         @endforelse
                     </tbody>
                     <tfoot>
-                        <th colspan=*>
+                        <th colspan=9>
                             <h3>Total&nbsp;:&nbsp;<span style="color:green">{{ $total }}</span></h3>
                         </th>
                     </tfoot>
