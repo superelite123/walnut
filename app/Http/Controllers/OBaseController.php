@@ -161,9 +161,14 @@ class OBaseController extends Controller
     {
         $date_range = $request->date_range;
         $date_range = $this->convertDateRangeFormat($date_range);
+        $exporting = $request->exporting;
         $bCond = InvoiceNew::whereRaw('DATE(date) >= ?', [$date_range['start_date']])
                             ->whereRaw('DATE(date) <= ?', [$date_range['end_date']])
                             ->whereIn('status',$request->status);
+        if($exporting == 1)
+        {
+            $bCond = $bCond->where('exported','=',null);
+        }
         $orderingColumn = $request->input('order.0.column');
         $dir = $request->input('order.0.dir');
         switch($orderingColumn)
@@ -197,7 +202,7 @@ class OBaseController extends Controller
         else
         {
             $search = $request->input('search.value');
-            $cond = $bCond->where('number','like',"%{$search}%")
+            $bCond = $bCond->where('number','like',"%{$search}%")
                     ->orWhereHas('customer',function($query) use ($search){
                         $query->where('clientname','like',"%{$search}%");
                     })
@@ -210,11 +215,14 @@ class OBaseController extends Controller
                     })
                     ->orWhere('total','like',"%{$search}%")
                     ->orWhere('date','like',"%{$search}%");
-            $totalFiltered  = $cond->count();
+            $totalFiltered  = $bCond->count();
             $limit = $request->input('length') != -1?$request->input('length'):$totalFiltered;
-            $orders      = $cond->offset($start)->limit($limit)->get();
+            $orders      = $bCond->offset($start)->limit($limit)->get();
         }
-
+        if($exporting == 1)
+        {
+            $bCond->update(['exported' => date('Y-m-d H:i:s')]);
+        }
         return array(
 			"draw"			=> intval($request->input('draw')),
 			"recordsTotal"	=> intval($totalData),

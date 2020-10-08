@@ -22,7 +22,8 @@ $("#export_invoice_btn").on('click', function(event) {
         date_range:$('#reservation').val(),
         length:tableInfo.recordsTotal,
         start:0,
-        type:$('input[name="invoiceType"]:checked').val()
+        type:$('input[name="invoiceType"]:checked').val(),
+        exporting:1
     }
     $.ajax({
         url:'getInvoices',
@@ -238,6 +239,7 @@ var createInvoicesTable = (date_range) => {
             { "data": "tax" },
       //      { "data": "basePrice" },
              { "data": "totalDue" },
+             { "data": "exported_chk" },
             { "data": "actions" },
         ],
         "columnDefs": [
@@ -254,6 +256,7 @@ var createInvoicesTable = (date_range) => {
             { "orderable": false, "targets": 10 },
             { "orderable": false, "targets": 11 },
             { "orderable": false, "targets": 12 },
+            { "orderable": false, "targets": 13 },
         ],
         'scrollX':true
     });
@@ -335,7 +338,8 @@ let convert_ajax_table_data = (json) => {
         json[i].discount    = json[i].total_info.discount
         json[i].tax         = json[i].total_info.tax
         json[i].totalDue    = json[i].total_info.adjust_price
-
+        const exported      = json[i].exported == 1?'checked':''
+        json[i].exported_chk = '<input type="checkbox" class="exported_chk" ' + exported + ' />'
         json[i].actions = list_btn_template_start
         json[i].actions += '<li><a href="view/' + json[i].id + '/0" target="_blank"><i class="fas fa-file-invoice-dollar">&nbsp;</i>View</a></li>'
         json[i].actions += '<li><a href="_download_invoice_pdf/' + json[i].id + '" target="_blank"><i class="fas fa-file-pdf"></i>&nbsp;Download Invoice</a></li>'
@@ -343,6 +347,23 @@ let convert_ajax_table_data = (json) => {
     }
     return json
 }
+
+$('#invoice_table tbody').on('click','.exported_chk',function(){
+    let tr = $(this).closest('tr')
+    let row = invoice_table.row( tr )
+    let invoice_id = row.data().id
+    $.ajax({
+        url:'_toggle_exported',
+        data:'id=' + invoice_id,
+        type:'post',
+        success:(res) => {
+            createInvoicesTable($("#reservation").val())
+        },
+        error:(e) => {
+        swal(e.statusText, e.responseJSON.message, "error")
+        }
+    })
+})
 $('#customer_table tbody').on('click', 'td.details-control', function () {
     var tr = $(this).closest('tr');
     var row = customer_table.row( tr );

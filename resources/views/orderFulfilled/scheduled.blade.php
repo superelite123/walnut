@@ -108,7 +108,7 @@
                     </tbody>
                     <tfoot>
                         <th colspan=9>
-                            <h3>Total&nbsp;:&nbsp;<span style="color:green">{{ $total }}</span></h3>
+                            <h3>Total&nbsp;:&nbsp;<span style="color:green">${{ $total }}</span></h3>
                         </th>
                     </tfoot>
                 </table>

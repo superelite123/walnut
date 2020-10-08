@@ -63,6 +63,7 @@
     let verifies      = {!! json_encode($verifies) !!}
     for ( var i=0, ien=verifies.length ; i<ien ; i++ ) {
         verifies[i].no = i + 1
+        verifies[i].total = "$" + verifies[i].total
         verifies[i].number  += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="badge badge-info">'
                             + verifies[i].items.length + '</span>'
     }

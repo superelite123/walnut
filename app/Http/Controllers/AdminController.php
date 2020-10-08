@@ -61,11 +61,22 @@ class AdminController extends OBaseController
                 $nestedData['rSubTotal']        = $fInfo['rSubTotal'];
                 $nestedData['rTax']             = $fInfo['rTax'];
                 $nestedData['date']             = $order->date;
+                $nestedData['exported']       = $order->exported == null?0:1;
 				$data[] = $nestedData;
 			}
         }
         $result['data'] = $data;
         return response()->json($result);
+    }
+    public function toggleExported(Request $request)
+    {
+        $invoice = InvoiceNew::find($request->id);
+        if($invoice)
+        {
+            $invoice->exported = $invoice->exported == null?date('Y-m-d H:i:s'):null;
+            $invoice->save();
+        }
+        return response()->json(['success' => 1]);
     }
     public function getCustomers(Request $request)
     {

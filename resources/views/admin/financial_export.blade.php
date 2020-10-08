@@ -40,7 +40,7 @@
         font-size: 23px;
     }
 
-    input[type="checkbox"], input[type="radio"]{
+    input[type="radio"]{
         position: absolute;
         right: 9000px;
     }
@@ -96,21 +96,14 @@
             <div class="col-md-2">
                 <div class="form-check">
                     <label class='radio-label'>
-                        <input type="radio" name="invoiceType" value='0' checked> <span class="label-text">Show All</span>
+                        <input type="radio" name="invoiceType" value='0'> <span class="label-text">Show All</span>
                     </label>
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="form-check">
                     <label class='radio-label'>
-                        <input type="radio" name="invoiceType" value='1'> <span class="label-text">Only Delivered</span>
-                    </label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-check">
-                    <label class='radio-label'>
-                        <input type="radio" name="invoiceType" value='2'> <span class="label-text">Not Delivered</span>
+                        <input type="radio" name="invoiceType" value='1' checked> <span class="label-text">Only Delivered</span>
                     </label>
                 </div>
             </div>
@@ -141,6 +134,7 @@
                         <th>Customer Name</th>
                         <th>Metrc Manifest</th>
                         <th>Invoice</th>
+                        <th>Creation Date</th>
                         <th>Invoice Date</th>
                         <th>Terms</th>
                         <th>Total Qty Grams</th>
@@ -152,11 +146,14 @@
                         <th>Net Invoice</th>
                         <th>Excise Tax</th>
                         <th>Total Price</th>
+                        <th>Exported</th>
                         <th>Action</th>
                       </thead>
                       <tbody>
                       </tbody>
                       <tfoot>
+                          <th></th>
+                          <th></th>
                           <th></th>
                           <th></th>
                           <th></th>
