@@ -34,7 +34,8 @@
                         <th>Client</th>
                         <th>Distributor</th>
                         <th>Total Cost</th>
-                        <th>Date</th>
+                        <th>Creation Date</th>
+                        <th>Invoice Date</th>
                     </thead>
                     <tbody>
                     </tbody>

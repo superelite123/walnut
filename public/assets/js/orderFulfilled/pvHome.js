@@ -26,6 +26,7 @@ var createVerificationTable = () => {
             { "data": "clientname" },
             { "data": "companyname" },
             { "data": "total" },
+            { "data": "creationDate" },
             { "data": "date" },
         ],
         'scrollX':true

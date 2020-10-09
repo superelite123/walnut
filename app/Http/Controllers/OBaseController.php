@@ -203,6 +203,7 @@ class OBaseController extends Controller
         {
             $search = $request->input('search.value');
             $bCond = $bCond->where('number','like',"%{$search}%")
+                    ->orWhere('number2','like',"%{$search}%")
                     ->orWhereHas('customer',function($query) use ($search){
                         $query->where('clientname','like',"%{$search}%");
                     })

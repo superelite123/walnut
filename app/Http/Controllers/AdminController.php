@@ -60,7 +60,8 @@ class AdminController extends OBaseController
                 $nestedData['total_info']       = $order->TotalInfoForExport;
                 $nestedData['rSubTotal']        = $fInfo['rSubTotal'];
                 $nestedData['rTax']             = $fInfo['rTax'];
-                $nestedData['date']             = $order->date;
+                $nestedData['date']             = $order->SignDateD;
+                $nestedData['creationDate']     = $order->date;
                 $nestedData['exported']       = $order->exported == null?0:1;
 				$data[] = $nestedData;
 			}
