@@ -52,6 +52,7 @@ $('#verification_table tbody').on('click', 'td.details-control', function () {
 var row_details_format_v = (d) => {
     // `d` is the original data object for the row
     var data = d.items;
+    data = verifies[d.no - 1].items
     var html = '<table class="table table-bordered" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
     html += '<thead>'
     html += '<th>No</th>'
@@ -68,24 +69,31 @@ var row_details_format_v = (d) => {
     for(var i = 0; i < data.length; i ++)
     {
         let type = data[i].type == 2?'Sub Total':'Tax'
-        html += '<tr>'
-        html += '<td>' + (i + 1) + '</td>'
-        html += '<td>' + type + '</td>'
-        html += '<td>$' + data[i].amount + '</td>'
-        html += '<td>' + data[i].d_personame + '</td>'
-        html += '<td>' + data[i].cash_serial + '</td>'
-        html += '<td><img class="stockimg" username="' + data[i].d_personame + '" alt="" style="width:100px;height:100px" src="' + signFileUrl + '/' + data[i].sign_filename + '"></td>'
-        html += '<td>' + data[i].created_at + '</td>'
-        html += '<td><button class="btn btn-info btn-xs v_btn" b_id="' + d.id + '" s_id="' + data[i].id + '"><i class="fas fa-edit">&nbsp;</i>Verify</button></td>'
-        html += '</tr>'
+        if(data[i].verfied != 1)
+        {
+            html += '<tr>'
+            html += '<td>' + (i + 1) + '</td>'
+            html += '<td>' + type + '</td>'
+            html += '<td>$' + data[i].amount + '</td>'
+            html += '<td>' + data[i].d_personame + '</td>'
+            html += '<td>' + data[i].cash_serial + '</td>'
+            html += '<td><img class="stockimg" username="' + data[i].d_personame + '" alt="" style="width:100px;height:100px" src="' + signFileUrl + '/' + data[i].sign_filename + '"></td>'
+            html += '<td>' + data[i].created_at + '</td>'
+            html += '<td><button class="btn btn-info btn-xs v_btn" b_no="' + (d.no - 1) + '" s_no="' + i + '" b_id="' + d.id + '" s_id="' + data[i].id + '"><i class="fas fa-edit">&nbsp;</i>Verify</button></td>'
+            html += '</tr>'
+        }
+
     }
 
     html += "</tbody></table>";
     return html;
 }
-$('#verification_table tbody').on('click', '.v_btn', function(){
+$('#verification_table tbody').on('click', '.v_btn', function(e){
     let b_id = $(this).attr('b_id')
     let s_id = $(this).attr('s_id')
+    const b_no = $(this).attr('b_no')
+    const s_no = $(this).attr('s_no')
+    let tr = $(this).closest('tr')
     let amount = parseFloat(prompt('Enter the Verification amount'))
     if(isNaN(amount))
     {
@@ -106,8 +114,8 @@ $('#verification_table tbody').on('click', '.v_btn', function(){
                 url:'_verify_payment/' + b_id + '/' + s_id + '/' + amount,
                 success:(res) => {
                     $.growl.notice({ message: "One Payment is Verified" })
-                    location.reload()
-                    //createVerificationTable()
+                    tr.remove()
+                    verifies[b_no].items[s_no].verfied = 1;
                 },
                 error:(e) => {
                     swal(e.statusText, e.responseJSON.message, "error")

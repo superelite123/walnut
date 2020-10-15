@@ -59,10 +59,10 @@ var convertInvoicesToCSV = (objArray) => {
         for (var i = 0; i < array.length; i++) {
 
             var line1 = ''
-
             line1 += '\"' + array[i].clientname + '\",'
             line1 += array[i].mmstr + ','
-            line1 += array[i].number.split('-')[1] + ','
+            line1 += array[i].number.split('-')[1] == undefined?array[i].number:array[i].number.split('-')[1]
+            line1 += ','
             line1 += array[i].creationDate + ','
             line1 += array[i].date + ','
             line1 += array[i].terms + ','

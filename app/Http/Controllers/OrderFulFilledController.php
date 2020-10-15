@@ -74,7 +74,7 @@ class OrderFulFilledController extends OBaseController
         $mailData['invNumber'] = $invoice->number2;
         $mailData['retailer'] = $invoice->customer != null?$invoice->customer->secondaryc_name:'No Retailer Name';
         $mailData['date']   = date('m/d/Y h:i a',strtotime($invoice->delivery_time));;
-        //Mail::to($invoice->SalesEmail)->send(new ScheduledNotify($mailData));
+        Mail::to($invoice->SalesEmail)->send(new ScheduledNotify($mailData));
         return response()->json(['success' => 1,'salesEmail' => $invoice->SalesEmail]);
     }
 
@@ -827,8 +827,8 @@ class OrderFulFilledController extends OBaseController
             $invoice->companyname   = $invoice->CPName;
             $invoice->total         = number_format((float)$invoice->total, 2, '.', '');
             $invoice->items         = $invoice->PaymentLog()->where('allowed',0)->get();
-            $invoice->creationDate     = $invoice->date;
-            $invoice->date             = $invoice->SignDateD;
+            $invoice->creationDate  = $invoice->date;
+            $invoice->date  = $invoice->SignDateD;
         }
         return $invoices;
     }

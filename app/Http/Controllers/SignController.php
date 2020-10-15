@@ -235,6 +235,7 @@ class SignController extends OBaseController
 
             $invoice->sign_name = $request->sign_name;
             $invoice->sign_date = $request->sign_date.' '.date('H:i:s');
+            $invoice->number2 = explode('-',$invoice->number2)[1];
             $invoice->save();
             $result = array();
             $imagedata = base64_decode($request->img_data);

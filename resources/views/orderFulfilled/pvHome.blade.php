@@ -33,7 +33,7 @@
                         <th>Invoice</th>
                         <th>Client</th>
                         <th>Distributor</th>
-                        <th>Total Cost</th>
+                        <th>Total Price</th>
                         <th>Creation Date</th>
                         <th>Invoice Date</th>
                     </thead>
