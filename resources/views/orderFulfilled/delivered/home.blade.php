@@ -56,7 +56,7 @@
                           <th>Total Price</th>
                           <th>R Sub Total</th>
                           <th>R Tax</th>
-                          <th>Date</th>
+                          <th>Creation Date</th>
                           <th>View</th>
                           <th>PDF</th>
                           <th>Archive</th>

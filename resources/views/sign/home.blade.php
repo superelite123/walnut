@@ -52,7 +52,7 @@
                           <th>Total Price</th>
                           <th>R Sub Total</th>
                           <th>R Tax</th>
-                          <th>Date</th>
+                          <th>Creation Date</th>
                           <th>Sign Delivery</th>
                           <th>Note</th>
                           <th>Email</th>
