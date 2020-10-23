@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 //Models
 use App\Models\FGInventory;
 use App\Models\InventoryVault;
-
+use App\Models\InventoryRestockLog;
 class InventoryRestockController extends Controller
 {
     //
@@ -34,6 +34,18 @@ class InventoryRestockController extends Controller
             $tmp['pass1'] = 0;
             $tmp['pass2'] = 0;
             $tmp['type'] = $item->AssetType->producttype;
+            $tmp['orderLabel'] = '';
+            $tmp['retailer'] = '';
+            if($item->rRestockLog != null)
+            {
+                $invoice = $item->rRestockLog->rOrder;
+                if($invoice != null)
+                {
+                    $tmp['orderLabel']  = $invoice->number;
+                    $tmp['retailer']    = $invoice->customer != null?$invoice->customer->secondaryc_name:'No Retailer Name';
+                }
+            }
+
             $response[] = $tmp;
         }
 
@@ -58,6 +70,8 @@ class InventoryRestockController extends Controller
         {
             $inventory->status = 1;
             $inventory->save();
+            //remove Log
+            $inventory->rRestockLog()->delete();
             return 1;
         }
     }

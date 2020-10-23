@@ -47,7 +47,7 @@ class AdminController extends OBaseController
     {
         $invoiceStatus = [[3,4],[4],[3]];
         $request->status = $invoiceStatus[$request->type];
-        $result = $this->getOrdersByPagnation1($request);
+        $result = $this->getOrdersByPagnationAF($request);
         $data = [];
         if($result['data']){
 			foreach($result['data'] as $order){

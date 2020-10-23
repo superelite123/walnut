@@ -155,7 +155,7 @@ class CC extends Controller
             '2' => 'No',
             '1' => 'Yes',
          ]);
-        $crud->unsetDelete();
+   //     $crud->unsetDelete();
         $crud->where([
             'fginventory.status' => 1
         ]);
@@ -473,7 +473,7 @@ class CC extends Controller
    //     $crud->where([
 //            'inventory_vault.status' => 2
   //      ]);
-        $crud->unsetDelete();
+   //     $crud->unsetDelete();
         $crud->callbackAddForm(function ($data) {
            $data['um'] = '4';
            $data['qtyonhand'] = '1';

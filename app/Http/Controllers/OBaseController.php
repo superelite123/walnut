@@ -231,6 +231,71 @@ class OBaseController extends Controller
             'data'        => $orders
 		);
     }
+    protected function getOrdersByPagnationAF(Request $request)
+    {
+        $date_range = $request->date_range;
+        $date_range = $this->convertDateRangeFormat($date_range);
+        $exporting = $request->exporting;
+        $bCond = InvoiceNew::whereRaw('DATE(sign_date) >= ?', [$date_range['start_date']])
+                            ->whereRaw('DATE(sign_date) <= ?', [$date_range['end_date']])
+                            ->whereIn('status',$request->status);
+        if($exporting == 1)
+        {
+            $bCond = $bCond->where('exported','=',null);
+        }
+        $orderingColumn = $request->input('order.0.column');
+        $dir = $request->input('order.0.dir');
+        switch($orderingColumn)
+        {
+            case '0':
+            break;
+            case '4':
+                $bCond = $bCond->orderBy('sign_date',$dir);
+                break;
+            default:
+                $bCond = $bCond->orderBy('sign_date','desc');
+            break;
+        }
+        $totalData = $bCond->count();
+        $limit = $request->input('length') != -1?$request->input('length'):$totalData;
+		$start = $request->input('start');
+        $totalFiltered = $bCond->count();
+        if(empty($request->input('search.value'))){
+            $totalFiltered  = $bCond->count();
+            $orders = $bCond->offset($start)->limit($limit)->get();
+        }
+        else
+        {
+            $search = $request->input('search.value');
+            $bCond = $bCond->where('number','like',"%{$search}%")
+                    ->orWhere('number2','like',"%{$search}%")
+                    ->orWhereHas('customer',function($query) use ($search){
+                        $query->where('clientname','like',"%{$search}%");
+                    })
+                    ->orWhereHas('distuributor',function($query) use ($search){
+                        $query->where('companyname','like',"%{$search}%");
+                    })
+                    ->orWhereHas('salesperson',function($query) use ($search){
+                        $query->where('firstname','like',"%{$search}%")
+                              ->orWhere('lastname','like',"%{$search}%");
+                    })
+                    ->orWhere('total','like',"%{$search}%")
+                    ->orWhere('date','like',"%{$search}%");
+            $totalFiltered  = $bCond->count();
+            $limit = $request->input('length') != -1?$request->input('length'):$totalFiltered;
+            $orders      = $bCond->offset($start)->limit($limit)->get();
+        }
+        if($exporting == 1)
+        {
+            $bCond->update(['exported' => date('Y-m-d H:i:s')]);
+        }
+        return array(
+			"draw"			=> intval($request->input('draw')),
+			"recordsTotal"	=> intval($totalData),
+			"recordsFiltered" => intval($totalFiltered),
+            'data'        => $orders
+		);
+    }
     protected function setOrderStatus(Request $request)
     {
         $invoice = InvoiceNew::find($request->id);

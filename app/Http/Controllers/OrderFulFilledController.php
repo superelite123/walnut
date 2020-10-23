@@ -24,6 +24,7 @@ use App\Models\InvoiceContact;
 use App\Models\DeliveryStatus;
 use App\Models\Counter;
 use App\Models\Delivery;
+use App\Models\InventoryRestockLog;
 use Session;
 use DB;
 use PDF;
@@ -351,6 +352,12 @@ class OrderFulFilledController extends OBaseController
                             {
                                 $inventory->metrc_tag = $child['newMetrc'];
                                 $inventory->status = 9;
+                                //logging
+                                $log = new InventoryRestockLog;
+                                $log->fgasset_id = $inventory->fgasset_id;
+                                $log->order_id = $invoice->id;
+                                $log->type = $child['i_type'];
+                                $log->save();
                                 $inventory->save();
                             }
                             if(!isset($child['deleted']) || $child['deleted'] == 0)
@@ -392,6 +399,12 @@ class OrderFulFilledController extends OBaseController
                             //$inventory->metrc_tag = $item['newMetrc'];
                             $inventory->status = 9;
                             $inventory->save();
+                            //logging
+                            $log = new InventoryRestockLog;
+                            $log->fgasset_id = $inventory->fgasset_id;
+                            $log->order_id = $invoice->id;
+                            $log->type = $item['i_type'];
+                            $log->save();
                         }
                         if($item['deleted'] == 0)
                         {

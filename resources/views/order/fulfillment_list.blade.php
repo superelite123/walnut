@@ -160,6 +160,8 @@
                         <thead>
                             <th>No</th>
                             <th>Metrc Tag</th>
+                            <th>SO Number</th>
+                            <th>Retailer</th>
                             <th>Strain</th>
                             <th>Type</th>
                             <th>Distro Verified</th>

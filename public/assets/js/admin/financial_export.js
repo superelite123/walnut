@@ -53,7 +53,7 @@ var convertInvoicesToCSV = (objArray) => {
     return new Promise(function(next_operation){
 
         var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-        var str     = "Customer Name,Metrc Manifest,Invoice Number,Creation Date,Invoice Date,Terms,Total Qty Grams,Flower,Pre Roll,Concentrate,Total Invoice,Discount,"
+        var str     = "Customer Name,Metrc Manifest,Invoice Number,Creation Date,Delivery Date,Terms,Total Qty Grams,Flower,Pre Roll,Concentrate,Total Invoice,Discount,"
             str    +="Net Invoice,Excise Tax,Total Due\r\n"
 
         for (var i = 0; i < array.length; i++) {
@@ -249,7 +249,7 @@ var createInvoicesTable = (date_range) => {
             { "orderable": false, "targets": 1 },
             { "orderable": false, "targets": 2 },
             { "orderable": false, "targets": 3 },
-            { "orderable": false, "targets": 4 },
+            { "orderable": true, "targets": 4 },
             { "orderable": false, "targets": 5 },
             { "orderable": false, "targets": 6 },
             { "orderable": false, "targets": 7 },
@@ -261,7 +261,8 @@ var createInvoicesTable = (date_range) => {
             { "orderable": false, "targets": 13 },
             { "orderable": false, "targets": 14 },
         ],
-        'scrollX':true
+        'scrollX':true,
+        "order": [[ 4, "desc" ]]
     });
 }
 var createCustomerTable = (date_range) => {

@@ -505,6 +505,7 @@ let createInvRestockTable = () => {
 }
 let drawInvRestockTable = () => {
     $('#inv_restock_table').dataTable().fnDestroy()
+
     for ( var i=0, ien=inv_restock_table_data.length ; i<ien ; i++ ) {
         let tmp = inv_restock_table_data[i]
         let is_pass_1 = tmp.pass1 == 0?'disabled':''
@@ -520,6 +521,8 @@ let drawInvRestockTable = () => {
         [
             { "data": "no" },
             { "data": "metrc_tag" },
+            { "data": "orderLabel" },
+            { "data": "retailer" },
             { "data": "strain" },
             { "data": "type" },
             { "data": "pass_1_button" },
@@ -591,7 +594,7 @@ $(function(){
     $("body").addClass('fixed')
 
     $("#reservation").daterangepicker({
-        format: 'mm.dd.yyyy',
+        format: 'dd.mm.yyyy',
         startDate: s_date,
         endDate: e_date
     }).on("change", function() {
@@ -600,7 +603,7 @@ $(function(){
     })
 
     $("#reservation_problematic").daterangepicker({
-        format: 'mm.dd.yyyy',
+        format: 'dd.mm.yyyy',
         startDate: s_date,
         endDate: e_date
     }).on("change", function() {

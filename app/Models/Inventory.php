@@ -38,6 +38,11 @@ class Inventory extends Model
         return $this->belongsTo(Unit::class,'um');
     }
 
+    public function rRestockLog()
+    {
+        return $this->hasOne(InventoryRestockLog::class,'fgasset_id');
+    }
+
     public function Room()
     {
         return $this->belongsTo(LocationArea::class,'cultivator_company_id');
@@ -68,7 +73,7 @@ class Inventory extends Model
         {
             $batch_fk = Harvest::find($this->parent_id);
             $batch_fk = $batch_fk != null?$batch_fk->harvest_batch_id:'No';
-            
+
             $coa = $batch_fk.'_COA.pdf';
         }
 
@@ -104,7 +109,7 @@ class Inventory extends Model
 
         foreach($res as $val)
         {
-            
+
             $val->i_type = $this->type;
             $val->description = $val->Description;
             $val->status = '0';

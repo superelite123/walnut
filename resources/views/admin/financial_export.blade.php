@@ -135,7 +135,7 @@
                         <th>Metrc Manifest</th>
                         <th>Invoice</th>
                         <th>Creation Date</th>
-                        <th>Invoice Date</th>
+                        <th>Delivery Date</th>
                         <th>Terms</th>
                         <th>Total Qty Grams</th>
                         <th>Total flower grams</th>
