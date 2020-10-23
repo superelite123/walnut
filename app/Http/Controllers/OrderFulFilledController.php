@@ -833,7 +833,7 @@ class OrderFulFilledController extends OBaseController
     {
         $invoices = InvoiceNew::whereHas('PaymentLog',function($query){
             $query->where('allowed',0);
-        })->get();
+        })->orderBy('sign_date','desc')->get();
         foreach($invoices as $invoice)
         {
             $invoice->clientname    = $invoice->CName;

@@ -35,7 +35,7 @@
                         <th>Distributor</th>
                         <th>Total Price</th>
                         <th>Creation Date</th>
-                        <th>Invoice Date</th>
+                        <th>Delivery Date</th>
                     </thead>
                     <tbody>
                     </tbody>
