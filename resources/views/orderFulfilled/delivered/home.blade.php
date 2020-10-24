@@ -57,17 +57,11 @@
                           <th>R Sub Total</th>
                           <th>R Tax</th>
                           <th>Creation Date</th>
-                          <th>View</th>
-                          <th>PDF</th>
-                          <th>Archive</th>
-                          <th>Collect Payment</th>
+                          <th>Actions</th>
                       </thead>
                       <tbody>
                       </tbody>
                       <tfoot>
-                        <th></th>
-                        <th></th>
-                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>

@@ -33,6 +33,10 @@ class InvoiceNew extends Model
     {
         return $this->hasMany(InvoiceItemAP::class,'invoice_id');
     }
+    public function rCreditNote()
+    {
+        return $this->hasMany(InvoiceCreditNote::class,'invoice_id');
+    }
     public function Priority()
     {
         return $this->belongsTo(Priority::class,'priority_id');
@@ -392,6 +396,10 @@ class InvoiceNew extends Model
     public function getSalesEmailAttribute()
     {
         return $this->salesperson != null?$this->salesperson->email:null;
+    }
+    public function getSalesPersonNameAttribute()
+    {
+        return $this->salesperson != null?$this->salesperson->lastname.' '.$this->salesperson->firstname:null;
     }
     public function get_items_for_fullfilled_list()
     {

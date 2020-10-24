@@ -284,7 +284,6 @@ Route::group( [ 'prefix' => 'order_fulfilled','middleware' => ['auth','permissio
     //print from fulfillment Form
     Route::get('fulfilled_print_from_form/{id}','OrderFulFilledController@barcode_print');
     //archived part
-    Route::get('delivered','OrderFulFilledController@delivered');
 
     /**
      * 7.9
@@ -323,6 +322,11 @@ Route::group( [ 'prefix' => 'order_fulfilled','middleware' => ['auth','permissio
     Route::post('store_invoice_contact','OrderFulFilledController@storeInvoiceContact');
     //Sign Panel
     Route::get('sign_panel/{id}','SignController@Panel');
+    //Credit Note
+    Route::get('new_credit_note/{id}','CreditNoteController@form');
+    Route::post('_add_credit_note','CreditNoteController@store');
+    Route::get('credit_notes','CreditNoteController@archive');
+    Route::post('credit_notes/archives','CreditNoteController@_archives');
 });
 /**
  * 5.10.Payment Verification

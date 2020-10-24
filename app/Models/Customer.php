@@ -11,7 +11,7 @@ class Customer extends Model
     protected $primaryKey = 'client_id';
 
     protected $fillable = ['name','address','email'];
-    
+
     public function state_name()
     {
         return $this->belongsTo(State::class,'state');
@@ -28,7 +28,10 @@ class Customer extends Model
     {
         return $this->hasMany(PriceMatrix::class,'customer_id');
     }
-    
+    public function rCreditNote()
+    {
+        return $this->hasMany(InvoiceCreditNote::class,'customer_id');
+    }
     public function Invoices()
     {
         return $this->hasMany(InvoiceNew::class,'customer_id');
@@ -81,7 +84,7 @@ class Customer extends Model
 
             $temps[]        = $temp;
         }
-        
+
         $result['sumSubTotal']  = number_format((float)$result['sumSubTotal'], 2, '.', '');
         $result['sumTax']       = number_format((float)$result['sumTax'], 2, '.', '');
         $result['sumTotal']     = number_format((float)$result['sumTotal'], 2, '.', '');

@@ -163,6 +163,12 @@ return [
                     'can' => 'order_delivered',
                 ],
                 [
+                    'text'        => 'Walnut CreditNote',
+                    'url'         => 'order_fulfilled/credit_notes',
+                    'icon'        => 'glyphicon glyphicon-list',
+                    'can' => 'order_delivered',
+                ],
+                [
                     'text'        => 'Payment Verfication',
                     'url'         => 'order/p_v',
                     'icon'        => 'glyphicon glyphicon-list',

@@ -1,0 +1,27 @@
+.head-row{
+    margin:10px 0px;
+}
+.head-row > div > label,.head-row > div > span{
+    font-size:18px;
+}
+.addBtn{
+    margin-top:25px;
+}
+.select2-container--default .select2-selection--single, .select2-selection .select2-selection--single {
+    font-size: 10px;
+}
+table.dataTable {
+    clear: both;
+    margin-top: 6px !important;
+    margin-bottom: 6px !important;
+    max-width: none !important;
+    font-size: small !important;
+}
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    font-size: small !important;
+}
+table > thead > tr > th,table > tbody > tr > td{
+    text-align: center;
+}

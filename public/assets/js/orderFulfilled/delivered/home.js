@@ -2,6 +2,13 @@ var s_date = windowvar.start_date;
 var e_date = windowvar.end_date;
 let signFileUrl = windowvar.signFileUrl
 let selected_invoice = null
+let list_btn_template_start = ''
+let list_btn_template_end = ''
+list_btn_template_start += '<div class="dropdown pull-right">'
+list_btn_template_start += '<button class="btn btn-info btn-sm btn-flat dropdown-toggle" type="button" data-toggle="dropdown">Action'
+list_btn_template_start += '<span class="caret"></span></button>'
+list_btn_template_start += '<ul class="dropdown-menu">'
+list_btn_template_end += '</ul></div>'
 $("#export_btn").on('click', function(event) {
     $('#loadingModal').modal({
         backdrop: 'static',
@@ -182,10 +189,7 @@ var createTable = (date_range) => {
             { "data": "lRSubTotal" },
             { "data": "lRTax" },
             { "data": "date" },
-            { "data": "btnView" },
-            { "data": "btnPdf" },
-            { "data": "btnArchive" },
-            { "data": "btnPayment" },
+            { "data": "actions" },
         ],
         "columnDefs": [
             { "orderable": false, "targets": 0 },
@@ -195,10 +199,6 @@ var createTable = (date_range) => {
             { "orderable": true, "targets": 4 },
             { "orderable": false, "targets": 5 },
             { "orderable": false, "targets": 6 },
-            { "orderable": false, "targets": 7 },
-            { "orderable": false, "targets": 8 },
-            { "orderable": false, "targets": 9 },
-            { "orderable": false, "targets": 10 },
 
         ],
         'scrollX':true
@@ -211,13 +211,14 @@ let convert_ajax_table_data = (json) => {
         json[i].lRSubTotal      = '$' + json[i].rSubTotal
         json[i].lRTax           = '$' + json[i].rTax
         json[i].chkUndeliver    = '<input type="checkbox" class="chkUndeliver" >'
-        json[i].btnView         = '<a class="btn btn-info btn-xs" href="delivered_payment_view/' + json[i].id + '" target="_blank">'
-        json[i].btnView        += '<i class="fas fa-file-invoice-dollar">&nbsp;</i>Inv Snap</a>'
-        json[i].btnPdf          = '<a href="../order_fulfilled/_download_invoice_pdf/' + json[i].id + '?name=1" target="_blank"><i class="fas fa-file-pdf"></i>&nbsp;PDF INV</a>'
-        json[i].btnArchive      = '<button class="btn btn-warning btn-xs btnArchive">'
-        json[i].btnArchive     += '<i class="fas fa-file-invoice-dollar">&nbsp;</i>Archive</button>'
-        json[i].btnPayment      = '<a class="btn btn-info btn-xs" href="payment/' + json[i].id + '" target="_blank">'
-        json[i].btnPayment     += '<i class="fas fa-dollar-sign"></i>Collect Payments</a>'
+        json[i].actions = list_btn_template_start
+        json[i].actions += '<li><a href="delivered_payment_view/' + json[i].id + '" target="_blank">'
+        json[i].actions += '<i class="fas fa-file-invoice-dollar">&nbsp;</i>Inv Snap</a></li>'
+        json[i].actions += '<li><a href="../order_fulfilled/_download_invoice_pdf/' + json[i].id + '?name=1" target="_blank"><i class="fas fa-file-pdf"></i>&nbsp;PDF INV</a></li>'
+        json[i].actions += '<li><a class="btnArchive"><i class="fas fa-file-invoice-dollar">&nbsp;</i>Archive</a></li>'
+        json[i].actions += '<li><a href="payment/' + json[i].id + '" target="_blank"><i class="fas fa-dollar-sign"></i>Collect Payments</a></li>'
+        json[i].actions += '<li><a href="new_credit_note/' + json[i].id + '" target="_blank"><i class="fas fa-dollar-sign"></i>Credit Note</a></li>'
+        json[i].actions += list_btn_template_end
     }
     return json
 }
