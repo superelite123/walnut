@@ -191,6 +191,7 @@ Route::group( ['prefix' => 'order','middleware' => ['auth','permission:order_new
     Route::post('store','OrderController@store');
     Route::post('_form_customer_list','OrderController@_form_customer_list');
     Route::post('_form_avaliable_qty','OrderController@_form_avaliable_qty');
+    Route::post('_customer_credit_note_total','OrderController@_CustomerCreditNoteTotal');
 });
 /**
  * 3.29
@@ -386,6 +387,7 @@ Route::group( ['prefix' => 'inventory','middleware' => ['auth']],function(){
     Route::post('getInventory','InventoryController@getInventory');
     Route::get('_check_metrc_duplicate','InventoryController@_checkMetrcDuplicate');
     Route::post('_split','InventoryController@splitItem');
+    Route::get('import','InventoryController@importPanel');
 });
 /**
  * NDA Management

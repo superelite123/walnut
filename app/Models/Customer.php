@@ -36,6 +36,10 @@ class Customer extends Model
     {
         return $this->hasMany(InvoiceNew::class,'customer_id');
     }
+    public function getCreditNoteTotalAttribute()
+    {
+        return $this->rCreditNote()->where('archive',0)->get()->sum('total_price');
+    }
     public function getTotalDebtAttribute()
     {
         $invoices = $this->Invoices()->where([['paid',null],['status',3]])->get();

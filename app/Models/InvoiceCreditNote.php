@@ -8,7 +8,7 @@ use App\Helper\HasManyRelation;
 class InvoiceCreditNote extends Model
 {
     use HasManyRelation;
-    protected $fillable = ['invoice_id','customer_id','total_price','archive','archived_at'];
+    protected $fillable = ['invoice_id','customer_id','total_price','original_total','archive','archived_at'];
     //
     public function rItems()
     {

@@ -106,10 +106,14 @@
             <tr>
                 <th style="width:50%">Total Extra Discount:</th>
                 <td>${{ $invoice->TotalInfo['e_discount'] }}</td>
-              </tr>
+            </tr>
             <tr>
               <th style="width:50%">Promotion Value:</th>
               <td>${{ $invoice->TotalInfo['promotion'] }}</td>
+            </tr>
+            <tr>
+              <th style="width:50%">Credit Note:</th>
+              <td>${{ $invoice->TotalInfo['credit_amount'] }}</td>
             </tr>
             <tr>
               <th style="width:50%">Sub Total:</th>

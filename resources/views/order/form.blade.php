@@ -586,8 +586,49 @@
       <!-- /.modal-dialog -->
     </div>
     <!--/.shipping modal-->
+
+<div class="modal fade" id="modal_credit_note">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Credit Note</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Credit Note:</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <input type="number" class="form-control" id="txtCreditNote" value=0>
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+                </div>
+            </div>
+            <!--./modal body-->
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-info pull-right" id="btnSaveCreditNote">Save Changes</button>
+            </div>
+            <!--./modal footer-->
+        </div>
+        <!--./modal content-->
+    </div>
+    <!--./modal dialog-->
+</div>
+<!--./modal-->
 @stop
 @include('footer')
+<script>
+    const submitBtnLabel = '<?php echo $mode=='store'?'Build Sales Order':'Update Sales Order';?>'
+</script>
 @section('js')
   <script type="text/javascript" src="{{ asset('assets/component/js/daterangepicker/moment.js') }}"></script>
   <script type="text/javascript" src="{{ asset('assets/component/js/bootstrap-tagsinput.min.js') }}"></script>

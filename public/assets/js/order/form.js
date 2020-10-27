@@ -16,7 +16,8 @@ let taxexempt           = 0
 //isNew Flag
 let isNew = windowvar.isNew
 shipping_method.ok = true
-
+let customerCreditTotal = windowvar.customerCreditTotal;
+let creditNoteForDeduct = 0;
 //invoice_row
 var inserted_data = Array();
 
@@ -51,18 +52,34 @@ var Adjust_priceInput = $("#adjust_price");
     })
 
     $('#client').change(function(){
-        if($(this).val() == 0)
+        $.ajax({
+            url:'_customer_credit_note_total',
+            type:'post',
+            data:'id=' + $(this).val(),
+            success:(res) => {
+                listnerForCustomers($(this).val(),res.total)
+            },
+            error:() => {
+                listnerForCustomers($(this).val(),0)
+            }
+        })
+
+    })
+    const listnerForCustomers = (customerID,totalPrice) => {
+        if(customerID == 0)
         {
             Unit_priceInput.val(0)
             return false;
         }
-        let client = clients[findIndexWithAttr(clients,'client_id',$(this).val())]
+        let client = clients[findIndexWithAttr(clients,'client_id',customerID)]
         let term = client.term != null?client.term.term:'No Term'
-        sel_client = $(this).val()
+        sel_client = customerID
         $('.term_content').html(term)
         let salesrep = client.salesrep != null?client.salesrep:0
         $('#salesperson').val(salesrep).change()
-    })
+        customerCreditTotal = totalPrice
+        changeSubmitBtnLabel()
+    }
 
     let setPrice = (basePrice) => {
         // let p_type = P_type_list.val()
@@ -416,7 +433,6 @@ var calc_adjust_price = () => {
 
     data.sub_total     = cost * qty;
     data.discount      = data.sub_total * discount.pro / 100.0
-    console.log(data)
     data.less_discount = data.sub_total - data.discount// - data.e_discount
     data.adjust_price  = data.less_discount + tax
 
@@ -430,7 +446,6 @@ var calc_adjust_price = () => {
 }
 
 let set_adjust_price = (data) => {
-    console.log(data)
     $('#discount').val(data.discount)
     Sub_totalInput.val(data.sub_total)
     $('#cpu').val(data.cpu)
@@ -610,7 +625,27 @@ $(".makeBtn").click(function(){
         swal("please select the Customer", "", "warning")
         return;
     }
-
+    if(customerCreditTotal > 0)
+    {
+        $('#modal_credit_note').modal('show')
+    }
+    else
+    {
+        showConfirmDialog()
+    }
+});
+$('#btnSaveCreditNote').on('click',() => {
+    const creditNote = parseFloat($('#txtCreditNote').val())
+    if(creditNote > customerCreditTotal)
+    {
+        alert('You can not enter big value than original value')
+        return false
+    }
+    creditNoteForDeduct = creditNote
+    $('#modal_credit_note').hide()
+    showConfirmDialog()
+})
+const showConfirmDialog = () => {
     swal({
         title: "Are You Sure",
         text: "Are You going to save the Sales order?",
@@ -621,8 +656,7 @@ $(".makeBtn").click(function(){
       }, function () {
         submit_invoice();
     });
-});
-
+}
 var submit_invoice = () => {
     let term = clients[findIndexWithAttr(clients,'client_id',$('#client').val())].term
     term = term == null?-1:term.term_id
@@ -641,6 +675,7 @@ var submit_invoice = () => {
         'id':invoice_id,
         'mode':mode,
         'shipping_method':shipping_method,
+        'creditNoteForDeduct':creditNoteForDeduct
     };
 
     $.ajax({
@@ -764,6 +799,8 @@ $("body").addClass('fixed');
         autoclose: true
     })
     $('#aInbTable').DataTable()
+
+    changeSubmitBtnLabel();
 })
 
 var initOp = () => {
@@ -816,7 +853,12 @@ var initOp = () => {
     $("#modal_shipping_method").modal('hide');
 };
 initOp();
-
+const changeSubmitBtnLabel = () =>
+{
+    //set Submit label
+    $('.makeBtn').text(submitBtnLabel + '('+customerCreditTotal+')')
+    console.log('hi')
+}
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

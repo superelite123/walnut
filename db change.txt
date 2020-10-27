@@ -4,3 +4,7 @@ ALTER TABLE `invoices_new`
 	ADD COLUMN `deliveryer` INT NULL DEFAULT NULL AFTER `delivery_time`;
 //9.29
 INSERT INTO `delivery` (`id`, `username`, `date`) VALUES ('-1', 'Not Selected', '2020-09-29 22:24:42');
+
+//10.26
+ALTER TABLE `invoices_new`
+	ADD COLUMN `credit_amount` DECIMAL(10,2) NOT NULL DEFAULT 0 AFTER `total`;

@@ -13,7 +13,7 @@ class InvoiceNew extends Model
 
     protected $table = 'invoices_new';
 
-    protected $fillable = ['number','customer_id','distuributor_id',
+    protected $fillable = ['number','customer_id','distuributor_id','credit_amount',
                            'salesperson_id','note','fulfillmentnote','date','total',
                            'term_id','paid','coainbox','delivered','status','tax_allow','m_m_str'];
     public function getDateAttribute($value)
@@ -167,6 +167,8 @@ class InvoiceNew extends Model
             $extended   -= $option->value;
             $adjust_price -= $option->value;
         }
+        //deduct creditnote
+        $extended -= $this->credit_amount;
         //sum of weight
         $n_items = $this->fulfilledNItem()->get();
         foreach($n_items as $item)
@@ -185,7 +187,8 @@ class InvoiceNew extends Model
         }
         if($this->tax_type == 2)
         {
-            $taxed = ($base_price - $discounted - $e_discount) * 0.27;
+            //($base_price - $discounted - $e_discount)
+            $taxed =  $extended * 0.27;
         }
         if($this->tax_allow == 1)
             $taxed = 0;
@@ -198,6 +201,7 @@ class InvoiceNew extends Model
         $result['promotion']    = number_format((float)$base_price - $base_price_for_promotion, 2, '.', '');
         $result['prValue']      = number_format((float)$promotionCost, 2, '.', '');
         $result['tax']          = number_format((float)$taxed, 2, '.', '');
+        $result['credit_amount']= number_format((float)$this->credit_amount, 2, '.', '');
         $result['adjust_price'] = number_format((float)$adjust_price, 2, '.', '');
         $result['qty']          = $qty;
         $result['pay_date']     = $this->PayDate;
@@ -246,6 +250,8 @@ class InvoiceNew extends Model
             $extended   -= $option->value;
             $adjust_price -= $option->value;
         }
+        //deduct creditnote
+        $extended -= $this->credit_amount;
         $weight = DB::select('SELECT sum(weight) totalWeight from invoice_fulfilled_item ifi
                               JOIN invoice_good ig ON ifi.asset_id=ig.id
                               WHERE ifi.m_parent_id != -1
@@ -257,7 +263,7 @@ class InvoiceNew extends Model
         }
         if($this->tax_type == 2)
         {
-            $taxed = ($base_price - $discounted - $e_discount) * 0.27;
+            $taxed = $extended * 0.27;
         }
         if($this->tax_allow == 1)
             $taxed = 0;
@@ -287,6 +293,7 @@ class InvoiceNew extends Model
         $result['discount']     = number_format((float)$discounted, 2, '.', '');
         $result['e_discount']   = number_format((float)$e_discount, 2, '.', '');
         $result['extended']     = number_format((float)$extended, 2, '.', '');
+        $result['credit_amount']= number_format((float)$this->credit_amount, 2, '.', '');
         $result['qty']          = $qty;
         $result['weight']       = number_format((float)$weight, 1, '.', '');
         $result['tax']          = number_format((float)$taxed, 2, '.', '');

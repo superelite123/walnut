@@ -405,18 +405,24 @@ return [
             'icon' => 'fas fa-sitemap',
             'can'  => ['inventory_combine','inventory_split'],
             'submenu' => [
-            [
-                'text' => 'Combine',
-                'url'  => 'inventory/combine',
-                'icon' => 'fas fa-equals',
-                'can' => 'inventory_combine',
-            ],
-            [
-                'text' => 'Split',
-                'url'  => 'inventory/split',
-                'icon' => 'fas fa-cut',
-                'can' => 'inventory_split',
-            ],
+                [
+                    'text' => 'Combine',
+                    'url'  => 'inventory/combine',
+                    'icon' => 'fas fa-equals',
+                    'can' => 'inventory_combine',
+                ],
+                [
+                    'text' => 'Split',
+                    'url'  => 'inventory/split',
+                    'icon' => 'fas fa-cut',
+                    'can' => 'inventory_split',
+                ],
+                [
+                    'text' => 'Import',
+                    'url'  => 'inventory/import',
+                    'icon' => 'fas fa-cut',
+                    'can' => 'inventory_import',
+                ],
             ]
         ],
         [
@@ -460,12 +466,7 @@ return [
                     'icon' => 'fas fa-users',
                     'can' => 'c_relations_clients',
                 ],
-                [
-                    'text' => 'Clients_lostintech',
-                    'url'  => 'customers2',
-                    'icon' => 'fas fa-users',
-                    'can' => 'c_relations_clients',
-                ],
+
                 [
                     'text' => 'Person',
                     'url'  => 'contactperson',

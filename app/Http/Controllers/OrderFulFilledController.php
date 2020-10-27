@@ -838,7 +838,7 @@ class OrderFulFilledController extends OBaseController
         {
             $invoice->clientname    = $invoice->CName;
             $invoice->companyname   = $invoice->CPName;
-            $invoice->total         = number_format((float)$invoice->total, 2, '.', '');
+            $invoice->total         = $invoice->TotalInfo['adjust_price'];
             $invoice->items         = $invoice->PaymentLog()->where('allowed',0)->get();
             $invoice->creationDate  = $invoice->date;
             $invoice->date  = $invoice->SignDateD;

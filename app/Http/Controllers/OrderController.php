@@ -54,6 +54,9 @@ use App\Mail\PendingOrderSender;
 use App\Mail\ProblemOrder;
 use App\Mail\ReportNewOrder;
 use Config;
+//creditNOte
+use App\Models\InvoiceCreditNote;
+use App\Models\InvoiceCreditNoteLog;
 class OrderController extends OBaseController
 {
     //
@@ -93,6 +96,7 @@ class OrderController extends OBaseController
             'producttypes'    => Producttype::where('onordermenu',1)->orderby('producttype')->get(),
             'promos'          => Promo::all(),
             'isNew'           => 0,
+            'customerCreditTotal' => 0
         ];
         $aInvList = [];
         $fg = ActiveInventory::select(DB::raw('strainname'),DB::raw('asset_type_id'),DB::raw('upc_fk'),
@@ -146,6 +150,7 @@ class OrderController extends OBaseController
             $form['term']            = Term::find($form['invoice']->term_id);
             $form['shipping_method'] = $form['invoice']->shipping_method;
             $form['isNew']           = 1;
+            $form['customerCreditTotal'] = $form['invoice']->customer->CreditNoteTotal;
         }
 
         JavaScript::put([
@@ -160,7 +165,8 @@ class OrderController extends OBaseController
             'clients'           => $form['clients'],
             'sel_client'        => $form['invoice']->customer_id,
             'promos'            => $form['promos'],
-            'isNew'             => $form['isNew']
+            'isNew'             => $form['isNew'],
+            'customerCreditTotal'=> $form['customerCreditTotal']
         ]);
 
         return view('order.form',$form);
@@ -169,6 +175,12 @@ class OrderController extends OBaseController
     public function _form_customer_list()
     {
         return response()->json(Customer::with(['Term','basePrice'])->get());
+    }
+
+    public function _CustomerCreditNoteTotal(Request $request)
+    {
+        $customer = Customer::find($request->id);
+        return response()->json(['total' => $customer->CreditNoteTotal]);
     }
 
     public function _form_avaliable_qty(Request $request)
@@ -243,6 +255,7 @@ class OrderController extends OBaseController
                 $invoice->status = Config::get('constants.order.fulfillment');
             }
             $invoice->date = date('Y-m-d',strtotime($request->date));
+            $invoice->credit_amount = $request->creditNoteForDeduct;
             $invoice->save();
 
             //store or update shipping info
@@ -256,7 +269,38 @@ class OrderController extends OBaseController
             //store or update items
             $invoice->itemAP()->delete();
             $invoice->storeHasMany(['itemAP' => $items]);
-
+            //check credit note deduct
+            $customer = Customer::find($request->customer_id);
+            $creditNotes = $customer->rCreditNote()->where('archive','0')->get();
+            $requestedCreditNote = $request->creditNoteForDeduct;
+            $bBreak = false;
+            foreach($creditNotes as $creditNote)
+            {
+                $diff = $requestedCreditNote - $creditNote->total_price;
+                $amountForLog = 0;
+                if($diff >= 0)
+                {
+                    //archive this creditNote
+                    $creditNote->archive = 1;
+                    $creditNote->save();
+                    $amountForLog = $creditNote->total_price;
+                    $requestedCreditNote -= $amountForLog;
+                }
+                else
+                {
+                    $amountForLog = $requestedCreditNote;
+                    $creditNote->total_price -= $requestedCreditNote;
+                    $creditNote->save();
+                    $bBreak = true;
+                }
+                //log
+                $log = new InvoiceCreditNoteLog;
+                $log->credit_note = $creditNote->id;
+                $log->invoice_id = $invoice->id;
+                $log->amount = $amountForLog;
+                $log->save();
+                if($bBreak) break;
+            }
             return $invoice;
         });
 

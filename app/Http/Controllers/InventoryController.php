@@ -99,7 +99,7 @@ class InventoryController extends Controller
 
             $relation_data = [];
             foreach($insert_data as $item)
-            {   
+            {
                 $temp = [];
                 $temp['parent'] = $combined->fgasset_id;
                 $temp['child'] = InventoryIgnored::insert($item);
@@ -125,7 +125,7 @@ class InventoryController extends Controller
     public function getInventory(Request $request)
     {
         $columns = ['harvest_batch_id','strain','producttype.producttype',
-                    'upc','coa','qtyonhand','weight','um','harvested_date' 
+                    'upc','coa','qtyonhand','weight','um','harvested_date'
                    ];
         $bCond = ActiveInventory::whereRaw('DATE(harvested_date) >= ?', [$request->s_date])
                                 ->whereRaw('DATE(harvested_date) <= ?', [$request->e_date]);
@@ -137,7 +137,7 @@ class InventoryController extends Controller
         $totalFiltered = 0;
         if(empty($request->input('search.value'))){
             $totalFiltered  = $bCond->count();
-            $inventory = $bCond->offset($start)->limit($limit)->get();    
+            $inventory = $bCond->offset($start)->limit($limit)->get();
         }
         else
         {
@@ -182,7 +182,7 @@ class InventoryController extends Controller
 			"recordsFiltered" => intval($totalFiltered),
 			"data"			=> $data
 		);
-		
+
 		return response()->json($json_data);
     }
 
@@ -210,7 +210,7 @@ class InventoryController extends Controller
             $fg->harvested_date = $inventory->harvested_date;
             $fg->save();
 
-            
+
         }
         if($request->i_type == 1)
         {
@@ -221,5 +221,10 @@ class InventoryController extends Controller
             InventoryVault::find($request->fgasset_id)->delete();
         }
         return 1;
+    }
+
+    public function importPanel()
+    {
+        return view('inventory.import_panel');
     }
 }
