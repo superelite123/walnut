@@ -388,6 +388,7 @@ Route::group( ['prefix' => 'inventory','middleware' => ['auth']],function(){
     Route::get('_check_metrc_duplicate','InventoryController@_checkMetrcDuplicate');
     Route::post('_split','InventoryController@splitItem');
     Route::get('import','InventoryController@importPanel');
+    Route::post('importInventory','InventoryController@importInventory');
 });
 /**
  * NDA Management

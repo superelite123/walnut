@@ -192,7 +192,8 @@ class InvoiceNew extends Model
         }
         if($this->tax_allow == 1)
             $taxed = 0;
-        $adjust_price += $taxed;
+        $adjust_price = $extended + $taxed;
+        //$adjust_price += $taxed;
         $result = [];
         $result['base_price']   = number_format((float)$base_price, 2, '.', '');
         $result['discount']     = number_format((float)$discounted, 2, '.', '');
@@ -267,8 +268,8 @@ class InvoiceNew extends Model
         }
         if($this->tax_allow == 1)
             $taxed = 0;
-        $adjust_price += $taxed;
-
+        //$adjust_price += $taxed;
+        $adjust_price = $extended + $taxed;
         //ptweight
         $ptweight = [];
         $ptweightTypes = PtWeight::all();

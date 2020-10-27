@@ -227,4 +227,12 @@ class InventoryController extends Controller
     {
         return view('inventory.import_panel');
     }
+    public function importInventory(Request $request)
+    {
+        $file = $request->file('inventoryFile');
+        echo $file == null?1:0;
+        //$path = $request->file('inventoryFile')->getRealPath();
+        // $data = array_map('str_getcsv', file($path));
+        // print_r($data);
+    }
 }
