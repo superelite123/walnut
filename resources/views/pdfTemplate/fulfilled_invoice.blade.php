@@ -237,8 +237,11 @@ html {
         <span style="text-align: right;">{{ $invoice->TotalInfo['promotion'] }}</span> <br>
         <span style="text-align: left;">Sub Total: $</span>
         <span style="text-align: right;">{{ $invoice->TotalInfo['extended'] }}</span><br>
-        <span style="text-align: left;">Credit Note: $</span>
-        <span style="text-align: right;">{{ $invoice->TotalInfo['credit_amount'] }}</span><br>
+        @if ($invoice->TotalInfo['credit_amount'] > 0)
+            <span style="text-align: left;">Credit Note: $</span>
+            <span style="text-align: right;">{{ $invoice->TotalInfo['credit_amount'] }}</span><br>
+        @endif
+
         <span style="text-align: left;">CA Excise Tax Based On Total Base Price @27%: $</span>
         <span  style="text-align: right;">{{ $invoice->TotalInfo['tax'] }}</span><br>
         <span style="text-align: left;">Total Due: $</span>

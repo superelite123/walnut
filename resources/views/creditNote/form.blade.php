@@ -25,11 +25,14 @@
                 <label for="">Customer:</label>
                 <span>{{ $order->CName }}</span>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2" style="display:flex;justify-content:center">
+                <button class="btn btn-info pull-right"  id="export_btn" class="export"><i class="fa fa-download"></i>&nbsp;Export CSV</button>
+            </div>
+            <div class="col-md-3">
                 <label for="">Term:</label>
                 <span>{{ $order->TermLabel }}</span>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Total:</label>
                     <div class="input-group">

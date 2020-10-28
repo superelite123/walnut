@@ -15,10 +15,12 @@
       <th style="width:50%">Promotion Value:</th>
       <td>${{ $invoice->TotalInfo['promotion'] }}</td>
     </tr>
-    <tr>
-      <th style="width:50%">Credit Note:</th>
-      <td>${{ $invoice->TotalInfo['credit_amount'] }}</td>
-    </tr>
+    @if ($invoice->TotalInfo['credit_amount'] > 0)
+        <tr>
+        <th style="width:50%">Credit Note:</th>
+        <td>${{ $invoice->TotalInfo['credit_amount'] }}</td>
+      </tr>
+    @endif
     <tr>
       <th style="width:50%">Sub Total:</th>
       <td>${{ $invoice->TotalInfo['extended'] }}</td>

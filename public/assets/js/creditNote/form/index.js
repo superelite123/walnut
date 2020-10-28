@@ -1,4 +1,60 @@
 let items = [];
+//export CSV
+$("#export_btn").on('click', function(event) {
+    $.ajax({
+        url:'../credit_notes/archives',
+        type:'post',
+        data: {who:customerID},
+        success:(res) => {
+            convertToCSV(res.items).then(function(result){
+                let filename = res.name + "'s Credit Note";
+                exportCSVfile(filename,result);
+            })
+        },
+        error:(e) => {
+            $('#loadingModal').modal('hide')
+            swal(e.statusText, e.responseJSON.message, "error")
+        }
+    })
+
+});
+
+var convertToCSV = (objArray) => {
+
+    return new Promise(function(next_operation){
+console.log(objArray)
+        var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray
+        let str = "No,SO,Credit Note Value\r\n"
+
+        array.forEach((element,index) => {
+          str += (index + 1) + ','
+          str += element.so + ','
+          str += element.total_price + '\r\n'
+        });
+        next_operation(str);
+    });
+}
+
+var exportCSVfile = (filename,csv) =>{
+    var exportedFilenmae = filename + '.csv' || 'export.csv';
+
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, exportedFilenmae);
+    } else {
+        var link = document.createElement("a");
+        if (link.download !== undefined) { // feature detection
+            // Browsers that support HTML5 download attribute
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", exportedFilenmae);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+}
 $('.addBtn').on('click',() => {
     const item = {
         strain:parseInt($('#strain').val()),

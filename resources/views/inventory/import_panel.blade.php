@@ -8,12 +8,12 @@
   <link rel="stylesheet" href="{{ asset('assets/component/dropzone/normalize.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/component/dropzone/component.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/component/css/growl/jquery.growl.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 @stop
 @section('content_header')
 @stop
 
 @section('content')
-    <!--start edit form-->
     <div class="box box-info">
         <div class="box-header with-border">
         <h1>Inventory Import</h1>
@@ -39,7 +39,6 @@
                 <div class="col-md-12" style='text-align:center;'>
                     <button id="df" class="btn btn-info btn-lg"><i class="fas fa-save"></i>&nbsp;&nbsp;&nbsp;Import</button>
                 </div>
-                <input type="submit" value="asd">
             </div>
             </form>
         </div>
@@ -48,11 +47,21 @@
 @stop
 @section('js')
   <script type="text/javascript" src="{{ asset('assets/component/js/sweetalert.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   <script type="text/javascript" src="{{ asset('assets/component/js/growl/jquery.growl.js') }}"></script>
   <script type="text/javascript" src="{{ asset('assets/component/dropzone/custom-file-input.js') }}"></script>
-@stop
+
 <script>
-    $("#df").click(() => {
-        console.log($('#file-1').val())
-    })
+    @if (session('success'))
+        $(function () {
+                toastr.success('{{ session('success') }}');
+        });
+    @endif
+    @if (session('warning'))
+        $(function () {
+                toastr.warning('{{ session('warning') }}');
+        });
+    @endif
 </script>
+@stop
+

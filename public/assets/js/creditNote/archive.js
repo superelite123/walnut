@@ -1,4 +1,85 @@
 let invoice_table = null
+$("#export_btn").on('click', function(event) {
+    let tableInfo = invoice_table.page.info()
+    let post_data = {
+        date_range:$('#reservation').val(),
+        length:tableInfo.recordsTotal,
+    }
+    $.ajax({
+        url:'credit_notes/archives',
+        type:'post',
+        headers:{"content-type" : "application/json"},
+        data: JSON.stringify(post_data),
+        success:(res) => {
+            convertToCSV(res.data).then(function(result){
+                let filename = 'Credit Notes ' + $("#reservation").val();
+                exportCSVfile(filename,result);
+            })
+        },
+        error:(e) => {
+            $('#loadingModal').modal('hide')
+            swal(e.statusText, e.responseJSON.message, "error")
+        }
+    })
+
+});
+
+var convertToCSV = (objArray) => {
+
+    return new Promise(function(next_operation){
+
+        var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+        var str = "No,Customer,Total Credits\r\n"
+
+        for (var i = 0; i < array.length; i++) {
+            let line = "";
+            line += (i + 1) + ','
+            line += '\"' + array[i].name + '\",';
+            line += array[i].total_price + '\r\n'
+
+            var items = array[i].items;
+            var sub_result = ',SO,Credit Note Value' + '\r\n'
+            if(items != null)
+            {
+                for (var j = 0; j < items.length; j++) {
+                    var newline = '  ';
+
+                    newline += ' ,' + items[j].so;
+                    newline += ' ,' + items[j].total_price + '\r\n';
+
+                    sub_result += newline;
+                }
+            }
+            if(sub_result != "")
+            {
+                line += sub_result+ '\r\n';
+            }
+            str += line
+        }
+        next_operation(str);
+    });
+}
+
+var exportCSVfile = (filename,csv) =>{
+    var exportedFilenmae = filename + '.csv' || 'export.csv';
+
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, exportedFilenmae);
+    } else {
+        var link = document.createElement("a");
+        if (link.download !== undefined) { // feature detection
+            // Browsers that support HTML5 download attribute
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", exportedFilenmae);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+}
 var createTable = (date_range) => {
     $('#invoice_table').dataTable().fnDestroy()
     invoice_table = $('#invoice_table').DataTable({

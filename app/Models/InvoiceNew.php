@@ -202,6 +202,7 @@ class InvoiceNew extends Model
         $result['promotion']    = number_format((float)$base_price - $base_price_for_promotion, 2, '.', '');
         $result['prValue']      = number_format((float)$promotionCost, 2, '.', '');
         $result['tax']          = number_format((float)$taxed, 2, '.', '');
+        $result['credit_total'] = $this->customer != null?$this->customer->CreditNoteTotal:number_format((float)$this->credit_amount, 2, '.', '');
         $result['credit_amount']= number_format((float)$this->credit_amount, 2, '.', '');
         $result['adjust_price'] = number_format((float)$adjust_price, 2, '.', '');
         $result['qty']          = $qty;

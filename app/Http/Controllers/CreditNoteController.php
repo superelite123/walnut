@@ -35,6 +35,7 @@ class CreditNoteController extends Controller
     {
         $creditNote = new InvoiceCreditNote;
         $creditNote->fill($request->except(['items']));
+        $creditNote->original_total = $request->total_price;
         $creditNote->save();
         $creditNote->storeHasMany(['rItems' => $request->items]);
         return response()->json(['success' => 1]);
@@ -52,38 +53,46 @@ class CreditNoteController extends Controller
         $date_range = $request->date_range;
         $date_range = $this->convertDateRangeFormat($date_range);
         $bCond = Customer::select('client_id','clientname')
-                         ->with('rCreditNote')
-                         ->whereHas('rCreditNote',function($query) use($date_range){
-                                    $query->whereBetween('created_at', [
-                                        $date_range['start_date']." 00:00:00",
-                                        $date_range['end_date']." 23:59:59"
-                                    ]);
-        });
-        //check order column
-        $orderingColumn = $request->input('order.0.column');
-        $dir = $request->input('order.0.dir');
-        switch($orderingColumn)
+                         ->with('rCreditNote');
+        if($request->who != null)
         {
-            case '1':
-                $bCond = $bCond->orderBy('clientname',$dir);
-            break;
-            default:
-                $bCond = $bCond->orderBy('clientname','desc');
+            $bCond = $bCond->where('client_id',$request->who);
+            $data = $bCond->get();
         }
+        else
+        {
+            $bCond = $bCond->whereHas('rCreditNote',function($query) use($date_range){
+                $query->whereBetween('created_at', [
+                    $date_range['start_date']." 00:00:00",
+                    $date_range['end_date']." 23:59:59"
+                ]);
+            });
+            //check order column
+            $orderingColumn = $request->input('order.0.column');
+            $dir = $request->input('order.0.dir');
+            switch($orderingColumn)
+            {
+                case '1':
+                    $bCond = $bCond->orderBy('clientname',$dir);
+                break;
+                default:
+                    $bCond = $bCond->orderBy('clientname','desc');
+            }
 
-        $totalData = $bCond->count();
-        $limit = $request->input('length') != -1?$request->input('length'):$totalData;
-        $start = $request->input('start');
-        $totalFiltered  = $bCond->count();
-        if(!empty($request->input('search.value'))){
-            $search = $request->input('search.value');
-            $bCond = $bCond->Where(function($query) use ($search){
-                        $query->where('clientname','like',"%{$search}%");
-                    });
+            $totalData = $bCond->count();
+            $limit = $request->input('length') != -1?$request->input('length'):$totalData;
+            $start = $request->input('start');
             $totalFiltered  = $bCond->count();
-        }
+            if(!empty($request->input('search.value'))){
+                $search = $request->input('search.value');
+                $bCond = $bCond->Where(function($query) use ($search){
+                            $query->where('clientname','like',"%{$search}%");
+                        });
+                $totalFiltered  = $bCond->count();
+            }
 
-        $data = $bCond->offset($start)->limit($limit)->get();
+            $data = $bCond->offset($start)->limit($limit)->get();
+        }
         $responseData = [];
         foreach($data as $key => $item)
         {
@@ -104,11 +113,23 @@ class CreditNoteController extends Controller
             $temp['total_price'] = $totalPrice;
             $responseData[] = $temp;
         }
-        return array(
-			"draw"			=> intval($request->input('draw')),
-			"recordsTotal"	=> intval($totalData),
-			"recordsFiltered" => intval($totalFiltered),
-			"data"			=> $responseData,
-		);
+        if($request->who != null)
+        {
+            return response()->json($responseData[0]);
+        }
+        else
+        {
+            return array(
+                "draw"			=> intval($request->input('draw')),
+                "recordsTotal"	=> intval($totalData),
+                "recordsFiltered" => intval($totalFiltered),
+                "data"			=> $responseData,
+            );
+        }
+
+    }
+    public function _customersNotes(Request $request)
+    {
+
     }
 }

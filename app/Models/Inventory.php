@@ -9,8 +9,10 @@ class Inventory extends Model
 {
     use HasManyRelation;
     protected $primaryKey = "fgasset_id";
-    protected $fillable = ['strainname','upc_fk','batch_fk','coa',
-                           'coafil_fk','um','weight','qtyonhand','parent_id'];
+    protected $fillable = [ 'strainname','upc_fk','batch_fk','coa',
+                            'coafil_fk','um','weight','qtyonhand','parent_id','metrc_tag',
+                            'stockimage','asset_type_id','status','bestbefore','harvested_date',
+                            'created_at','updated_at'];
     public function upc()
     {
         return $this->belongsTo(UPController::class,'upc_fk');

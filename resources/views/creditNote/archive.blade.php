@@ -37,6 +37,10 @@
                     <!-- /.input group -->
                 </div>
             </div>
+            <div class="col-xs-3"></div>
+            <div class="col-xs-3">
+                <button class="btn btn-info pull-right"  style="margin-top:1.5em" id="export_btn" class="export"><i class="fa fa-download"></i>&nbsp;Export CSV</button>
+            </div>
         </div>
         <div class="row">
             <div class="col-xs-12">
