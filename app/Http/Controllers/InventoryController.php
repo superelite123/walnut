@@ -230,9 +230,9 @@ class InventoryController extends Controller
     public function importInventory(Request $request)
     {
         $file = $request->file('inventoryFile');
-        echo $file == null?1:0;
-        //$path = $request->file('inventoryFile')->getRealPath();
-        // $data = array_map('str_getcsv', file($path));
-        // print_r($data);
+        echo $request->df;
+        $path = $request->file('inventoryFile')->getRealPath();
+        $data = array_map('str_getcsv', file($path));
+        print_r($data);
     }
 }
