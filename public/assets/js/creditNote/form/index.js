@@ -29,6 +29,7 @@ $('.addBtn').on('click',() => {
 })
 const createTable = () => {
     let html = ''
+    let total = 0
     if(items.length > 0)
     {
 
@@ -38,6 +39,8 @@ const createTable = () => {
             html += '<td>' + getInventoryLabel(element) + '</td>'
             html += '<td>' + element.price + '</td>'
             html += '</tr>'
+
+            total += element.price
         });
     }
     else
@@ -45,6 +48,7 @@ const createTable = () => {
         html += '<tr><td colspan=3 style="text-align:center"><h4>No Data</h4></td></tr>'
     }
     $('#tblInventory > tbody').html(html)
+    $('#totalPrice').val(total)
 }
 $('#btnSubmit').on('click',() => {
     const postData = {

@@ -31,7 +31,7 @@ var DiscountInput     = $("#discount");
 var LessDiscountInput = $("#less_discount");
 var TaxInput          = $("#tax");
 var Adjust_priceInput = $("#adjust_price");
-
+const submitBtnCreditNoteLabel = "Create SO (available credit = $"
 
 //--------------------------tax allow part---------------------------------
     $('#tax_allow').click(() => {
@@ -635,12 +635,18 @@ $(".makeBtn").click(function(){
     }
 });
 $('#btnSaveCreditNote').on('click',() => {
-    const creditNote = parseFloat($('#txtCreditNote').val())
+    let creditNote = parseFloat($('#txtCreditNote').val())
     if(creditNote > customerCreditTotal)
     {
         alert('You can not enter big value than original value')
         return false
     }
+    const subTotal = parseFloat($("#total_extended").text())
+    if(creditNote > subTotal)
+    {
+        creditNote = subTotal
+    }
+    console.log(creditNote)
     creditNoteForDeduct = creditNote
     $('#modal_credit_note').hide()
     showConfirmDialog()
@@ -856,8 +862,10 @@ initOp();
 const changeSubmitBtnLabel = () =>
 {
     //set Submit label
-    $('.makeBtn').text(submitBtnLabel + '('+customerCreditTotal+')')
-    console.log('hi')
+    if(customerCreditTotal > 0)
+        $('.makeBtn').text(submitBtnCreditNoteLabel + customerCreditTotal+')')
+    else
+        $('.makeBtn').text(submitBtnLabel)
 }
 $.ajaxSetup({
     headers: {
