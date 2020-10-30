@@ -111,7 +111,9 @@ class SignController extends OBaseController
     public function Panel($id)
     {
         $invoice = InvoiceNew::find($id);
-
+        $invoice->sign_date = '43902';
+        $invoice->save();
+        echo $invoice->sign_date;exit;
         $ourdetail = OurDetail::all()->first();
         $invoice['company_detail']  = $ourdetail;
         $data['invoice'] = $invoice;
@@ -237,7 +239,6 @@ class SignController extends OBaseController
             $invoice->sign_date = $request->sign_date.' '.date('H:i:s');
             $invoice->number2 = 1;//explode('-',$invoice->number2)[1];
             $invoice->save();
-            return $invoice->sign_date;
             $result = array();
             $imagedata = base64_decode($request->img_data);
             $filename = 'sign';
@@ -263,7 +264,7 @@ class SignController extends OBaseController
             $invoice['sign_name'] = $invoice->sign_name;
             $invoice['sign_date'] = $invoice->sign_date;
             $this->generatePdf($invoice,'pdfTemplate.fulfilled_invoice');
-            Mail::to($invoice->SalesEmail)->send(new ReportOrderDelivery($invoice));
+            //Mail::to($invoice->SalesEmail)->send(new ReportOrderDelivery($invoice));
             File::delete(public_path().'/storage/'.$invoice->number.'/invoice.pdf');
             File::delete(public_path().'/storage/'.$invoice->number.'/mail.pdf');
             return '1';
