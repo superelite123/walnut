@@ -73,7 +73,7 @@ let collectMoney = () => {
             data: JSON.stringify(data),
             success:(res) => {
                 swal('Thanks!', 'We saved your payment', "success")
-                location.reload()
+                //location.reload()
             },
             error:(e) => {
                 swal(e.statusText, e.responseJSON.message, "error")
@@ -205,7 +205,7 @@ $(() => {
                 text: "Your Signature will now be saved to this invoice",
                 type: "info",
                 showCancelButton: true,
-                closeOnConfirm: false,
+                closeOnConfirm: true,
                 showLoaderOnConfirm: true
             }, function () {
                 var data = signaturePad.toDataURL('image/png');
@@ -219,11 +219,11 @@ $(() => {
                     async:false,
                     success: function (response) {
                         swal('Thanks!', 'We saved your signature', "success")
-                        location.href='../../signature/home'
+                        //location.href='../../signature/home'
                     },
                     error:function(e)
                     {
-                        swal(e.statusText, e.responseJSON.message, "error")
+                        console.log(e);
                     }
                 });
             })

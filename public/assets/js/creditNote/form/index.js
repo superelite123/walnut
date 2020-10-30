@@ -27,9 +27,10 @@ console.log(objArray)
         let str = "No,SO,Credit Note Value\r\n"
 
         array.forEach((element,index) => {
-          str += (index + 1) + ','
-          str += element.so + ','
-          str += element.total_price + '\r\n'
+            str += (index + 1) + ','
+            str += element.so + ','
+            str += array[i].balancePrice + ','
+            str += array[i].totalPrice + '\r\n'
         });
         next_operation(str);
     });

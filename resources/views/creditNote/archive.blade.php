@@ -49,6 +49,7 @@
                           <th></th>
                           <th>No</th>
                           <th>Customer</th>
+                          <th>Current Balance</th>
                           <th>Total Credits</th>
                       </thead>
                       <tbody>

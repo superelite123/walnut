@@ -146,6 +146,7 @@ class OrderFulFilledController extends OBaseController
             $temp['rSubTotal'] = $fInfo['rSubTotal'];
             $temp['rTax'] = $fInfo['rTax'];
             $temp['date'] = $order->date;
+            $temp['delivery_time'] = $order->delivery_time;
             $temp['logs'] = ['allowed' => [],'unallowed' => []];
             foreach($fInfo['logs'] as $key => $items)
             {

@@ -101,6 +101,7 @@ class CreditNoteController extends Controller
             $temp['id'] = $item->client_id;
             $temp['name'] = $item->clientname;
             $temp['items'] = [];
+            $balancePrice = 0;
             $totalPrice = 0;
             foreach($item->rCreditNote as $creditNote)
             {
@@ -108,9 +109,11 @@ class CreditNoteController extends Controller
                 $creditNoteTemp['so'] = $creditNote->rInvoice->number;
                 $creditNoteTemp['total_price'] = $creditNote->total_price;
                 $temp['items'][] = $creditNoteTemp;
-                $totalPrice += $creditNote->total_price;
+                $balancePrice += $creditNote->total_price;
+                $totalPrice   += $creditNote->original_total;
             }
-            $temp['total_price'] = $totalPrice;
+            $temp['balancePrice'] = $balancePrice;
+            $temp['totalPrice']   = $totalPrice;
             $responseData[] = $temp;
         }
         if($request->who != null)

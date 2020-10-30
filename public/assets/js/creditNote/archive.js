@@ -29,13 +29,14 @@ var convertToCSV = (objArray) => {
     return new Promise(function(next_operation){
 
         var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-        var str = "No,Customer,Total Credits\r\n"
+        var str = "No,Customer,Current Balance,Total Credits\r\n"
 
         for (var i = 0; i < array.length; i++) {
             let line = "";
             line += (i + 1) + ','
-            line += '\"' + array[i].name + '\",';
-            line += array[i].total_price + '\r\n'
+            line += '\"' + array[i].name + '\",'
+            line += array[i].balancePrice + ','
+            line += array[i].totalPrice + '\r\n'
 
             var items = array[i].items;
             var sub_result = ',SO,Credit Note Value' + '\r\n'
@@ -101,13 +102,15 @@ var createTable = (date_range) => {
             },
             { "data": "no" },
             { "data": "name" },
-            { "data": "total_price" },
+            { "data": "balancePrice" },
+            { "data": "totalPrice" },
         ],
         "columnDefs": [
             { "orderable": false, "width": "5px", "targets": 0 },
             { "orderable": true, "width": "10px", "targets": 1 },
             { "orderable": false, "targets": 2 },
             { "orderable": false, "targets": 3 },
+            { "orderable": false, "targets": 4 },
         ],
     })
 }
