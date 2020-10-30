@@ -236,10 +236,18 @@ class OBaseController extends Controller
         $date_range = $request->date_range;
         $date_range = $this->convertDateRangeFormat($date_range);
         $exporting = $request->exporting;
-        if()
-        $bCond = InvoiceNew::whereRaw('DATE(sign_date) >= ?', [$date_range['start_date']])
-                            ->whereRaw('DATE(sign_date) <= ?', [$date_range['end_date']])
-                            ->whereIn('status',$request->status);
+        $bAll = in_array(3,$request->status);
+        if($bAll)
+        {
+            $bCond = InvoiceNew::whereRaw('DATE(date) >= ?', [$date_range['start_date']])
+                            ->whereRaw('DATE(date) <= ?', [$date_range['end_date']]);
+        }
+        else
+        {
+            $bCond = InvoiceNew::whereRaw('DATE(sign_date) >= ?', [$date_range['start_date']])
+                            ->whereRaw('DATE(sign_date) <= ?', [$date_range['end_date']]);
+        }
+        $bCond = $bCond->whereIn('status',$request->status);
         if($exporting == 1)
         {
             $bCond = $bCond->where('exported','=',null);

@@ -111,9 +111,6 @@ class SignController extends OBaseController
     public function Panel($id)
     {
         $invoice = InvoiceNew::find($id);
-        $invoice->sign_date = '43902';
-        $invoice->save();
-        echo $invoice->sign_date;exit;
         $ourdetail = OurDetail::all()->first();
         $invoice['company_detail']  = $ourdetail;
         $data['invoice'] = $invoice;
