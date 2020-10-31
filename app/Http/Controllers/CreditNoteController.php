@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\InvoiceNew;
 use App\Models\InvoiceCreditNote;
+use App\Models\InvoiceCreditNoteLog;
 use App\Models\Customer;
 use App\Models\Term;
 use App\Models\Strainame;
@@ -107,13 +108,25 @@ class CreditNoteController extends Controller
             {
                 $creditNoteTemp = [];
                 $creditNoteTemp['so'] = $creditNote->rInvoice->number;
-                $creditNoteTemp['total_price'] = $creditNote->total_price;
+                $creditNoteTemp['total_price'] = '$'.number_format((float)$creditNote->total_price, 2, '.', '');
                 $temp['items'][] = $creditNoteTemp;
                 $balancePrice += $creditNote->total_price;
                 $totalPrice   += $creditNote->original_total;
             }
-            $temp['balancePrice'] = $balancePrice;
-            $temp['totalPrice']   = $totalPrice;
+            $temp['balancePrice'] = '$'.number_format((float)$balancePrice, 2, '.', '');
+            $temp['totalPrice']   = '$'.number_format((float)$totalPrice, 2, '.', '');
+            //applied credits
+            $appliedCredits = InvoiceCreditNoteLog::whereHas('rInvoice',function($query) use($item){
+                $query->where('customer_id',$item->client_id);
+            })->get();
+            $temp['appliedCreditsData'] = [];
+            foreach($appliedCredits as $appliedCredit)
+            {
+                $appliedCreditTemp = [];
+                $appliedCreditTemp['so'] = $appliedCredit->rInvoice->number;
+                $appliedCreditTemp['amount'] = '$'.$appliedCredit->amount;
+                $temp['appliedCreditsData'][] = $appliedCreditTemp;
+            }
             $responseData[] = $temp;
         }
         if($request->who != null)

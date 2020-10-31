@@ -280,12 +280,12 @@ class OrderController extends OBaseController
                 $amountForLog = 0;
                 if($diff >= 0)
                 {
+                    $amountForLog = $creditNote->total_price;
+                    $requestedCreditNote -= $amountForLog;
                     //archive this creditNote
                     $creditNote->total_price = 0;
                     $creditNote->archive = 1;
                     $creditNote->save();
-                    $amountForLog = $creditNote->total_price;
-                    $requestedCreditNote -= $amountForLog;
                 }
                 else
                 {

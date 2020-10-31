@@ -60,7 +60,7 @@ $('.addBtn').on('click',() => {
     const item = {
         strain:parseInt($('#strain').val()),
         p_type:parseInt($('#pType').val()),
-        price:parseInt($('#price').val()),
+        price:parseFloat($('#price').val()),
         qty:parseInt($('#qty').val()),
     }
 
@@ -111,7 +111,7 @@ $('#btnSubmit').on('click',() => {
     const postData = {
         invoice_id:orderID,
         customer_id:customerID,
-        total_price:parseInt($('#totalPrice').val()),
+        total_price:parseFloat($('#totalPrice').val()),
         items:items,
     }
     if(postData.total_price < 0.0001 || postData.items.length < 1)

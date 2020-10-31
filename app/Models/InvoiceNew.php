@@ -97,7 +97,7 @@ class InvoiceNew extends Model
     }
     public function getSignDateHAttribute()
     {
-        return ($this->sign_date != null && $this->sign_date != '0000-00-00')?date('m/d/Y H',strtotime($this->sign_date)):date('m/d/Y');
+        return ($this->sign_date != null && $this->sign_date != '0000-00-00')?date('m/d/Y H',strtotime($this->sign_date)):'';
     }
     public function getCNameAttribute()
     {

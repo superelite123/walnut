@@ -12,6 +12,10 @@ class InvoiceCreditNoteLog extends Model
     //
     public function rCreditNote()
     {
+        return $this->belongsTo(InvoiceCreditNote::class,'credit_note');
+    }
+    public function rInvoice()
+    {
         return $this->belongsTo(InvoiceNew::class,'invoice_id');
     }
 }

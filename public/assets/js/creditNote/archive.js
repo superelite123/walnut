@@ -158,6 +158,20 @@ var row_details_format = (d) => {
         html += '<td colspan=6>' + d.pDiscount.value + '</td></tr>'
     }
     html += "</tbody></table>";
+    //applied credits
+    html += '<h4>Applied Credits</h4>'
+    html += '<table class="table table-bordered" cellpadding="5" cellspacing="0" border="0">';
+    html += '<thead>'
+    html += '<th>SO</th>'
+    html += '<th>Amount</th>'
+    html += '</thead>'
+    d.appliedCreditsData.forEach(element => {
+       html += '<tr>' 
+       html += '<td>' + element.so + '</td>'
+       html += '<td>' + element.amount + '</td>'
+       html += '</tr>'
+    });
+    html += "<tbody>";
     return html;
 }
 $(function(){
