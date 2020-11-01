@@ -57,11 +57,13 @@
                           <th>R Sub Total</th>
                           <th>R Tax</th>
                           <th>Creation Date</th>
+                          <th>Delivered Date</th>
                           <th>Actions</th>
                       </thead>
                       <tbody>
                       </tbody>
                       <tfoot>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>

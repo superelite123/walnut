@@ -189,6 +189,7 @@ var createTable = (date_range) => {
             { "data": "lRSubTotal" },
             { "data": "lRTax" },
             { "data": "date" },
+            { "data": "delivery_time" },
             { "data": "actions" },
         ],
         "columnDefs": [
@@ -199,7 +200,7 @@ var createTable = (date_range) => {
             { "orderable": true, "targets": 4 },
             { "orderable": false, "targets": 5 },
             { "orderable": false, "targets": 6 },
-
+            { "orderable": false, "targets": 7 },
         ],
         'scrollX':true
     });
