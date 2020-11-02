@@ -256,10 +256,17 @@ class OBaseController extends Controller
         $dir = $request->input('order.0.dir');
         switch($orderingColumn)
         {
-            case '0':
-            break;
+            case '2':
+                $bCond = $bCond->orderBy('number2',$dir);
+                break;
+            case '3':
+                $bCond = $bCond->orderBy('date',$dir);
+                break;
             case '4':
                 $bCond = $bCond->orderBy('sign_date',$dir);
+                break;
+            case '10':
+                $bCond = $bCond->orderBy('total',$dir);
                 break;
             default:
                 $bCond = $bCond->orderBy('sign_date','desc');
@@ -292,6 +299,7 @@ class OBaseController extends Controller
                                             ->orWhere('lastname','like',"%{$search}%");
                                 })
                                 ->orWhere('total','like',"%{$search}%")
+                                ->orWhere('sign_date','like',"%{$search}%")
                                 ->orWhere('date','like',"%{$search}%");
             });
             $totalFiltered  = $bCond->count();
