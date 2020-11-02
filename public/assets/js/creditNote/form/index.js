@@ -91,10 +91,12 @@ const createTable = () => {
     {
 
         items.forEach((element,index) => {
-            html += '<tr>'
+            const btnDelete = "<button class=\"btn btn-danger btn-sm btnRemoveChild\"><i class=\"fas fa-times\"></i></button>"
+            html += "<tr item_id=\"" + index + "\">"
             html += '<td>' + (index + 1) + '</td>'
             html += '<td>' + getInventoryLabel(element) + '</td>'
             html += '<td>' + element.price + '</td>'
+            html += '<td>' + btnDelete + '</t>'
             html += '</tr>'
 
             total += element.price
@@ -107,6 +109,11 @@ const createTable = () => {
     $('#tblInventory > tbody').html(html)
     $('#totalPrice').val(total)
 }
+$('#tblInventory').on('click','.btnRemoveChild',function() {
+    const index = parseInt($(this).parents('tr').attr('item_id'))
+    items.splice(index,1)
+    createTable()
+})
 $('#btnSubmit').on('click',() => {
     const postData = {
         invoice_id:orderID,

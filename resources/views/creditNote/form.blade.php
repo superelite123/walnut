@@ -153,6 +153,7 @@
                         <th>No</th>
                         <th>Item</th>
                         <th>Price</th>
+                        <th></th>
                     </thead>
                     <tbody></tbody>
                 </table>
