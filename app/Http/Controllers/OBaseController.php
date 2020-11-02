@@ -240,15 +240,14 @@ class OBaseController extends Controller
         if($bAll)
         {
             $bCond = InvoiceNew::whereRaw('DATE(date) >= ?', [$date_range['start_date']])
-                            ->whereRaw('DATE(date) <= ?', [$date_range['end_date']])
-                            ->whereIn('status',$request->status);
+                            ->whereRaw('DATE(date) <= ?', [$date_range['end_date']]);
         }
         else
         {
             $bCond = InvoiceNew::whereRaw('DATE(sign_date) >= ?', [$date_range['start_date']])
-                            ->whereRaw('DATE(sign_date) <= ?', [$date_range['end_date']])
-                            ->whereIn('status',$request->status);
+                            ->whereRaw('DATE(sign_date) <= ?', [$date_range['end_date']]);
         }
+        $bCond = $bCond->whereIn('status',$request->status);
         if($exporting == 1)
         {
             $bCond = $bCond->where('exported','=',null);
@@ -277,20 +276,24 @@ class OBaseController extends Controller
         else
         {
             $search = $request->input('search.value');
-            $bCond = $bCond->where('number','like',"%{$search}%")
-                    ->orWhere('number2','like',"%{$search}%")
-                    ->orWhereHas('customer',function($query) use ($search){
-                        $query->where('clientname','like',"%{$search}%");
-                    })
-                    ->orWhereHas('distuributor',function($query) use ($search){
-                        $query->where('companyname','like',"%{$search}%");
-                    })
-                    ->orWhereHas('salesperson',function($query) use ($search){
-                        $query->where('firstname','like',"%{$search}%")
-                              ->orWhere('lastname','like',"%{$search}%");
-                    })
-                    ->orWhere('total','like',"%{$search}%")
-                    ->orWhere('date','like',"%{$search}%");
+           
+            $bCond =  $bCond->where(function($query) use ($search){
+                          $query
+                                ->where('number','like',"%{$search}%")
+                                ->orWhere('number2','like',"%{$search}%")
+                                ->orWhereHas('customer',function($query) use ($search){
+                                    $query->where('clientname','like',"%{$search}%");
+                                })
+                                ->orWhereHas('distuributor',function($query) use ($search){
+                                    $query->where('companyname','like',"%{$search}%");
+                                })
+                                ->orWhereHas('salesperson',function($query) use ($search){
+                                    $query->where('firstname','like',"%{$search}%")
+                                            ->orWhere('lastname','like',"%{$search}%");
+                                })
+                                ->orWhere('total','like',"%{$search}%")
+                                ->orWhere('date','like',"%{$search}%");
+            });
             $totalFiltered  = $bCond->count();
             $limit = $request->input('length') != -1?$request->input('length'):$totalFiltered;
             $orders      = $bCond->offset($start)->limit($limit)->get();

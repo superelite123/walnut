@@ -420,7 +420,7 @@ return [
                 [
                     'text' => 'Import',
                     'url'  => 'inventory/import',
-                    'icon' => 'fas fa-cut',
+                    'icon' => 'fas fa-save',
                     'can' => 'inventory_import',
                 ],
             ]
@@ -462,11 +462,17 @@ return [
             'submenu' => [
                 [
                     'text' => 'Clients',
-                    'url'  => 'customers',
+                    'url'  => 'customers2',
                     'icon' => 'fas fa-users',
                     'can' => 'c_relations_clients',
                 ],
-
+   /*                             [
+                    'text' => 'Clients',
+                    'url'  => 'customers',
+                    'icon' => 'fas fa-users',
+                    'can' => 'c_relations_clients',
+                ],*/
+             
                 [
                     'text' => 'Person',
                     'url'  => 'contactperson',

@@ -237,41 +237,45 @@ class InventoryController extends Controller
             $fgData = [];
             $vaultData = [];
             $cnt = 0;
-            for($i = 1; $i < count($csvArray); $i ++)
+            if(count($csvArray) >= 2)
             {
-                $row = $csvArray[$i];
-                $temp = [];
-                $temp['parent_id'] = $row[0];
-                $temp['stockimage'] = $row[1];
-                $temp['strainname'] = $row[2];
-                $temp['asset_type_id'] = $row[3];
-                $temp['upc_fk'] = $row[4];
-                $temp['metrc_tag'] = $row[5];
-                $temp['batch_fk'] = $row[6];
-                $temp['coa'] = $row[7];
-                $temp['um'] = $row[8];
-                $temp['weight'] = $row[9];
-                $temp['qtyonhand'] = $row[10];
-                $temp['status'] = $row[11];
-                $temp['bestbefore'] = $row[12];
-                $temp['harvested_date'] = $row[13];
-                $temp['created_at'] = date('Y-m-d H:i:s');
-                $temp['updated_at'] = date('Y-m-d H:i:s');
-                if($row[14] == 1)
+                for($i = 1; $i < count($csvArray); $i ++)
                 {
-                    $model = FGInventory::updateOrInsert(
-                        ['metrc_tag' => $temp['metrc_tag']],
-                        $temp
-                    );
-                    $cnt ++;
-                }
-                if($row[14] == 2)
-                {
-                    $model = InventoryVault::updateOrInsert(
-                        ['metrc_tag' => $temp['metrc_tag']],
-                        $temp
-                    );
-                    $cnt ++;
+                    $row = $csvArray[$i];
+                    $temp = [];
+                    $temp['parent_id'] = $row[0];
+                    $temp['stockimage'] = $row[1];
+                    $temp['strainname'] = $row[2];
+                    $temp['asset_type_id'] = $row[3];
+                    $temp['upc_fk'] = $row[4];
+                    $temp['metrc_tag'] = $row[5];
+                    $temp['batch_fk'] = $row[6];
+                    $temp['coa'] = $row[7];
+                    $temp['um'] = $row[8];
+                    $temp['weight'] = $row[9];
+                    $temp['qtyonhand'] = $row[10];
+                    $temp['status'] = $row[11];
+                    $temp['bestbefore'] = $row[12];
+                    $temp['harvested_date'] = $row[13];
+                    $temp['datelastmodified'] = date('Y-m-d H:i:s');
+                    $temp['created_at'] = date('Y-m-d H:i:s');
+                    $temp['updated_at'] = date('Y-m-d H:i:s');
+                    if($row[14] == 1)
+                    {
+                        $model = FGInventory::updateOrInsert(
+                            ['metrc_tag' => $temp['metrc_tag']],
+                            $temp
+                        );
+                        $cnt ++;
+                    }
+                    if($row[14] == 2)
+                    {
+                        $model = InventoryVault::updateOrInsert(
+                            ['metrc_tag' => $temp['metrc_tag']],
+                            $temp
+                        );
+                        $cnt ++;
+                    }
                 }
             }
             return redirect('inventory/import')->with('success',$cnt.'Inventory is imported successfully!');
