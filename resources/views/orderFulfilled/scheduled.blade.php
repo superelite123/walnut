@@ -102,14 +102,30 @@
                             @endphp
                         @empty
                             <tr>
-                                <td colspan=9 style='text-align:center'><h3>No Data</h3></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style='text-align:center'><h3>No Data</h3></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         @endforelse
                     </tbody>
                     <tfoot>
-                        <th colspan=9>
+                        <th>
                             <h3>Total&nbsp;:&nbsp;<span style="color:green">${{ $total }}</span></h3>
                         </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                     </tfoot>
                 </table>
             </div>

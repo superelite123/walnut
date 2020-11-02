@@ -146,7 +146,7 @@ class InvoiceNew extends Model
             $discounted     += $item->discount;
             $e_discount     += $item->e_discount;
 
-            $extended       += $item->extended;
+            $extended       += $item->Extended;
             $adjust_price   += $item->AdjustPrice;
             $qty            += $item->qty;
             if($item->Taxexempt != 1)
@@ -236,7 +236,7 @@ class InvoiceNew extends Model
             $base_price += $item->BasePrice;
             $discounted   += $item->discount;
             $e_discount   += $item->e_discount;
-            $extended     += $item->extende;
+            $extended     += $item->Extended;
             $adjust_price += $item->AdjustPrice;
             $qty += $item->qty;
             if($item->Taxexempt != 1)
