@@ -74,7 +74,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('promo');
         $crud->setSubject('Promo', 'Promo');
         $crud->displayAs(array('multiplier' => '% Discount'));
@@ -99,7 +99,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('pricing_customer');
         $crud->setSubject('Price to Customer', 'Price Matrix');
   //      $crud->unsetColumns(['datelastmodified']);
@@ -129,7 +129,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('fginventory');
         $crud->setSubject('a Finished Goods Item, over-riding Process Path', 'ActiveFinished Goods for Sale');
         $crud->columns(['parent_id','metrc_tag', 'strainname', 'asset_type_id', 'upc_fk','coa', 'qtyonhand','status','weight','um','harvested_date' ,'created_at']);
@@ -274,7 +274,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('fginventory');
         $crud->setSubject('a Finished Goods Item, over-riding Process Path', 'ActiveFinished Goods for Sale');
         $crud->columns(['parent_id','metrc_tag', 'strainname', 'asset_type_id', 'upc_fk','coa', 'qtyonhand','status','weight','um','harvested_date' ,'created_at']);
@@ -419,7 +419,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('delivery');
         $crud->setSubject('Delivery Method', 'Delivery Method');
         $crud->columns(['username','van','ca_dl_id']);
@@ -451,7 +451,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
                 $crud->setTable('inventory_vault');
         $crud->setSubject('a Bulk Item, over-riding Process Path', 'Active Inventory 1 Bulk for Sale');
         $crud->columns(['parent_id','metrc_tag','strainname', 'asset_type_id', 'upc_fk','coa', 'qtyonhand','status','weight','um','status', 'created_at']);
@@ -595,7 +595,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
                 $crud->setTable('inventory_vault');
         $crud->setSubject('a Bulk Item, over-riding Process Path', 'Active Inventory 1 Bulk for Sale');
         $crud->columns(['parent_id','metrc_tag','strainname', 'asset_type_id', 'upc_fk','coa', 'qtyonhand','status','weight','um','status', 'created_at']);
@@ -737,7 +737,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('bugtracker');
         $crud->setSubject('Bug Tracker', 'Submit a bug');
         $crud->setRelation('strain_id','strainname','strain');
@@ -765,7 +765,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('coalibrary');
         $crud->setSubject('COA to Library', 'COA File upload Portal');
         $crud->setFieldUpload('urllocation', 'assets/upload/files/coa', 'assets/upload/files/coa');
@@ -793,7 +793,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('harvests');
         $crud->setSubject('View Harvests', 'View Harvest');
         $crud->columns(['id','harvest_batch_id', 'total_weight', 'strain_id']);
@@ -825,7 +825,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('harvests');
         $crud->setSubject('new Harvest overriding process path', 'CAUTION HARVEST MODIFICATION');
        // $crud->columns(['id','harvest_batch_id', 'total_weight', 'strain_id']);
@@ -866,7 +866,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('harvest_item');
         $crud->setSubject('View items', 'View Harvest');
         $crud->columns(['id','harvest_id','plant_tag', 'weight', 'created_at']);
@@ -899,7 +899,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('strainname');
         $crud->setSubject('Strain', 'Submit a strain');
         $crud->columns(['itemname_id','strain','strainalias', 'strainacro']);
@@ -931,7 +931,7 @@ class CC extends Controller
         $crud = new GroceryCrud($config, $database);
         $crud->setTable('harvestdynamics');
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setRelation('unit_weight','units','{name}-{abbriviation}');
         $crud->setRelation('cultivator_company_id','location_area','{location_id} - {name}');
         $crud->setRelation('parent_id','harvests','harvest_batch_id');
@@ -996,7 +996,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('holdinginventory');
         $crud->setSubject('Inventory on Holding', 'Inventory on Holding');
         $crud->columns(['stockimage', 'batch_fk', 'strainname', 'asset_type_id', 'upc_fk','coa', 'qtyonhand','weight','um']);
@@ -1197,7 +1197,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('batchdescription');
         $crud->setSubject('Description', 'Strain Description');
         $crud->unsetColumns(['datelastmodified']);
@@ -1224,7 +1224,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('invupccont');
         $crud->setSubject('Strain-Type Matrix', 'Create Strain Type Matrix');
         $crud->columns(['iteminv_id','strain','type','upc','baseprice','taxexempt','um','weight']);
@@ -1284,7 +1284,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('productcategory');
         $crud->setSubject('Product', 'Products');
         $crud->columns(['producttype_id','producttype','weight_volume','units','producttype_desc','promovalue','promocost','onordermenu','pcategory','status' ,'tare']);
@@ -1340,7 +1340,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('vendors');
         $crud->setSubject('Vendor', 'Vendors');
         $crud->setRelation('state','states','abbr');
@@ -1366,7 +1366,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('cultivator');
         $crud->setSubject('Cultivator', 'Cultivator');
         $crud->setFieldUpload('licenseupload', '../assets/upload/files/license', '../../assets/upload/files/license');
@@ -1395,7 +1395,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('distributor');
         $crud->setSubject('Distributor', 'Distributor');
         $crud->setRelation('state','states','abbr');
@@ -1423,7 +1423,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('ospfacility');
         $crud->setSubject('OSP', 'OSP Facility');
         $crud->setFieldUpload('licenseupload', 'assets/upload/files/license', '../../assets/upload/files/license');
@@ -1452,7 +1452,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('licensetype');
         $crud->setSubject('License', 'License Type');
         $crud->unsetColumns(['datelastmodified']);
@@ -1479,7 +1479,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('status');
         $crud->setSubject('Status', 'Status');
         $crud->unsetColumns(['datelastmodified']);
@@ -1506,10 +1506,10 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('terms');
         $crud->setSubject('Terms', 'Terms');
-
+        
         $crud->unsetColumns(['datelastmodified']);
         $crud->unsetFields(['datelastmodified']);
         $output = $crud->render();
@@ -1534,7 +1534,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('units');
         $crud->setSubject('Units', 'Units');
         $crud->unsetColumns(['datelastmodified']);
@@ -1562,7 +1562,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('testingmatrix');
         $crud->setSubject('Matrix', 'OSP Matrix');
         $crud->unsetColumns(['datelastmodified']);
@@ -1589,7 +1589,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('customers');
         $crud->setSubject('Customer', 'Customers');
         $crud->displayAs(array('clientname' => 'Client', 'legalname' => 'Legal Name', 'primarycontact' => 'Primary Contact', 'companyemail' => 'Email to send invoice','companyphone' =>'Company Phone','secondaryc_name' =>'
@@ -1624,7 +1624,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('customers');
         $crud->setSubject('Customer', 'Customers');
         $crud->displayAs(array('clientname' => 'Client', 'legalname' => 'Legal Name', 'primarycontact' => 'Primary Contact', 'companyemail' => 'Email to send invoice','companyphone' =>'Company Phone','secondaryc_name' =>'
@@ -1661,7 +1661,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('inventorytype');
         $crud->setSubject('Inventory Type', 'Inventory Types');
         $crud->unsetColumns(['datelastmodified']);
@@ -1689,7 +1689,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('contactperson');
         $crud->setSubject('Person', 'Contact Person');
         $crud->fieldType('email', GroceryCrud::FIELD_TYPE_EMAIL);
@@ -1729,7 +1729,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('contacttype');
         $crud->setSubject('Type', 'Contact Type');
         $crud->unsetColumns(['datelastmodified']);
@@ -1757,7 +1757,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('inventorycategory');
         $crud->setSubject('Inventory', 'Inventory Category');
         $crud->unsetColumns(['datelastmodified']);
@@ -1785,7 +1785,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('clients');
         $crud->setSubject('Clients', 'Clients');
         $crud->displayAs(array('clientname' => 'Client', 'legalname' => 'Legal Name', 'primarycontact' => 'Primary Contact', 'companyphone' => 'Phone','licensetype' =>'License Type'));
@@ -1816,7 +1816,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('batch');
         $crud->setSubject('Batch', 'Batch Creation');
         $crud->setFieldUpload('image', '../assets/upload/files/inv', '../../assets/upload/files/inv');
@@ -1969,7 +1969,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('harvest_tracker');
         $crud->setSubject('Harvest Tracker', 'Harvest Tracking  '.date('Y-m-d'));
         $crud->setRelation('um','units','{name} - {abbriviation}');
@@ -2055,7 +2055,7 @@ class CC extends Controller
         $crud = new GroceryCrud($config, $database);
         $crud->setTable('harvest_tracker');
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setSubject('Harvest Tracker', 'Harvest Tracking - 24-10-19');
         $crud->setRelation('um','units','{name} - {abbriviation}');
         $crud->setRelation('harvestid','harvests','harvest_batch_id');
@@ -2109,7 +2109,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('harvest_item_waist');
         $crud->setSubject('Waste', 'Waste');
         $crud->setRelation('parent_id','harvests','harvest_batch_id');
@@ -2141,7 +2141,7 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
         $crud->setTable('assets');
         $crud->setSubject('Asset', 'Asset Show');
         $crud->setRelation('type_id','productcategory','producttype');
@@ -2197,5 +2197,33 @@ class CC extends Controller
 
 
         return $asset_group->toJson();
+    }
+
+    public function credit_reasons()
+    {
+        $database = $this->_getDatabaseConnection();
+        $config = config('grocerycrud');
+        $crud = new GroceryCrud($config, $database);
+        $crud->setTheme('Walnut');
+        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setTable('invoice_credit_note_reasons');
+        $crud->unsetFields(['datelastmodified']);
+        $crud->unsetColumns(['datelastmodified']);
+        $output = $crud->render();
+        if ($output->isJSONResponse) {
+            return response($output->output, 200)
+                  ->header('Content-Type', 'application/json')
+                  ->header('charset', 'utf-8');
+        }
+
+        $css_files = $output->css_files;
+        $js_files = $output->js_files;
+        $output = $output->output;
+
+        return view('gc', [
+            'output' => $output,
+            'css_files' => $css_files,
+            'js_files' => $js_files,
+        ]);
     }
 }

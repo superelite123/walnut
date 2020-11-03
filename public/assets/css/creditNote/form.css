@@ -7,9 +7,6 @@
 .addBtn{
     margin-top:25px;
 }
-.select2-container--default .select2-selection--single, .select2-selection .select2-selection--single {
-    font-size: 10px;
-}
 table.dataTable {
     clear: both;
     margin-top: 6px !important;
@@ -24,4 +21,8 @@ table {
 }
 table > thead > tr > th,table > tbody > tr > td{
     text-align: center;
+}
+.break-td{
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }

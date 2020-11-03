@@ -64,7 +64,7 @@ $('.addBtn').on('click',() => {
         qty:parseInt($('#qty').val()),
     }
 
-    if(item.strain == 0 || item.pType == 0 || item.price < 0.00001 || item.qty < 1)
+    if($('#strain').val() == null || $('#pType').val() == null || item.price < 0.00001 || item.qty < 1)
     {
         alert('Enter correct value');
         return false
@@ -120,6 +120,12 @@ $('#btnSubmit').on('click',() => {
         customer_id:customerID,
         total_price:parseFloat($('#totalPrice').val()),
         items:items,
+        reason_id:$('#reason_note').val(),
+    }
+    if(postData.reason_id === null)
+    {
+        alert('Select Credit Note Reason')
+        return false
     }
     if(postData.total_price < 0.0001 || postData.items.length < 1)
     {

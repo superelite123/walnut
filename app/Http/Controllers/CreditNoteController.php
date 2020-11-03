@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\InvoiceNew;
 use App\Models\InvoiceCreditNote;
 use App\Models\InvoiceCreditNoteLog;
+use App\Models\InvoiceCreditNoteReason;
 use App\Models\Customer;
 use App\Models\Term;
 use App\Models\Strainame;
@@ -29,6 +30,7 @@ class CreditNoteController extends Controller
             'date'            => $order->date,
             'number'          => $order->number,
             'term'            => Term::find($order->term_id),
+            'reasons'         => InvoiceCreditNoteReason::all()  
         ];
         return view('creditNote.form',$data);
     }
@@ -108,17 +110,21 @@ class CreditNoteController extends Controller
             {
                 $creditNoteTemp = [];
                 $creditNoteTemp['so'] = $creditNote->rInvoice->number;
-                $creditNoteTemp['total_price'] = '$'.number_format((float)$creditNote->total_price, 2, '.', '');
+                $creditNoteTemp['total_price'] = '$'.$creditNote->total_price;
+                $creditNoteTemp['note'] = $creditNote->rReason != null?$creditNote->rReason->name:'';
+                
                 $temp['items'][] = $creditNoteTemp;
+                
                 $balancePrice += $creditNote->total_price;
                 $totalPrice   += $creditNote->original_total;
             }
-            $temp['balancePrice'] = '$'.number_format((float)$balancePrice, 2, '.', '');
-            $temp['totalPrice']   = '$'.number_format((float)$totalPrice, 2, '.', '');
+
+            $temp['balancePrice'] = '$'.$balancePrice;
+            $temp['totalPrice']   = '$'.$totalPrice;
             //applied credits
             $appliedCredits = InvoiceCreditNoteLog::whereHas('rInvoice',function($query) use($item){
-                $query->where('customer_id',$item->client_id);
-            })->get();
+                                $query->where('customer_id',$item->client_id);
+                            })->get();
             $temp['appliedCreditsData'] = [];
             foreach($appliedCredits as $appliedCredit)
             {

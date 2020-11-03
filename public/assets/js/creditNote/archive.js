@@ -135,11 +135,12 @@ $('#invoice_table tbody').on('click', 'td.details-control', function () {
 var row_details_format = (d) => {
     // `d` is the original data object for the row
     var data = d.items;
-    var html = '<table class="table table-bordered  table-striped childTable" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
+    var html = '<table class="table table-bordered  table-striped childTable" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;table-layout: fixed;">';
     html += '<thead>'
     html += '<th style="width:10px">No</th>'
     html += '<th>SO</th>'
     html += '<th>Credit Note Value</th>'
+    html += '<th>Reason</th>'
     html += '</thead>'
 
     html += "<tbody>"
@@ -149,6 +150,7 @@ var row_details_format = (d) => {
         html += '<td>' + (i + 1) + '</td>';
         html += '<td>' + data[i].so + '</td>';
         html += '<td>' + data[i].total_price + '</td>';
+        html += '<td class=\'break-td\'>' + data[i].note + '</td>';
         html += '</tr>';
     }
     if(d.pDiscount != null)

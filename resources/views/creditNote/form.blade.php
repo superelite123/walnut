@@ -48,22 +48,35 @@
         <!--./Customer Part-->
         <!--Order Part-->
         <div class="row head-row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="">Sales Person:</label>
                 <span>{{ $order->SalesPersonName }}</span>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="">Sales Order:</label>
                 <span>{{ $order->number }}</span>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="">Creation Date:</label>
                 <span>{{ $order->date }}</span>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <hr>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Add Credit Reason:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <select class="form-control select2" style="width: 100%;" name="reason_note" id="reason_note">
+                            <option value="0" disabled selected>--Select Reason--</option>
+                            @foreach($reasons as $reason)
+                                <option value="{{ $reason->id }}">{{ $reason->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <!-- /.input group -->
+                </div>
+                <!-- /.form-group -->
             </div>
         </div>
         <div class="row">
@@ -76,7 +89,7 @@
                     <i class="fas fa-sliders-h"></i>
                     </div>
                     <select class="form-control select2" style="width: 100%;" name="strain" id="strain">
-                    <option value="0"></option>
+                    <option value="0" disabled selected>--Select Strain--</option>
                     @foreach($strains as $strain)
                         <option value="{{ $strain->itemname_id }}">{{ $strain->strain }}</option>
                     @endforeach
@@ -96,7 +109,7 @@
                     <i class="fas fa-sliders-h"></i>
                     </div>
                     <select class="form-control select2" style="width: 100%;" id="pType">
-                    <option value="0"></option>
+                    <option value="0" disabled selected>--Select Product Type--</option>
                     @foreach($producttypes as $producttype)
                         <option value="{{ $producttype->producttype_id }}">{{ $producttype->producttype}}</option>
                     @endforeach

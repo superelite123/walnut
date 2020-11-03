@@ -622,6 +622,12 @@ return [
                     'can'  => 'admin_license'
                 ],
                 [
+                    'text' => 'Credit Reasons',
+                    'url'  => 'credit_reasons',
+                    'icon' => 'far fa-id-badge',
+                    'can'  => 'credit_reasons'
+                ],
+                [
                     'text' => 'Status',
                     'url'  => 'status',
                     'icon' => 'fas fa-chart-bar',

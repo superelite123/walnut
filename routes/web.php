@@ -84,6 +84,7 @@ Route::group( ['middleware' => 'auth'], function(){
     //harvestBuilder
     Route::any('allocationresults', 'CC@allocationresults');
     Route::any('waste','CC@waste');
+    Route::any('credit_reasons','CC@credit_reasons');
     Route::any('allocationbuilder','CC@allocationbuilder');
     Route::post("_harvestTrackerBuilerBarcode",'CC@_harvestTrackerBuilerBarcode');
     Route::post("_harvestTrackerBuilerToHoldingInventory",'CC@_harvestTrackerBuilerToHoldingInventory');
@@ -285,6 +286,7 @@ Route::group( [ 'prefix' => 'order_fulfilled','middleware' => ['auth','permissio
     //print from fulfillment Form
     Route::get('fulfilled_print_from_form/{id}','OrderFulFilledController@barcode_print');
     //archived part
+    Route::get('delivered','OrderFulFilledController@delivered');
 
     /**
      * 7.9
@@ -372,8 +374,8 @@ Route::get('order_fulfilled/_set_status','OrderFulFilledController@setOrderStatu
 Route::group( ['prefix' => 'admin','middleware' => ['auth','permission:order_finacial']],function(){
     Route::get('/financial_export','AdminController@financialExport');
     Route::post('getInvoices','AdminController@getInvoices');
-    Route::post('_toggle_exported','AdminController@toggleExported');
     Route::post('getCustomers','AdminController@getCustomers');
+    Route::post('_toggle_exported','AdminController@toggleExported');
     Route::post('_getCustomerInvoice','AdminController@_getCustomerInvoice');
     Route::get('view/{id}/{print}','OrderFulFilledController@view');
     Route::get('_download_invoice_pdf/{id}','OrderFulFilledController@_download_invoice_pdf');
