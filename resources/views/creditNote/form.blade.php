@@ -89,7 +89,7 @@
                     <i class="fas fa-sliders-h"></i>
                     </div>
                     <select class="form-control select2" style="width: 100%;" name="strain" id="strain">
-                    <option value="0" disabled selected>--Select Strain--</option>
+                    <option value="0" selected>--Select Strain--</option>
                     @foreach($strains as $strain)
                         <option value="{{ $strain->itemname_id }}">{{ $strain->strain }}</option>
                     @endforeach
@@ -109,7 +109,7 @@
                     <i class="fas fa-sliders-h"></i>
                     </div>
                     <select class="form-control select2" style="width: 100%;" id="pType">
-                    <option value="0" disabled selected>--Select Product Type--</option>
+                    <option value="0" selected>--Select Product Type--</option>
                     @foreach($producttypes as $producttype)
                         <option value="{{ $producttype->producttype_id }}">{{ $producttype->producttype}}</option>
                     @endforeach

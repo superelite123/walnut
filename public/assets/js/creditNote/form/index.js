@@ -64,7 +64,7 @@ $('.addBtn').on('click',() => {
         qty:parseInt($('#qty').val()),
     }
 
-    if($('#strain').val() == null || $('#pType').val() == null || item.price < 0.00001 || item.qty < 1)
+    if(item.price < 0.00001 || item.qty < 1)
     {
         alert('Enter correct value');
         return false
