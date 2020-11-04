@@ -203,7 +203,7 @@ class InvoiceNew extends Model
         $result['prValue']      = number_format((float)$promotionCost, 2, '.', '');
         $result['tax']          = number_format((float)$taxed, 2, '.', '');
         $result['credit_total'] = $this->customer != null?$this->customer->CreditNoteTotal:number_format((float)$this->credit_amount, 2, '.', '');
-        $result['credit_amount']= number_format((float)$this->credit_amount, 2, '.', '');
+        $result['credit_amount']= $this->credit_amount;
         $result['adjust_price'] = number_format((float)$adjust_price, 2, '.', '');
         $result['qty']          = $qty;
         $result['pay_date']     = $this->PayDate;
@@ -233,24 +233,26 @@ class InvoiceNew extends Model
         $items = $this->itemAP;
         foreach($items as $key => $item)
         {
-            $base_price += $item->BasePrice;
-            $discounted   += $item->discount;
-            $e_discount   += $item->e_discount;
-            $extended     += $item->Extended;
-            $adjust_price += $item->AdjustPrice;
-            $qty += $item->qty;
+            $base_price     += $item->BasePrice;
+            $discounted     += $item->discount;
+            $e_discount     += $item->e_discount;
+            $extended       += $item->Extended;
+            $adjust_price   += $item->AdjustPrice;
+            $qty            += $item->qty;
+
             if($item->Taxexempt != 1)
             {
                 $base_price_for_tax += $item->BasePrice;
             }
         }
+
         //Calculate Extra Discount
         $option = InvoiceOption::where(['order_id' => $this->id,'type' => 1])->first();
         if($option != null)
         {
-            $e_discount += $option->value;
-            $extended   -= $option->value;
-            $adjust_price -= $option->value;
+            $e_discount     += $option->value;
+            $extended       -= $option->value;
+            $adjust_price   -= $option->value;
         }
         //deduct creditnote
         $extended -= $this->credit_amount;
@@ -295,7 +297,7 @@ class InvoiceNew extends Model
         $result['discount']     = number_format((float)$discounted, 2, '.', '');
         $result['e_discount']   = number_format((float)$e_discount, 2, '.', '');
         $result['extended']     = number_format((float)$extended, 2, '.', '');
-        $result['credit_amount']= number_format((float)$this->credit_amount, 2, '.', '');
+        $result['credit_amount']= $this->credit_amount;
         $result['qty']          = $qty;
         $result['weight']       = number_format((float)$weight, 1, '.', '');
         $result['tax']          = number_format((float)$taxed, 2, '.', '');

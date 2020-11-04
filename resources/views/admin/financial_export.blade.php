@@ -130,46 +130,46 @@
           <div class="row">
               <div class="col-xs-12 invoice_table_panel">
                   <table class="table table-bordered" id="invoice_table" style='width:100%'>
-                      <thead>
-                        <th>Customer Name</th>
-                        <th>Metrc Manifest</th>
-                        <th>Invoice</th>
-                        <th>Creation Date</th>
-                        <th>Delivery Date</th>
-                        <th>Terms</th>
-                        <th>Total Qty Grams</th>
-                        <th>Total flower grams</th>
-                        <th>Total pre roll grams</th>
-                        <th>Total concentrate</th>
-                        <th>Total Invoice</th>
-                        <th>Discount</th>
-                        <th>Net Invoice</th>
-                        <th>Excise Tax</th>
-                        <th>Total Price</th>
-                        <th>Exported</th>
-                        <th>Action</th>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                      <tfoot>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                      </tfoot>
+                        <thead>
+                            <th>Customer<br>Name</th>
+                            <th>Metrc<br>Manifest</th>
+                            <th>Invoice</th>
+                            <th>Creation<br>Date</th>
+                            <th>Delivery<br>Date</th>
+                            <th>Terms</th>
+                            <th>Total<br>Qty<br>Grams</th>
+                            <th>Total<br>flower<br>grams</th>
+                            <th>Total<br>pre roll grams</th>
+                            <th>Total<br>conce<br>ntrate</th>
+                            <th>Total<br>Invoice</th>
+                            <th>Discount</th>
+                            <th>Net<br>Invoice</th>
+                            <th>Excise<br>Tax</th>
+                            <th>Total<br>Price</th>
+                            <th>Expo<br>rted</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tfoot>
                   </table>
               </div>
           </div>
