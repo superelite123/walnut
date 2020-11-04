@@ -529,6 +529,22 @@ let drawInvRestockTable = () => {
             { "data": "pass_2_button" },
             { "data": "pass_f_button" },
         ],
+        "columnDefs": [
+            { "orderable": false, "targets": 0 },
+            { "orderable": true, "targets": 1 },
+            { "orderable": true, "targets": 2 },
+            { "orderable": true, "targets": 3 },
+            { "orderable": true, "targets": 4 },
+            { "orderable": true, "targets": 5 },
+            { "orderable": false, "targets": 6 },
+            { "orderable": false, "targets": 7 },
+            { "orderable": false, "targets": 8 },
+            { "width": '10px', "targets": 0 },
+            { "width": '40px', "targets": 2 },
+            { "width": '50px', "targets": 6 },
+            { "width": '70px', "targets": 7 },
+            { "width": '90px', "targets": 8 },
+        ],
         "order": [[0, 'asc']],
         'responsive': true
     });

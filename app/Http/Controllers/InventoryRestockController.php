@@ -42,7 +42,7 @@ class InventoryRestockController extends Controller
                 if($invoice != null)
                 {
                     $tmp['orderLabel']  = $invoice->number;
-                    $tmp['retailer']    = $invoice->customer != null?$invoice->customer->secondaryc_name:'No Retailer Name';
+                    $tmp['retailer']    = $invoice->customer != null?$invoice->customer->clientname:'No Retailer Name';
                 }
             }
 
