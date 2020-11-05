@@ -122,31 +122,34 @@
                       <!-- /.input group -->
                   </div>
               </div>
-              <div class="col-xs-3"></div>
-              <div class="col-xs-3">
-                  <button class="btn btn-info pull-right"  style="margin-top:1.5em" id="export_invoice_btn" class="export"><i class="fa fa-download"></i>&nbsp;Export CSV</button>
+              <div class="col-md-2"></div>
+              <div class="col-xs-2">
+                <button class="btn btn-info pull-right"  style="margin-top:1.5em" id="btn_export_invoice_hopper" class="export"><i class="fa fa-download"></i>&nbsp;Hopper</button>
+              </div>
+              <div class="col-xs-2">
+                  <button class="btn btn-info pull-right"  style="margin-top:1.5em" id="btn_export_invoice_maritsa" class="export"><i class="fa fa-download"></i>&nbsp;Maritsa</button>
               </div>
           </div>
           <div class="row">
-              <div class="col-xs-12 invoice_table_panel">
+              <div class="col-xs-12 invoice_table_panel" style="overflow:auto">
                   <table class="table table-bordered" id="invoice_table" style='width:100%'>
                         <thead>
-                            <th>Customer<br>Name</th>
-                            <th>Metrc<br>Manifest</th>
+                            <th>Customer Name</th>
+                            <th>Metrc Manifest</th>
                             <th>Invoice</th>
-                            <th>Creation<br>Date</th>
-                            <th>Delivery<br>Date</th>
+                            <th>Creation Date</th>
+                            <th>Delivery Date</th>
                             <th>Terms</th>
-                            <th>Total<br>Qty<br>Grams</th>
-                            <th>Total<br>flower<br>grams</th>
-                            <th>Total<br>pre roll grams</th>
-                            <th>Total<br>conce<br>ntrate</th>
-                            <th>Total<br>Invoice</th>
+                            <th>Total Qty Grams</th>
+                            <th>Total flower grams</th>
+                            <th>Total pre roll grams</th>
+                            <th>Total conce ntrate</th>
+                            <th>Total Invoice</th>
                             <th>Discount</th>
-                            <th>Net<br>Invoice</th>
-                            <th>Excise<br>Tax</th>
-                            <th>Total<br>Price</th>
-                            <th>Expo<br>rted</th>
+                            <th>Net Invoice</th>
+                            <th>Excise Tax</th>
+                            <th>Total Price</th>
+                            <th>Exported</th>
                             <th>Action</th>
                         </thead>
                         <tbody>

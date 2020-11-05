@@ -11,7 +11,40 @@ list_btn_template_end += '</ul></div>'
 var invoice_table
 let customer_table
 let verification_table
-$("#export_invoice_btn").on('click', function(event) {
+$("#btn_export_invoice_hopper").on('click', function(event) {
+    $('#loadingModal').modal({
+        backdrop: 'static',
+        keyboard: false
+    })
+    $('#loadingModal').modal('show')
+    let tableInfo = invoice_table.page.info()
+    let post_data = {
+        date_range:$('#reservation').val(),
+        length:tableInfo.recordsTotal,
+        start:0,
+        type:$('input[name="invoiceType"]:checked').val(),
+    }
+    $.ajax({
+        url:'getInvoices',
+        type:'post',
+        headers:{"content-type" : "application/json"},
+        data: JSON.stringify(post_data),
+        success:(res) => {
+            console.log(res)
+            $('#loadingModal').modal('hide')
+            convertInvoicesToCSV( convert_ajax_table_data(res.data)).then(function(result){
+                let filename = 'Invoices ' + $("#reservation").val();
+                exportCSVfile(filename,result);
+            })
+        },
+        error:(e) => {
+            $('#loadingModal').modal('hide')
+            swal(e.statusText, e.responseJSON.message, "error")
+        }
+    })
+
+});
+$("#btn_export_invoice_maritsa").on('click', function(event) {
     $('#loadingModal').modal({
         backdrop: 'static',
         keyboard: false
