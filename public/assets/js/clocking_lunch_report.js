@@ -17,7 +17,7 @@ var convertToCSVCompliance = (objArray) => {
     return new Promise(function(next_operation){
 
         var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-        var str = "id,Harvester,Clock In,Clokc Out,Clocked In Time\r\n";
+        var str = "id,Driver,Lunch In,Lunch Out,Lunched In Time\r\n";
 
         for (var i = 0; i < array.length; i++) {
             var line = '';
@@ -57,13 +57,10 @@ var exportCSVfile = (filename,csv) =>{
 let createTable = (date_range) => {
     report_table = $('#tbl_report').DataTable({
         "ajax": {
-            url: "_get_clocking_data",
+            url: "_get_clocking_lunch_data",
             type: 'POST',
             "data": function ( d ) {
-                
                 d.date_range=date_range;
-                // d.custom = $('#myInput').val();
-                // etc
             },
             dataSrc: function ( json ) {
                 
@@ -72,7 +69,7 @@ let createTable = (date_range) => {
                     if(json[i].user != null)
                         json[i].name        = json[i].user.firstname
                     else
-                        json[i].name        = 'No Harvester'
+                        json[i].name        = 'No Driver in lunch'
                     json[i].start_time  = json[i].start_time.substring(0,16)
                     json[i].end_time    = json[i].end_time.substring(0,16)
                     json[i].clocked_in  = time_diff(json[i].start_time.substring(11,16),json[i].end_time.substring(11,16))
@@ -120,7 +117,7 @@ $('#tbl_report tbody').on('click', '.edit_btn', function () {
     const end_time   = row.data().end_time.split(' ')[1]
     $('#picker_s_time').val(start_time)
     $('#picker_e_time').val(end_time)
-
+    
     $('#modal_time_range').modal('show')
 })
 
@@ -150,7 +147,7 @@ $('.confirmBtn').click(() => {
 
     swal({
         title: "Are You Sure",
-        text: "You are about to change work time?",
+        text: "You are about to change lunch time?",
         type: "info",
         showCancelButton: true,
         closeOnConfirm: true,
@@ -159,7 +156,7 @@ $('.confirmBtn').click(() => {
             $.ajax({
                 url:'_change_time_range',
                 type:'post',
-                data:'row_id=' + sel_row + '&s_time=' + s_time + '&e_time=' + e_time,
+                data:'row_id=' + sel_row + '&s_time=' + s_time + '&e_time=' + e_time + '&mode=1',
                 async:false,
                 success:(res) => {
                     $('#modal_time_range').modal('hide')

@@ -29,6 +29,7 @@ Route::post('get_harvest_chart_data','HomeController@get_harvest_chart_data');
 Route::post('get_strain_chart_data','HomeController@get_strain_chart_data');
 Route::get('/clocking','HomeController@clocking');
 Route::get('_set_clock_in','HomeController@_set_clock_in');
+Route::get('_set_lunch_in','HomeController@_set_lunch_in');
 
 Route::group( ['middleware' => ['auth','permission:Administration']], function() {
     Route::resource('users', 'UserController');
@@ -39,7 +40,9 @@ Route::group( ['middleware' => ['auth','permission:Administration']], function()
     Route::post('_save_permission','PermissionController@save');
     Route::get('_delete_permission/{id}','PermissionController@delete');
     Route::get('clocking_report','HomeController@clocking_report');
+    Route::get('clocking_lunch_report','HomeController@clocking_lunch_report');
     Route::post('_get_clocking_data','HomeController@_get_clocking_data');
+    Route::post('_get_clocking_lunch_data','HomeController@_get_clocking_lunch_data');
     Route::post('_change_time_range','HomeController@_change_time_range');
     Route::post('_get_clocking_chart_data','HomeController@_get_clocking_chart_data');
 });

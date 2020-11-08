@@ -374,6 +374,12 @@ return [
             'can'         => 'time_keeping'
         ],
         [
+            'text'        => 'Lunch Report',
+            'url'         => 'clocking_lunch_report',
+            'icon'        => 'fas fa-clock',
+            'can'         => 'time_keeping'
+        ],
+        [
             'text'        => 'Metrc Tag Search',
             'url'         => 'metrc_search',
             'icon'        => 'fas fa-clock',
@@ -462,13 +468,13 @@ return [
             'submenu' => [
                 [
                     'text' => 'Clients',
-                    'url'  => 'customers2',
+                    'url'  => 'customers',
                     'icon' => 'fas fa-users',
                     'can' => 'c_relations_clients',
                 ],
    /*                             [
                     'text' => 'Clients',
-                    'url'  => 'customers',
+                    'url'  => 'customers2',
                     'icon' => 'fas fa-users',
                     'can' => 'c_relations_clients',
                 ],*/

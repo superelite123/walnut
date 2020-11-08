@@ -12,6 +12,7 @@ use App\Models\LocationArea;
 use App\Models\Invoice;
 use App\Models\ContactPerson;
 use App\Models\Clocking;
+use App\Models\ClockingDriver;
 use JavaScript;
 use DB;
 use Spatie\Permission\Models\Role;
@@ -39,7 +40,7 @@ class HomeController extends Controller
     public function index()
     {
 
-    //controls defailt chart date
+        //controls defailt chart date
         $first_day_this_month = date('Y-m-t', strtotime('today - 31 days')); // hard-coded '01' for first day
         $last_day_this_month  = date('Y-m-t');
 
@@ -107,10 +108,13 @@ class HomeController extends Controller
     public function clocking(Request $request)
     {
         $data['harvesters'] = ContactPerson::where('contacttype',5)->get();
+        $data['drivers']    = ContactPerson::where('contacttype',12)->get();
         $data['clocking_harvesters']  = Clocking::with('user')->where('status',1)->get();
+        $data['clocking_drivers']     = ClockingDriver::with('user')->where('status',1)->get();
         $data['mode'] = $request->mode == null?1:$request->mode;
         JavaScript::put([
             'clocking_harvesters' => $data['clocking_harvesters'],
+            'clocking_drivers'=> $data['clocking_drivers'],
         ]);
 
         return view('clocking',$data);
@@ -140,7 +144,30 @@ class HomeController extends Controller
 
         return $data['clocking_harvesters'];
     }
+    /**
+     * @
+     */
+    public function _set_lunch_in(Request $request)
+    {
+        $uid = $request->user_id;
+        if($request->status == '1')
+        {
+            $clock = new ClockingDriver;
+            $clock->user_id = $uid;
+            $clock->start_time = date('Y-m-d H:i:s');
+            $clock->status = 1;
+            $clock->save();
+        }
+        else
+        {
+            $clock = ClockingDriver::where('user_id',$uid)->where('status',1)->first();
+            $clock->status = 0;
+            $clock->end_time = date('Y-m-d H:i:s');
+            $clock->save();
+        }
 
+        return response()->json(['success' => 1]);
+    }
     public function clocking_report()
     {
         $s_date = date('m/d/Y', strtotime('today - 31 days'));
@@ -166,16 +193,47 @@ class HomeController extends Controller
         {
             $date_range = $this->change_date_format($request->date_range);
         }
-
         return response()->json(
             Clocking::with('user')
             ->where('status',0)
-            ->whereRaw('DATE(end_time) >= ?', [$date_range['start_date']])
+            ->whereRaw('DATE(start_time) >= ?', [$date_range['start_date']])
             ->whereRaw('DATE(end_time) <= ?', [$date_range['end_date']])
             ->get()
         );
     }
+    public function clocking_lunch_report()
+    {
+        $s_date = date('m/d/Y', strtotime('today - 31 days'));
+        $e_date = date('m/d/Y');
 
+        JavaScript::put([
+            's_date' => $s_date,
+            'e_date' => $e_date,
+        ]);
+
+        return view('clocking_lunch_report');
+    }
+    public function _get_clocking_lunch_data(Request $request)
+    {
+        $date_range = [];
+        if($request->date_range == null)
+        {
+            $date_range['start_date'] = date('m/d/Y', strtotime('today - 31 days'));
+            $date_range['end_date']   = date('Y-m-d');
+        }
+        else
+        {
+            $date_range = $this->change_date_format($request->date_range);
+        }
+
+        return response()->json(
+            ClockingDriver::with('user')
+            ->where('status',0)
+            ->whereRaw('DATE(start_time) >= ?', [$date_range['start_date']])
+            ->whereRaw('DATE(end_time) <= ?', [$date_range['end_date']])
+            ->get()
+        );
+    }
     private function change_date_format($date_range)
     {
         if($date_range == null)
@@ -201,7 +259,10 @@ class HomeController extends Controller
         $row_id = $request->row_id;
         $s_time = $request->s_time;
         $e_time = $request->e_time;
-        $clocking = Clocking::find($row_id);
+        if($request->mode == 1)
+            $clocking = ClockingDriver::find($row_id);
+        else
+            $clocking = Clocking::find($row_id);
         $clocking->start_time = explode(' ',$clocking->start_time)[0].' '.$s_time;
         $clocking->end_time = explode(' ',$clocking->end_time)[0].' '.$e_time;
         $clocking->save();

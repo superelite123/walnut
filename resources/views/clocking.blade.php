@@ -44,6 +44,8 @@
                     <ul class="nav nav-tabs">
                         <li <?php echo $mode == 1?'class="active"':"";?> ><a href='javascript:switchTab(1)' >Clock In</a></li>
                         <li <?php echo $mode == 2?'class="active"':"";?> ><a href='javascript:switchTab(2)'>Clock Out</a></li>
+                        <li <?php echo $mode == 3?'class="active"':"";?> ><a href='javascript:switchTab(3)'>Lunch Break</a></li>
+                        <li <?php echo $mode == 4?'class="active"':"";?> ><a href='javascript:switchTab(4)'>Return from Lunch</a></li>
                         <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
                     </ul>
                     <div class="tab-content">
@@ -89,6 +91,52 @@
                                 </div>
                             </div>
                         </div>
+                        <!--./Lunch Break-->
+                        <div class="tab-pane <?php echo $mode == 3?'active':'';?>" id="tab_3">
+                            <div class='row'>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Name ::</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                            <i class="fas fa-dna"></i>
+                                            </div>
+                                            <select class="form-control select2" style="width: 100%;" name="drivers" id="drivers">
+                                                <option value="0"></option>
+                                                @foreach ($drivers as $driver)
+                                                    <option value="{{ $driver->contact_id }}">{{ $driver->lastname }}, {{ $driver->firstname }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class='btn btn-lg btn-info' id='btn_lunch_in' style='margin-top:20px'>Lunch Break</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Lunch Break-->
+                        <!--Return From Lunch-->
+                        <div class="tab-pane <?php echo $mode == 4?'active':'';?>" id="tab_4">
+                            <div class="row">
+                                <div class='col-md-12'>
+                                    <h2 id='now_time'></h2>
+                                </div>
+                                <div class="col-md-12">
+                                    <table class='table table-striped table-bordered' id='tbl_out_lunch'>
+                                        <thead>
+                                            <th>Name</th>
+                                            <th>Start Time</th>
+                                            <th>Return From Lunch</th>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!--./Return from Lunch-->
                     </div>
                 </div>
             </div>

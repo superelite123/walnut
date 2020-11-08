@@ -1589,8 +1589,8 @@ class CC extends Controller
         $config = config('grocerycrud');
         $crud = new GroceryCrud($config, $database);
         $crud->setTheme('Walnut');
-        $crud->setThemePath('../../beta1/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
-        $crud->setTable('customers');
+        $crud->setThemePath('../../workshop/vendor/grocerycrud/enterprise/src/GroceryCrud/Themes/');
+        $crud->setTable('customers_lostintech');
         $crud->setSubject('Customer', 'Customers');
         $crud->displayAs(array('clientname' => 'Client', 'legalname' => 'Legal Name', 'primarycontact' => 'Primary Contact', 'companyemail' => 'Email to send invoice','companyphone' =>'Company Phone','secondaryc_name' =>'
         2nd Contact Name','secondaryc_phone' =>'2nd Company Phone','secondaryc_email' =>'Retailers email','deliverye' =>'Delivery email','deliveryc' =>'Delivery Contact','deliveryp' =>'Delivery Phone','deliveryday' =>'Delivery Days','salesrep' =>'Sales Rep','accountmanager' =>'Account Manager','licensenumber' =>'License Number','licensetype' =>'License Type','licensevalid' =>'License Valid','licenseexpire' =>'License Expires','licenseul' =>'Uploaded License','servicezone' =>'Service Zone'));
@@ -1618,7 +1618,8 @@ class CC extends Controller
             'css_files' => $css_files,
             'js_files' => $js_files
         ]);
-    }public function customers2()
+    }
+    public function customers2()
     {
         $database = $this->_getDatabaseConnection2();
         $config = config('grocerycrud');
