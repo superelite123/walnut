@@ -110,8 +110,8 @@
     </div>
     <!-- /.row -->
 
-    <div class="row col-md-12">
-      <div class="col-xs-8">
+    <div class="row" style="margin-top:30px;">
+      <div class="col-md-8">
         <h4>
           Signature
         </h4>
@@ -123,7 +123,7 @@
           @endif
         </div>
       </div>
-      <div class="col-xs-4">
+      <div class="col-md-4">
         <div class="table-responsive">
             @include('shared.invoice_total')
         </div>
