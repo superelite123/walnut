@@ -108,7 +108,7 @@ class HomeController extends Controller
     public function clocking(Request $request)
     {
         $data['harvesters'] = ContactPerson::where('contacttype',5)->get();
-        $data['drivers']    = ContactPerson::where('contacttype',12)->get();
+        $data['drivers']    = ContactPerson::where('contacttype',5)->get();
         $data['clocking_harvesters']  = Clocking::with('user')->where('status',1)->get();
         $data['clocking_drivers']     = ClockingDriver::with('user')->where('status',1)->get();
         $data['mode'] = $request->mode == null?1:$request->mode;
@@ -198,6 +198,7 @@ class HomeController extends Controller
             ->where('status',0)
             ->whereRaw('DATE(start_time) >= ?', [$date_range['start_date']])
             ->whereRaw('DATE(end_time) <= ?', [$date_range['end_date']])
+            ->orderBy('end_time','desc')
             ->get()
         );
     }
@@ -231,6 +232,7 @@ class HomeController extends Controller
             ->where('status',0)
             ->whereRaw('DATE(start_time) >= ?', [$date_range['start_date']])
             ->whereRaw('DATE(end_time) <= ?', [$date_range['end_date']])
+            ->orderBy('end_time','desc')
             ->get()
         );
     }

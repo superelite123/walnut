@@ -3,7 +3,14 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h4><span>Current Time: <span id='now_time'></span></span><span style="margin-left:20px;">On site Members: {{$clocking_harvesters->count()}}</span></h4>
+    <h4><span>Current Time: <span id='now_time'></span></span><span style="margin-left:20px;">On site Members: 
+    @if( $mode == 1 || $mode == 2)
+        {{ $clocking_harvesters->count() }}
+    @endif
+    @if( $mode == 3 || $mode == 4)
+        {{ $clocking_drivers->count() }}
+    @endif
+    </span></h4>
 @stop
 @section('css')
   <link rel="stylesheet" href="{{ asset('assets/component/css/daterangepicker/daterangepicker.css') }}">

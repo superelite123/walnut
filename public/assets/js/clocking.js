@@ -169,34 +169,6 @@ $('#tbl_out_lunch tbody').on('click', '.btn_clock_out', function () {
     let user_id = parseInt(tr.attr('user_id'));
     swal({
         title: "Are You Sure",
-        text: "You are about to clock out",
-        type: "info",
-        showCancelButton: true,
-        closeOnConfirm: false,
-        showLoaderOnConfirm: false
-        },
-        function () {
-            $.get({
-                url:'_set_clock_in',
-                async:false,
-                data:'user_id='+user_id + '&status=0',
-                success:(res) => {
-                    swal("You are clocked out now!", "", "success")
-                    // clocking_harvesters = res
-                    // createTable()
-                    location.reload()
-                },
-                error:(e) => {
-                    swal("Error has been happened!", "", "danger")
-                }
-            })
-    })
-})
-$('#tbl_out_lunch tbody').on('click', '.btn_clock_out', function () {
-    let tr = $(this).parents('tr');
-    let user_id = parseInt(tr.attr('user_id'));
-    swal({
-        title: "Are You Sure",
         text: "You are about to lunch out",
         type: "info",
         showCancelButton: true,
