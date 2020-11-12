@@ -394,7 +394,7 @@ $('#invoice_table tbody').on('click','.exported_chk',function(){
         data:'id=' + invoice_id,
         type:'post',
         success:(res) => {
-            createInvoicesTable($("#reservation").val())
+            //createInvoicesTable($("#reservation").val())
         },
         error:(e) => {
         swal(e.statusText, e.responseJSON.message, "error")
