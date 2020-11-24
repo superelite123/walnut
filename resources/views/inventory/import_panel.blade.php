@@ -26,9 +26,6 @@
         <!-- /.box-header -->
 
         <div class="box-body">
-            <div class="alert">
-
-            </div>
             <form action="importInventory" method="POST" enctype="multipart/form-data">
                 @csrf
             <div class="row">
@@ -40,6 +37,183 @@
                     <button id="df" class="btn btn-info btn-lg"><i class="fas fa-save"></i>&nbsp;&nbsp;&nbsp;Import</button>
                 </div>
             </div>
+            </form>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <div class="box box-info">
+        <div class="box-header with-border">
+          <h1>Inventory Bulk Import</h1>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+            <form action="bulk_import_confirm" method="POST">
+              @csrf
+              <div class="row">
+                <!-- metrc tag -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <label>First Metrc Tag:</label>
+                      <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <input type="text" class="form-control" id="metrc" name="metrc" value="{{ old('metrc') }}" placeholder="Enter Metrc Tag">
+                      </div>
+                      <!-- /.input group -->
+                      <span class="error"><p style='color:red'><?php if ($errors->has('metrc')) echo $errors->first('metrc');?></p></span>
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+
+                <!-- count -->
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Count:</label>
+                        <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <input type="number" class="form-control" id="count" name="count"  value="{{ old('count',1) }}">
+                        </div>
+                        <!-- /.input group -->
+                        <span class="error">
+                          <?php 
+                            if ($errors->has('count')) 
+                              foreach ($errors->get('count') as $message) 
+                              {
+                          ?>
+                          <p style='color:red'>
+                              {{ $message }}
+                          </p>
+                          <?php
+                              }
+                          ?>
+                      </span>
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+
+                <!-- Inventory -->
+                <div class="col-md-3">
+                  <div class="form-group">
+                      <label>Inventory</label>
+                      <div class="input-group">
+                        <div class="input-group-addon">
+                          <i class="fas fa-sliders-h"></i>
+                        </div>
+                        <select class="form-control select2" style="width: 100%;" name="i_type" id="i_type">
+                          <option value="0" selected>---Select Where to save---</option>
+                          <option value="2" <?php if(old('i_type') == 2) echo 'selected';?>>Inv 1</option>
+                          <option value="1" <?php if(old('i_type') == 1) echo 'selected';?>>Inv 2</option>
+                        </select>
+                      </div>
+                      <!-- /.input group -->
+                      <span class="error"><p style='color:red'><?php if ($errors->has('i_type')) echo $errors->first('i_type');?></p></span>
+                  </div>
+                </div>
+
+                <!-- Blank col-md-12 -->
+                <div class="col-md-12"></div>
+
+                <!-- strains -->
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Strain</label>
+                        <div class="input-group">
+                          <div class="input-group-addon">
+                            <i class="fas fa-sliders-h"></i>
+                          </div>
+                          <select class="form-control select2" style="width: 100%;" name="strain" id="strain">
+                            <option value="0" selected>---Select Strain---</option>
+                            @foreach($strains as $strain)
+                              <option value="{{ $strain->itemname_id }}" <?php if(old('strain') == $strain->itemname_id) echo 'selected';?>>{{ $strain->strain }}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                        <!-- /.input group -->
+                        <span class="error"><p style='color:red'><?php if ($errors->has('strain')) echo $errors->first('strain');?></p></span>
+                    </div>
+                </div>
+
+                <!-- p_type -->
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Product Type</label>
+                        <div class="input-group">
+                          <div class="input-group-addon">
+                            <i class="fas fa-sliders-h"></i>
+                          </div>
+                          <select class="form-control select2" style="width: 100%;" name="p_type" id="p_type">
+                            <option value="0" selected>---Select Product Type---</option>
+                            @foreach($p_types as $p_type)
+                              <option value="{{ $p_type->producttype_id }}" <?php if(old('p_type') == $p_type->producttype_id) echo 'selected';?>>{{ $p_type->producttype }}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                        <!-- /.input group -->
+                        <span class="error"><p style='color:red'><?php if ($errors->has('p_type')) echo $errors->first('p_type');?></p></span>
+                    </div>
+                </div>
+
+                <!-- weight -->
+                <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Weight:</label>
+                      <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <input type="number" class="form-control" id="weight" name="weight" value="{{ old('weight') }}">
+                      </div>
+                      <span class="error">
+                        <?php 
+                          if ($errors->has('weight')) 
+                          foreach ($errors->get('weight') as $message) 
+                          {
+                        ?>
+                        <p style='color:red'>
+                          {{ $message }}
+                        </p>
+                        <?php
+                          }
+                        ?>
+                      </span>
+                      <!-- /.input group -->
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+
+                <!-- Parent Harvest ID -->
+                <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Parent Harvest ID:</label>
+                      <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <select class="form-control select2" style="width: 100%;" name="harvest" id="harvest">
+                          <option value="0" selected>---Select Harvest---</option>
+                          @foreach($harvests as $harvest)
+                            <option value="{{ $harvest->id }}" <?php if(old('harvest') == $harvest->id) echo 'selected';?>>{{ $harvest->harvest_batch_id }}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                      <!-- /.input group -->
+                      <span class="error"><p style='color:red'><?php if ($errors->has('harvest')) echo $errors->first('harvest');?></p></span>
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+                <div class="col-md-12">
+                  <input type="submit" class="btn btn-info" value="Confirm">
+                </div>
+              </div>
             </form>
         </div>
         <!-- /.box-body -->
@@ -62,6 +236,7 @@
                 toastr.warning('{{ session('warning') }}');
         });
     @endif
+    $('.select2').select2();
 </script>
 @stop
 

@@ -366,6 +366,7 @@ Route::group( [ 'prefix' => 'order_fulfilled','middleware' => ['auth','permissio
  */
 Route::group( [ 'prefix' => 'order','middleware' => ['auth','permission:order_report']],function(){
     Route::get('report','OrderController@report');
+    Route::get('fa_export_log','OrderExportLogController@index');
     Route::post('_get_report_list','OrderController@_get_report_list');
 });
 Route::get('order_fulfilled/_set_status','OrderFulFilledController@setOrderStatus');
@@ -394,6 +395,10 @@ Route::group( ['prefix' => 'inventory','middleware' => ['auth']],function(){
     Route::post('_split','InventoryController@splitItem');
     Route::get('import','InventoryController@importPanel');
     Route::post('importInventory','InventoryController@importInventory');
+    Route::post('bulk_import_confirm','InventoryController@bulk_import_confirm');
+    Route::post('bulk_import','InventoryController@bulk_import');
+    Route::get('archive_imported','InventoryController@archive_imported');
+    Route::post('_approve_imported','InventoryController@_approve_imported');
 });
 /**
  * NDA Management

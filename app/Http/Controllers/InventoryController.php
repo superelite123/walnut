@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
+use Config;
 //Models
 use App\Models\FGInventory;
 use App\Models\InventoryVault;
@@ -14,6 +15,8 @@ use App\Models\Producttype;
 use App\Models\Strainame;
 use App\Models\InventoryIgnored;
 use App\Models\InventoryVSIgnored;
+use App\Models\UPController;
+
 class InventoryController extends Controller
 {
     //
@@ -225,7 +228,11 @@ class InventoryController extends Controller
 
     public function importPanel()
     {
-        return view('inventory.import_panel');
+        $data = [];
+        $data['strains']    = Strainame::orderby('strain')->get();
+        $data['p_types']    = Producttype::where('onordermenu',1)->orderby('producttype')->get();
+        $data['harvests']   = Harvest::where('archived',0)->orderBy('created_at','desc')->get();
+        return view('inventory.import_panel',$data);
     }
     public function importInventory(Request $request)
     {
@@ -254,7 +261,7 @@ class InventoryController extends Controller
                     $temp['um'] = $row[8];
                     $temp['weight'] = $row[9];
                     $temp['qtyonhand'] = $row[10];
-                    $temp['status'] = $row[11];
+                    $temp['status'] = 14;
                     $temp['bestbefore'] = $row[12];
                     $temp['harvested_date'] = $row[13];
                     $temp['datelastmodified'] = date('Y-m-d H:i:s');
@@ -284,7 +291,163 @@ class InventoryController extends Controller
         {
             return  redirect('inventory/import')->with('warning','No Selected Files');
         }
+    }
 
+    public function bulk_import_confirm(Request $request)
+    {
+        $messages = [
+            'required'  => 'The :attribute field is required.',
+            'numeric'   => 'The :attribute field is number field',
+            'gt'        => 'The :attribute field should be great than 1',
+            'min'       => 'The :attribute field\'s length should be great than 5',
+            'max'       => 'The :attribute field should be less than 99999',
+        ];
+        $validatedData = $request->validate([
+            'metrc'     => 'required|min:5',
+            'count'     => 'required|numeric|gt:0',
+            'i_type'    => 'gt:0',
+            'strain'    => 'gt:0',
+            'p_type'    => 'gt:0',
+            'weight'    => 'required|gt:0|max:99999',
+            'harvest'   => 'gt:0',
+        ],$messages);
+        $nCutPoint = strlen($request->metrc) - 4;
 
+        $metrcTag = [substr($request->metrc,0,$nCutPoint),substr($request->metrc,$nCutPoint,strlen($request->metrc))];
+        $data = [];
+        $data['bulk_import_data'] = [];
+        for($i = 0; $i < $request->count; $i ++)
+        {
+            $data['bulk_import_data'][] = [
+                'metrc'     => $metrcTag[0].(string)((int)$metrcTag[1] + $i),
+                'strain'    => $request->strain,
+                'p_type'    => $request->p_type,
+                'weight'    => $request->weight,
+                'harvest'   => $request->harvest,
+                'i_type'   => $request->i_type,
+            ];
+        }
+        $data['strains'] = Strainame::orderby('strain')->get();
+        $data['p_types'] = Producttype::where('onordermenu',1)->orderby('producttype')->get();
+        $data['harvests'] = Harvest::where('archived',0)->orderBy('created_at','desc')->get();
+        $data['default_strain'] = $request->strain;
+        $data['default_p_type'] = $request->p_type;
+        $data['default_harvest'] = $request->harvest;
+        //print_r($data['bulk_import_data']);exit;
+        return view('inventory.import_bulk_confirm',$data);
+    }
+
+    public function bulk_import(Request $request)
+    {
+        $default_upc = UPController::where([
+            ['strain' , $request->default_strain],
+            ['type' , $request->default_p_type],
+        ])->first();
+        $default_harvest = Harvest::find($request->default_harvest);
+        $insert_data = [];
+        
+        foreach($request->items as $item)
+        {
+            $temp = $item;
+            unset($temp['i_type']);
+            //set upc_fk
+            $upc = $default_upc;
+            
+            if($item['strainname'] != $request->default_strain || $item['asset_type_id'] != $request->default_p_type)
+            {
+                $upc = UPController::where(
+                    [
+                        ['strain' , $item['strainname']],
+                        ['type' , $item['asset_type_id']],
+                    ]
+                )->first();
+            }
+
+            $temp['upc_fk'] = $upc != null?$upc->id:1;
+            //
+            $temp['um'] = 4;
+            $temp['qtyonhand'] = 1;
+            $temp['status'] = 14;
+            //set harvest_id
+            $harvest = $default_harvest;
+            if($item['parent_id'] != $request->default_harvest)
+            {
+                $harvest = Harvest::find($item['parent_id']);
+            }
+            $temp['harvested_date'] = $harvest != null?date('Y-m-d',strtotime($harvest->created_at)):date('Y-m-d');
+            $temp['datelastmodified'] = date('Y-m-d H:i:s');
+            $temp['created_at'] = date('Y-m-d H:i:s');
+            $temp['updated_at'] = date('Y-m-d H:i:s');
+            
+            if($item['i_type'] == '1')
+            {
+                $model = FGInventory::updateOrInsert(
+                    ['metrc_tag' => $temp['metrc_tag']],
+                    $temp
+                );
+            }
+            else
+            {
+                $model = InventoryVault::updateOrInsert(
+                    ['metrc_tag' => $temp['metrc_tag']],
+                    $temp
+                );
+            }
+        }
+
+        return redirect('inventory/import')->with('success',count($request->items).'Inventory is imported successfully!');
+    }
+
+    public function archive_imported()
+    {
+        $inventory = FGInventory::where('status','14')->get();
+        $inventory = $inventory->merge(InventoryVault::where('status','14')->get());
+        
+        $sorted_data = [];
+        foreach($inventory as $item)
+        {
+            $temp_item = $item;
+            $temp_item->batch_id        = $item->HarvestBatchID;
+            $temp_item->strain_name     = $item->StrainLabel;
+            $temp_item->p_type          = $item->PType;
+            $temp_item->i_type_label    = $item->type == 1?'Inv 2':'Inv 1';
+            $temp_item->upc_label       = $item->UPCLabel;
+            $temp = [
+                        'id' => $item->parent_id,
+                        'batch_id' => $item->HarvestBatchID,
+                        'strain_label'  => $item->StrainLabel,
+                        'type'          => $item->PType,
+                        'harvested_date'=> $item->harvested_date,
+                        'inventory' => [$temp_item]];
+            $b_exist = false;
+            foreach($sorted_data as $key => $sorted_item)
+            {
+                if($sorted_item['id'] == $item->parent_id)
+                {
+                    $sorted_data[$key]['inventory'][] = $item;
+                    $b_exist = true;
+                    break;
+                }
+            }
+            if(!$b_exist)
+            {
+                $sorted_data[] = $temp;
+            }
+        }
+        return view('inventory.archive_imported',['data' => $sorted_data]);
+    }
+
+    public function _approve_imported(Request $request)
+    {
+        FGInventory::where([
+            ['parent_id',$request->id],
+            ['status',14],
+        ])->update(['status' => 1]);
+        InventoryVault::where([
+            ['parent_id',$request->id],
+            ['status',14],
+        ])->update(['status' => 1]);
+
+        return response()->json(['success' => 1]);
     }
 }

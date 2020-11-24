@@ -12,6 +12,7 @@ use App\Models\InvoiceNew;
 use App\Models\InvoiceItemAP;
 use App\Models\InvoiceFulfilledItem;
 use App\Models\InvoiceGood;
+use App\Models\InvoiceExportLog;
 use PDF;
 use File;
 class OBaseController extends Controller
@@ -309,6 +310,16 @@ class OBaseController extends Controller
         if($exporting == 1)
         {
             $bCond->update(['exported' => date('Y-m-d H:i:s')]);
+            $exportLogs = [];
+            $user_id = auth()->user()->id;
+            foreach($orders as $order)
+            {
+                $exportLogs[] = ['user_id' => $user_id, 'invoice_id' => $order->id, 
+                                 'created_at' => date('Y-m-d H:i:s'),
+                                 'updated_at' => date('Y-m-d H:i:s')];
+
+            }
+            InvoiceExportLog::insert($exportLogs);
         }
         return array(
 			"draw"			=> intval($request->input('draw')),

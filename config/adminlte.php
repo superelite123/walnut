@@ -199,6 +199,12 @@ return [
                     'can' => 'order_report',
                 ],
                 [
+                    'text'        => 'FA Export Logs',
+                    'url'         => 'order/fa_export_log',
+                    'icon'        => 'fas fa-calculator',
+                    'can' => 'order_finacial',
+                ],
+                [
                     'text'        => 'Report Page',
                     'url'         => 'order/report',
                     'icon'        => 'fas fa-calculator',
@@ -426,6 +432,12 @@ return [
                 [
                     'text' => 'Import',
                     'url'  => 'inventory/import',
+                    'icon' => 'fas fa-save',
+                    'can' => 'inventory_import',
+                ],
+                [
+                    'text' => 'Awaiting Approval',
+                    'url'  => 'inventory/archive_imported',
                     'icon' => 'fas fa-save',
                     'can' => 'inventory_import',
                 ],

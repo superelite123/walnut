@@ -44,7 +44,18 @@ class Inventory extends Model
     {
         return $this->hasOne(InventoryRestockLog::class,'fgasset_id');
     }
-
+    public function getHarvestBatchIDAttribute()
+    {
+        return $this->Harvest != null?$this->Harvest->harvest_batch_id:'';
+    }
+    public function getStrainLabelAttribute()
+    {
+        return $this->Strain != null?$this->Strain->strain:'';
+    }
+    public function getPTypeAttribute()
+    {
+        return $this->AssetType != null?$this->AssetType->producttype:'';
+    }
     public function Room()
     {
         return $this->belongsTo(LocationArea::class,'cultivator_company_id');
