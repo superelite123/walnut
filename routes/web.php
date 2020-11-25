@@ -28,6 +28,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::post('get_harvest_chart_data','HomeController@get_harvest_chart_data');
 Route::post('get_strain_chart_data','HomeController@get_strain_chart_data');
 Route::get('/clocking','HomeController@clocking');
+Route::get('/clocking_distro','HomeController@clockingDistro');
 Route::get('_set_clock_in','HomeController@_set_clock_in');
 Route::get('_set_lunch_in','HomeController@_set_lunch_in');
 
@@ -403,7 +404,7 @@ Route::group( ['prefix' => 'inventory','middleware' => ['auth']],function(){
 /**
  * NDA Management
  */
-Route::group( ['prefix' => 'nda_management','middleware' => ['auth']],function(){
+Route::group( ['prefix' => 'nda_management','middleware' => ['auth','permission:Administration']],function(){
     Route::get('home','NdaManagementController@home');
     Route::get('view/{id}','NdaManagementController@view');
     Route::post('get_ndaLogs','NdaManagementController@getNdaLogs');

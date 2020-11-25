@@ -120,7 +120,17 @@ class HomeController extends Controller
         return view('clocking',$data);
 
     }
+    public function clockingDistro(Request $request)
+    {
+        $data['drivers'] = ContactPerson::where('contacttype',12)->get();
+        $data['clocking_drivers']     = ClockingDriver::with('user')->where('status',1)->get();
+        $data['mode'] = $request->mode == null?1:$request->mode;
+        JavaScript::put([
+            'clocking_drivers'=> $data['clocking_drivers'],
+        ]);
 
+        return view('clocking_distro',$data);
+    }
     public function _set_clock_in(Request $request)
     {
         $uid = $request->user_id;
