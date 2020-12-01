@@ -128,7 +128,36 @@
       <!-- /.col -->
       <div class="col-xs-6">
         <div class="table-responsive">
-            @include('shared.invoice_total')
+          <table class="table">
+            <tr>
+              <th style="width:50%">Total Base Price:</th>
+              <td>${{ $invoice->TotalInfo['base_price'] }}</td>
+            </tr>
+            <tr>
+              <th style="width:50%">Discount Amount:</th>
+              <td>${{ $invoice->TotalInfo['discount'] }}</td>
+            </tr>
+            <tr>
+                <th style="width:50%">Total Extra Discount:</th>
+                <td>${{ $invoice->TotalInfo['e_discount'] }}</td>
+              </tr>
+            <tr>
+              <th style="width:50%">Promotion Value:</th>
+              <td>${{ $invoice->TotalInfo['promotion'] }}</td>
+            </tr>
+            <tr>
+              <th style="width:50%">Sub Total:</th>
+              <td>${{ $invoice->TotalInfo['extended'] }}</td>
+            </tr>
+            <tr>
+              <th>CA Excise Tax Based On Total Base Price @27%:</th>
+              <td>${{ $invoice->TotalInfo['tax'] }}</td>
+            </tr>
+            <tr>
+              <th>Total Due:</th>
+              <td>${{ $invoice->TotalInfo['adjust_price'] }}</td>
+            </tr>
+          </table>
         </div>
       </div>
       <!-- /.col -->
@@ -220,9 +249,6 @@
     </div>
     @if (!$isDelivered)
     <div class="row">
-        <div class="col-md-12">
-            <h3>Delivery</h3>
-        </div>
       <div class="col-md-5">
           <h4>
             Client Sign - Signature below acknowledges <br>receipt of above product and confirmation <br>of invoice terms as outlined above
@@ -238,7 +264,7 @@
       <div class="col-md-2" style='margin-left:20px;'>
         <button style='margin-top:100px;' class="btn btn-info" onclick="completeRejection()">Complete Rejection</button>
         <br>
-        <button style='margin-top:20px;' class="btn btn-info" onclick="partialRejection()">Partial Rejection&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+        <button style='margin-top:20px;' class="btn btn-info" onclick="partialRejection()">Partial Rejection</button>
       </div>
       <div class="col-md-4">
         <div class="col-xs-8">
@@ -250,7 +276,7 @@
               <div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
               </div>
-              <input type="text" class="form-control pull-right" id="sign_date" value="{{ $invoice->SignDateD }}">
+              <input type="text" class="form-control pull-right" id="sign_date" value="{{ date('Y-m-d') }}" readonly>
             </div>
             <!-- /.input group -->
           </div>
@@ -275,12 +301,6 @@
     </div>
     @endif
     <div class="row">
-        <div class="col-md-12"><hr></div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Payment Collections</h3>
-        </div>
         <div class='col-md-12'>
             <div class="col-xs-5">
                 <h4>
@@ -347,7 +367,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="text" class="form-control pull-right calendar" id="inputCollectionDate" value="{{ date('Y-m-d') }}">
+                            <input type="text" class="form-control pull-right calendar" id="inputCollectionDate" value="{{ date('Y-m-d') }}" readonly>
                         </div>
                         <!-- /.input group -->
                     </div>

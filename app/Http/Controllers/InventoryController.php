@@ -10,13 +10,15 @@ use Config;
 use App\Models\FGInventory;
 use App\Models\InventoryVault;
 use App\Models\ActiveInventory;
+use App\Models\InvoiceItemAP;
+use App\Models\Promo;
 use App\Models\Harvest;
 use App\Models\Producttype;
 use App\Models\Strainame;
 use App\Models\InventoryIgnored;
 use App\Models\InventoryVSIgnored;
 use App\Models\UPController;
-
+use App\Models\Counter;
 class InventoryController extends Controller
 {
     //
@@ -449,5 +451,56 @@ class InventoryController extends Controller
         ])->update(['status' => 1]);
 
         return response()->json(['success' => 1]);
+    }
+
+    public function getInventoryStatus(Request $request)
+    {
+        $aInvList = [];
+        $fg = ActiveInventory::select(DB::raw('strainname'),DB::raw('asset_type_id'),DB::raw('upc_fk'),
+              DB::raw('count(*) as qty'),DB::raw('sum(weight) as weights'))
+              ->with(['Strain','AssetType'])
+              ->where('qtyonhand','>',0)
+              ->whereHas('AssetType',function($query) {
+                    $query->where('onordermenu',1);
+                })
+              ->groupby('strainname','asset_type_id')
+              ->orderby('strainname','asc')
+              ->orderby('asset_type_id','asc')
+              ->get();
+        foreach($fg as $i)
+        {
+            $alreay_requested = InvoiceItemAP::whereHas('Order', function($q) {
+                $q->whereIn('status', [0,1,2]);
+            })->where([
+                    ['strain',$i->strainname],
+                    ['p_type',$i->asset_type_id],
+                    ['invoice_id','!=',$request->id]
+            ])->get();
+            $temp = [];
+            $temp['strain'] = $i->strain->strain;
+            $temp['p_type'] = $i->AssetType->producttype;
+            $temp['strain_id'] = $i->strainname;
+            $temp['p_type_id'] = $i->asset_type_id;
+            $temp['qty']    = $i->qty - $alreay_requested->sum('qty');
+            
+            $upc = UPController::where(
+                [
+                    ['strain',$i->strainname],
+                    ['type',$i->asset_type_id]
+                ])->first();
+            $weight = $upc != null?$upc->weight:0;
+            $bp = $upc != null?$upc->baseprice:0;
+            $taxE = $upc != null?$upc->taxexempt:0;
+            $temp['weight'] = number_format((float)($i->weights - $alreay_requested->sum('qty') * $weight), 2, '.', '');
+            $temp['bp'] = number_format((float)($bp), 2, '.', '');
+            $temp['taxE'] = $taxE;
+            if($temp['qty'] >= 1)
+                $aInvList[] = $temp;
+        }
+        $data = [];
+        $data['inventoryStatus'] = $aInvList;
+        $data['soNumber'] = Counter::where('key','invoice')->first()->prefix.Counter::where('key','invoice')->first()->value;
+        $data['discounts'] = Promo::all();
+        return response()->json($data);
     }
 }

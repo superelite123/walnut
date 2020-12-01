@@ -442,3 +442,8 @@ Route::post('invrestock/approve','InventoryRestockController@approve');
  */
 Route::get('metrc_search','MetrcTagSearchController@index')->middleware(['auth','permission:fginventory']);
 Route::post('metrc_search','MetrcTagSearchController@search')->middleware(['auth','permission:fginventory']);
+Route::group( ['prefix' => 'wbapi'],function(){
+    Route::get('get_inventory_status', 'InventoryController@getInventoryStatus');
+    Route::post('get_inventory_balace', 'OrderController@_form_avaliable_qty');
+    Route::post('order/_customer_credit_note_total','OrderController@_CustomerCreditNoteTotal');
+});

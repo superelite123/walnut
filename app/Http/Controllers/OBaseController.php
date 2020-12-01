@@ -307,7 +307,7 @@ class OBaseController extends Controller
             $limit = $request->input('length') != -1?$request->input('length'):$totalFiltered;
             $orders      = $bCond->offset($start)->limit($limit)->get();
         }
-        if($exporting == 1)
+        if($exporting == 1 && !$bAll)
         {
             $bCond->update(['exported' => date('Y-m-d H:i:s')]);
             $exportLogs = [];

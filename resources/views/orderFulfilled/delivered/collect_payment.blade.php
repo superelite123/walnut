@@ -128,7 +128,36 @@
       <!-- /.col -->
       <div class="col-xs-6">
         <div class="table-responsive">
-            @include('shared.invoice_total')
+          <table class="table">
+            <tr>
+              <th style="width:50%">Total Base Price:</th>
+              <td>${{ $invoice->TotalInfo['base_price'] }}</td>
+            </tr>
+            <tr>
+              <th style="width:50%">Discount Amount:</th>
+              <td>${{ $invoice->TotalInfo['discount'] }}</td>
+            </tr>
+            <tr>
+                <th style="width:50%">Total Extra Discount:</th>
+                <td>${{ $invoice->TotalInfo['e_discount'] }}</td>
+              </tr>
+            <tr>
+              <th style="width:50%">Promotion Value:</th>
+              <td>${{ $invoice->TotalInfo['promotion'] }}</td>
+            </tr>
+            <tr>
+              <th style="width:50%">Sub Total:</th>
+              <td>${{ $invoice->TotalInfo['extended'] }}</td>
+            </tr>
+            <tr>
+              <th>CA Excise Tax Based On Total Base Price @27%:</th>
+              <td>${{ $invoice->TotalInfo['tax'] }}</td>
+            </tr>
+            <tr>
+              <th>Total Due:</th>
+              <td>${{ $invoice->TotalInfo['adjust_price'] }}</td>
+            </tr>
+          </table>
         </div>
       </div>
       <!-- /.col -->
@@ -284,7 +313,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" class="form-control pull-right calendar" id="inputCollectionDate" value="{{ date('Y-m-d') }}">
+                    <input type="text" class="form-control pull-right calendar" id="inputCollectionDate" value="{{ date('Y-m-d') }}" readonly>
                 </div>
                 <!-- /.input group -->
             </div>

@@ -718,16 +718,16 @@ class OrderFulFilledController extends OBaseController
         $this->generatePdf($invoice,'pdfTemplate.fulfilled_invoice');
         if($request->mode == '1')
         {
-            //Mail::to($invoice->salesemail)->send(new SaleOrderSender($invoice));
+            Mail::to($invoice->salesemail)->send(new SaleOrderSender($invoice));
         }
         if($request->mode == '2')
         {
-            //Mail::to($invoice['customer']->companyemail)->send(new SaleOrderSender($invoice));
+            Mail::to($invoice['customer']->companyemail)->send(new SaleOrderSender($invoice));
         }
         if($request->mode == '3')
         {
-            //Mail::to($invoice['customer']->companyemail)->send(new SaleOrderSender($invoice));
-            //Mail::to($invoice->salesemail)->send(new SaleOrderSender($invoice));
+            Mail::to($invoice['customer']->companyemail)->send(new SaleOrderSender($invoice));
+            Mail::to($invoice->salesemail)->send(new SaleOrderSender($invoice));
         }
         File::delete(public_path().'/storage/'.$invoice->number.'/invoice.pdf');
         File::delete(public_path().'/storage/'.$invoice->number.'/mail.pdf');

@@ -683,7 +683,8 @@ var submit_invoice = () => {
         'shipping_method':shipping_method,
         'creditNoteForDeduct':creditNoteForDeduct
     };
-
+    console.log(post_data);
+    return false;
     $.ajax({
         url:'store',
         headers:{"content-type" : "application/json"},
