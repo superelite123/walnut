@@ -419,8 +419,8 @@ class InventoryController extends Controller
                         'batch_id' => $item->HarvestBatchID,
                         'strain_label'  => $item->StrainLabel,
                         'type'          => $item->PType,
-                        'harvested_date'=> $item->harvested_date,
-                        'inventory' => [$temp_item]];
+                        'date'=> $item->created_at->format('m/d/Y H:i:s'),
+                        'inventory' => [$temp_item],];
             $b_exist = false;
             foreach($sorted_data as $key => $sorted_item)
             {

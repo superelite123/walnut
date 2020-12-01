@@ -12,7 +12,8 @@ let tbl_inventory = $('#tbl_inventory').DataTable({
             { "data": "batch_id" },
             { "data": "strain_label" },
             { "data": "type" },
-            { "data": "harvested_date" },
+            { "data": "qty" },
+            { "data": "date" },
             { "data": "btn_approve" },
         ],
 });

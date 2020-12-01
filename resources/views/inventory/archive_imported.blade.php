@@ -33,7 +33,9 @@
                             <th>Harvest Batch ID</th>
                             <th>Strain</th>
                             <th>Type</th>
-                            <th>Harvested Date</th>
+                            <th>Quantity</th>
+                            <th>Imported Date</th>
+                            <th></th>
                             <th></th>
                         </thead>
                         <tbody></tbody>
@@ -55,6 +57,7 @@
 <script>
     let harvests_inventory = JSON.parse('{!! json_encode($data) !!}');
     harvests_inventory.forEach(element => {
-            element.btn_approve = '<button class="btn btn-info btn-xs btn_approve"><i class="fas fa-envelope-square">&nbsp;</i>Approve</button>'
-        });
+            element.btn_approve = '<button class="btn btn-info btn-xs btn_approve"><i class="fas fa-envelope-square">&nbsp;</i>Approve</button>';
+            element.qty = element.inventory.length;
+    });
 </script>
