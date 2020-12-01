@@ -13,9 +13,9 @@ use App\Models\ActiveInventory;
 use App\Models\Harvest;
 use App\Models\Producttype;
 use App\Models\Strainame;
+use App\Models\UPController;
 use App\Models\InventoryIgnored;
 use App\Models\InventoryVSIgnored;
-use App\Models\UPController;
 
 class InventoryController extends Controller
 {
@@ -231,6 +231,7 @@ class InventoryController extends Controller
         $data = [];
         $data['strains']    = Strainame::orderby('strain')->get();
         $data['p_types']    = Producttype::where('onordermenu',1)->orderby('producttype')->get();
+        $data['upcs']       = UPController::all();
         $data['harvests']   = Harvest::where('archived',0)->orderBy('created_at','desc')->get();
         return view('inventory.import_panel',$data);
     }
@@ -308,6 +309,7 @@ class InventoryController extends Controller
             'i_type'    => 'gt:0',
             'strain'    => 'gt:0',
             'p_type'    => 'gt:0',
+            'upc'    => 'gt:0',
             'weight'    => 'required|gt:0|max:99999',
             'harvest'   => 'gt:0',
         ],$messages);
@@ -322,6 +324,7 @@ class InventoryController extends Controller
                 'metrc'     => $metrcTag[0].(string)((int)$metrcTag[1] + $i),
                 'strain'    => $request->strain,
                 'p_type'    => $request->p_type,
+                'upc'       => $request->upc,
                 'weight'    => $request->weight,
                 'harvest'   => $request->harvest,
                 'i_type'   => $request->i_type,
@@ -329,9 +332,11 @@ class InventoryController extends Controller
         }
         $data['strains'] = Strainame::orderby('strain')->get();
         $data['p_types'] = Producttype::where('onordermenu',1)->orderby('producttype')->get();
+        $data['upcs']    = UPController::all();
         $data['harvests'] = Harvest::where('archived',0)->orderBy('created_at','desc')->get();
         $data['default_strain'] = $request->strain;
         $data['default_p_type'] = $request->p_type;
+        //$data['default_upc'] = $request->upc;
         $data['default_harvest'] = $request->harvest;
         //print_r($data['bulk_import_data']);exit;
         return view('inventory.import_bulk_confirm',$data);
@@ -339,10 +344,11 @@ class InventoryController extends Controller
 
     public function bulk_import(Request $request)
     {
-        $default_upc = UPController::where([
-            ['strain' , $request->default_strain],
-            ['type' , $request->default_p_type],
-        ])->first();
+        // $default_upc = UPController::where([
+        //     ['strain' , $request->default_strain],
+        //     ['type' , $request->default_p_type],
+        // ])->first();
+        $default_upc = $request->default_upc;
         $default_harvest = Harvest::find($request->default_harvest);
         $insert_data = [];
         
@@ -351,19 +357,19 @@ class InventoryController extends Controller
             $temp = $item;
             unset($temp['i_type']);
             //set upc_fk
-            $upc = $default_upc;
+            //$upc = $default_upc;
             
-            if($item['strainname'] != $request->default_strain || $item['asset_type_id'] != $request->default_p_type)
-            {
-                $upc = UPController::where(
-                    [
-                        ['strain' , $item['strainname']],
-                        ['type' , $item['asset_type_id']],
-                    ]
-                )->first();
-            }
+            // if($item['strainname'] != $request->default_strain || $item['asset_type_id'] != $request->default_p_type)
+            // {
+            //     $upc = UPController::where(
+            //         [
+            //             ['strain' , $item['strainname']],
+            //             ['type' , $item['asset_type_id']],
+            //         ]
+            //     )->first();
+            // }
 
-            $temp['upc_fk'] = $upc != null?$upc->id:1;
+            //$temp['upc_fk'] = $upc != null?$upc->id:1;
             //
             $temp['um'] = 4;
             $temp['qtyonhand'] = 1;

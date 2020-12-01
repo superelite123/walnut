@@ -123,7 +123,7 @@
                 <div class="col-md-12"></div>
 
                 <!-- strains -->
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label>Strain</label>
                         <div class="input-group">
@@ -143,7 +143,7 @@
                 </div>
 
                 <!-- p_type -->
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label>Product Type</label>
                         <div class="input-group">
@@ -162,8 +162,28 @@
                     </div>
                 </div>
 
+                <!-- UPC -->
+                <div class="col-md-4">
+                  <div class="form-group">
+                      <label>UPC</label>
+                      <div class="input-group">
+                        <div class="input-group-addon">
+                          <i class="fas fa-sliders-h"></i>
+                        </div>
+                        <select class="form-control select2" style="width: 100%;" name="upc" id="upc">
+                          <option value="0" selected>---Select UPC---</option>
+                          @foreach($upcs as $upc)
+                            <option value="{{ $upc->iteminv_id }}" <?php if(old('upc') == $upc->iteminv_id) echo 'selected';?>>{{ $upc->Label }}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                      <!-- /.input group -->
+                      <span class="error"><p style='color:red'><?php if ($errors->has('upc')) echo $errors->first('upc');?></p></span>
+                  </div>
+              </div>
+
                 <!-- weight -->
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group">
                       <label>Weight:</label>
                       <div class="input-group">
@@ -191,7 +211,7 @@
                 </div>
 
                 <!-- Parent Harvest ID -->
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group">
                       <label>Parent Harvest ID:</label>
                       <div class="input-group">

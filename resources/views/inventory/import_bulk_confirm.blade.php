@@ -44,7 +44,9 @@
                       <th>Harvest</th>
                       <th>Strain</th>
                       <th>Product Type</th>
+                      <th>UPC</th>
                       <th>Weight</th>
+                      <th>Inventory</th>
                     </thead>
                     <tbody>
                       @foreach ($bulk_import_data as $key => $item)
@@ -70,6 +72,13 @@
                             <select class="form-control select2" style="width: 100%;" name="items[{{ $key }}][asset_type_id]">
                               @foreach($p_types as $p_type)
                                 <option value="{{ $p_type->producttype_id }}" <?php if($item['p_type'] == $p_type->producttype_id) echo 'selected';?>>{{ $p_type->producttype }}</option>
+                              @endforeach
+                            </select>
+                          </td>
+                          <td>
+                            <select class="form-control select2" style="width: 100%;" name="items[{{ $key }}][upc_fk]">
+                              @foreach($upcs as $upc)
+                                <option value="{{ $upc->iteminv_id }}" <?php if($item['upc'] == $upc->iteminv_id) echo 'selected';?>>{{ $upc->Label }}</option>
                               @endforeach
                             </select>
                           </td>

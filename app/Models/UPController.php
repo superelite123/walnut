@@ -20,4 +20,13 @@ class UPController extends Model
     {
         return $this->belongsTo(Producttype::class,'type');
     }
+
+    public function getLabelAttribute()
+    {
+        $label = $this->Strain != null?$this->Strain->strain:'Removed';
+        $label .= ',';
+        $label .= $this->p_type != null?$this->p_type->producttype:'Removed';
+
+        return $label;
+    }
 }
