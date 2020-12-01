@@ -163,6 +163,12 @@ return [
                     'can' => 'order_delivered',
                 ],
                 [
+                    'text'        => 'Walnut CreditNote',
+                    'url'         => 'order_fulfilled/credit_notes',
+                    'icon'        => 'glyphicon glyphicon-list',
+                    'can' => 'order_delivered',
+                ],
+                [
                     'text'        => 'Payment Verfication',
                     'url'         => 'order/p_v',
                     'icon'        => 'glyphicon glyphicon-list',
@@ -191,13 +197,6 @@ return [
                     'url'         => 'order_fulfilled/i_report',
                     'icon'        => 'fas fa-calculator',
                     'can' => 'order_report',
-                ],
-                
-                [
-                    'text'        => 'FA Export Logs',
-                    'url'         => 'order/fa_export_log',
-                    'icon'        => 'fas fa-calculator',
-                    'can' => 'order_finacial',
                 ],
                 [
                     'text'        => 'Report Page',
@@ -359,25 +358,25 @@ return [
         ],
 
         [
-            'text' => 'Clock In/Out',
+            'text' => 'Culti - Clock In / Clock Out',
             'url'  => 'clocking',
             'icon' => 'fas fa-user',
             'can'  => 'clock_in_out'
         ],
         [
-            'text' => 'Time keeping Distro',
-            'url'  => 'clocking_distro',
-            'icon' => 'fas fa-user',
-            'can'  => 'clock_in_out'
-        ],
-        [
-            'text'        => 'Time Keeping',
+            'text'        => 'Culti - Time Keeping',
             'url'         => 'clocking_report',
             'icon'        => 'fas fa-clock',
             'can'         => 'time_keeping'
         ],
         [
-            'text'        => 'Time Keeping Culti',
+            'text' => 'Distro - Lunch In / Lunch Out',
+            'url'  => 'clocking_distro',
+            'icon' => 'fas fa-user',
+            'can'  => 'clock_in_out'
+        ],
+        [
+            'text'        => 'Distro - Time Keeping',
             'url'         => 'clocking_lunch_report',
             'icon'        => 'fas fa-clock',
             'can'         => 'time_keeping'
@@ -386,7 +385,7 @@ return [
             'text'        => 'Metrc Tag Search',
             'url'         => 'metrc_search',
             'icon'        => 'fas fa-clock',
-            'can'         => 'inventory_fg'
+            'can'         => 'time_keeping'
         ],
 
 
@@ -414,18 +413,30 @@ return [
             'icon' => 'fas fa-sitemap',
             'can'  => ['inventory_combine','inventory_split'],
             'submenu' => [
-            [
-                'text' => 'Combine',
-                'url'  => 'inventory/combine',
-                'icon' => 'fas fa-equals',
-                'can' => 'inventory_combine',
-            ],
-            [
-                'text' => 'Split',
-                'url'  => 'inventory/split',
-                'icon' => 'fas fa-cut',
-                'can' => 'inventory_split',
-            ],
+                [
+                    'text' => 'Combine',
+                    'url'  => 'inventory/combine',
+                    'icon' => 'fas fa-equals',
+                    'can' => 'inventory_combine',
+                ],
+                [
+                    'text' => 'Split',
+                    'url'  => 'inventory/split',
+                    'icon' => 'fas fa-cut',
+                    'can' => 'inventory_split',
+                ],
+                [
+                    'text' => 'Import',
+                    'url'  => 'inventory/import',
+                    'icon' => 'fas fa-save',
+                    'can' => 'inventory_import',
+                ],
+                [
+                    'text' => 'Awaiting Approval',
+                    'url'  => 'inventory/archive_imported',
+                    'icon' => 'fas fa-save',
+                    'can' => 'inventory_import',
+                ],
             ]
         ],
         [
@@ -624,6 +635,12 @@ return [
                     'url'  => 'licensetype',
                     'icon' => 'far fa-id-badge',
                     'can'  => 'admin_license'
+                ],
+                [
+                    'text' => 'Credit Reasons',
+                    'url'  => 'credit_reasons',
+                    'icon' => 'far fa-id-badge',
+                    'can'  => 'credit_reasons'
                 ],
                 [
                     'text' => 'Status',
